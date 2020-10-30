@@ -35,11 +35,11 @@
                     <ul class="navbar-nav mr-auto">
 
                     </ul>
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                                 <a class="nav-link" href="{{ url('/gameIndex') }}">{{ __('LoginTTTTT') }}</a>
                             </li>
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">

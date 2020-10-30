@@ -3,7 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\gameCRUD;
+use App\Models\Genre;
+use App\Models\gameGenre;
+use App\Models\Elq;
 use Illuminate\Http\Request;
+use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+
 
 class gameController extends Controller
 {
@@ -14,8 +20,31 @@ class gameController extends Controller
      */
     public function index()
     {
-        $model = gameCRUD::all();
-        return view('gameView.index',compact('model'))->with('i', (request()->input('page', 1) - 1) * 5);
+      
+        
+        /*$genres = DB::collection('genre')->get();
+        $games = Genre::with('game_genre')->get();
+        $genres = collect();
+        $test = collect();
+        $new = collect();
+        foreach($model as $m){
+            $test->push($m->id);
+        }
+        foreach($games as $game){
+            foreach($test as $mod){
+                if($game->id == $game->game_genre->pluck('genre_id')->get('0') && $mod == $game->game_genre->pluck('game_id')->get('0'))
+                $genres->push(DB::collection('game_genre')->where('game_id',$mod)->where('genre_id',$game->game_genre->pluck('genre_id')->get('0'))->get());
+            }
+        }
+        $reference = collect($genres)->map(function ($item){
+                return (object)$item;
+        });
+        var_dump($genres->flatten());
+            //$genres = DB::collection('game_genre')->where('game_id',$model)->where('genre_id',$genreView->genre_id)->get();
+        //$genres = gameGenre::where('game_id',$model['_id'])->where('genre_id',$genreView->genre_id)->get();
+ */
+        $games = gameCRUD::with(['game_genre','game_genre.genre'])->get();
+        return view('gameView.index',compact('games'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -53,9 +82,11 @@ class gameController extends Controller
      * @param  \App\Models\gameCRUD  $gameCRUD
      * @return \Illuminate\Http\Response
      */
-    public function show(gameCRUD $gameCRUD)
+    public function show($id)
     {
-        //
+        //$game = gameCRUD::find($id);
+        $game = gameCRUD::with(['game_genre','game_genre.genre'])->get()->find($id);
+        return view('gameView.showGame',compact('game'));
     }
 
     /**
@@ -79,7 +110,7 @@ class gameController extends Controller
     public function update(Request $request, gameCRUD $gameCRUD)
     {
         //
-    }
+     }
 
     /**
      * Remove the specified resource from storage.
@@ -89,6 +120,11 @@ class gameController extends Controller
      */
     public function destroy(gameCRUD $gameCRUD)
     {
-        //
+        $gameCRUD->delete();
+        return redirect()->route('gameView.index')
+        ->with('success','Book deleted successfully');
+    }
+    public function getGenre($id){
+        
     }
 }

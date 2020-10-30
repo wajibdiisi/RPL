@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\File;
 class UserProfileController extends Controller
 {
     public function show(){
-    return view('profile', ['user' => Auth::user()] );
+    return view('profile/profile', ['user' => Auth::user()] );
 }
     public function update_avatar(Request $request){
     // Logic for user upload of avatar
@@ -23,6 +23,6 @@ class UserProfileController extends Controller
         $user->avatar = $filename;
         $user->save();
     }
-    return view('profile', ['user' => Auth::user()] );
+    return view('profile/profile', ['user' => Auth::user()] );
 }
 }
