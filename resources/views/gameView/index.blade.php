@@ -7,7 +7,7 @@
                 <h2>Gamelist</h2>
             </div>
             <div class="pull-right">
-                <a class="btn btn-success" href="{{ route('gameView.create') }}"> Create New Book</a>
+                <a class="btn btn-success" href="{{ route('gameView.create') }}"> Create New Game</a>
             </div>
         </div>
     </div>
@@ -34,14 +34,12 @@
             <td>{{$g->gameName}}</td>
             <td>{{ $g->summary}}</td>
             <td>
-            @foreach($g->game_genre as $genre)
-            @foreach($genre->genre as $genre_name)
-            <div class="btn btn-info">{{$genre_name->title}}</div>
-            @endforeach
+            @foreach($g->genre as $genre)
+            <div class="btn btn-info">{{$genre->title}}</div>
             @endforeach
             </td>
 	        <td>
-                <form action="{{ route('gameView.destroy',$g['_id'])}}" method="POST">
+                <form action="{{ route('gameView.destroy',$g->_id)}}" method="POST">
                     <a class="btn btn-info" href="{{ route('gameView.show',$g['_id']) }}">Show</a>
                     <a class="btn btn-primary" href="{{ route('gameView.edit',$g['_id']) }}">Edit</a>
                     @csrf

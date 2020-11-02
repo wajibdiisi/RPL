@@ -17,8 +17,8 @@ class gameGenre extends Eloquent
     public function game(){
         return $this->hasMany('App\Models\gameCRUD','_id','game_id');
     }
-    public function games(){
-        return $this->belongsToMany(gameCRUD::class);
+    public function genreBelong(){
+        return $this->belongsTo(gameCRUD::class,'_id','genre_id');
     }
     
 }

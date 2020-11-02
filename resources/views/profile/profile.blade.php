@@ -254,7 +254,7 @@
                         <h4 class="card-title">Highest Achievement</h4>
                     </div>
                     <div class="card-body mb-3">
-                    <img src="https://i0.wp.com/carijawaban.id/wp-content/uploads/2020/07/Mythical_Glory.png?resize=169%2C169&ssl=1" class="user-profile-image rounded-circle" alt="" />
+                    <img src="https://i0.wp.com/carijawaban.id/wp-content/uploads/2020/07/Mythical_Glory.png?resize=169%2C169&ssl=1" class="user-profile-image rounded-circle" alt="" width="300" />
                     <img src="https://eloboost24.eu/images/valorant/6.png"/>  
                         <a href="#" class="label label-success mb-2">HTML</a>
                         <a href="#" class="label label-success mb-2">CSS</a>

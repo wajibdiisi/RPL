@@ -13,10 +13,10 @@ class Genre extends Eloquent
     protected $fillable = [
         'title','genreID'
     ];
-    public function game_genre(){
+    public function game_genre(){   
         return $this->hasMany('App\Models\gameGenre','genre_id','_id');
     }
     public function game(){
-        return $this->belongsToMany(gameCRUD::class,'game_genre');
+        return $this->belongsToMany(gameCRUD::class,null,'genre_ids','game_ids');
     }
 }

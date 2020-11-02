@@ -77,8 +77,8 @@
           <!-- Breadcrumb -->
           <nav aria-label="breadcrumb" class="main-breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-              <li class="breadcrumb-item"><a href="javascript:void(0)">Game</a></li>
+              <li class="breadcrumb-item"><a href="{{url('/gameIndex')}}">Home</a></li>
+              <li class="breadcrumb-item"><a href="{{url('/gameIndex')}}">Game</a></li>
               <li class="breadcrumb-item active" aria-current="page">{{$game->gameName}}</li>
             </ol>
           </nav>
@@ -89,13 +89,11 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img src="https://images-na.ssl-images-amazon.com/images/I/81PxGQcHiRL._AC_SL1500_.jpg" alt="Admin" class="rounded-circle" width="300">
+                    <img src="{{url('uploads/gamePicture/' . $game->gamePicture)}}" alt="Admin" class="rounded-circle" width="300">
                     <div class="mt-3">
                       <h4>{{$game->gameName}}</h4>
-                      <p class="text-secondary mb-1">@foreach($game->game_genre as $genre)
-            @foreach($genre->genre as $genre_name)
-            <div class="btn btn-info">{{$genre_name->title}}</div>
-            @endforeach
+                      <p class="text-secondary mb-1">@foreach($game->genre as $genre)
+            <div class="btn btn-info">{{$genre->title}}</div>
             @endforeach</p>
                       
                     </div>
@@ -111,10 +109,8 @@
                   </li>
                   <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                     <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github mr-2 icon-inline"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>Genre</h6>
-                    <span class="text-secondary">@foreach($game->game_genre as $genre)
-            @foreach($genre->genre as $genre_name)
-            <div class="btn btn-info">{{$genre_name->title}}</div>
-            @endforeach
+                    <span class="text-secondary">@foreach($game->genre as $genre)
+            <div class="btn btn-info">{{$genre->title}}</div>
             @endforeach</span>
                   </li>
                   <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
@@ -140,7 +136,7 @@
                       <h6 class="mb-0">Full Name</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      Kenneth Valdez
+                      {{$game->summary}}
                     </div>
                   </div>
                   <hr>
