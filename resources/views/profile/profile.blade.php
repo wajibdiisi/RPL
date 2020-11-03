@@ -226,6 +226,8 @@
 <body>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 <div class="container">
+
+<flashy data-message="{{ flashy()->message() }}"></flashy>
 <div class="page-inner no-page-title">
     <!-- start page main wrapper -->
     <div id="main-wrapper">
@@ -237,13 +239,71 @@
                     </div>
                     <div class="card-body user-profile-card mb-3">
                         <img src="{{url('uploads/avatars/' . $user->avatar)}}" class="user-profile-image rounded-circle" alt="" />
-                        <h4 class="text-center h6 mt-2">{{ $user->name}}</h4>
+                        <h4 class="text-center h6 mt-2">
+                        @if($user->username)
+                        @<?=$user->username?>@endif</h4>
                         <p class="text-center small">UI/UX Designer</p>
-                        
+                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModalCenter">
+                        <i class="fa fa-fw fa-camera"></i>
+                        <span>Change Photo</span>
+                      </button>
+                      <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#changeprofile">
+                        <i class="fa fa-fw fa-camera"></i>
+                        <span>Change Profile</span>
+                      </button>
+                        <div class="modal fade" id="changeprofile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <form enctype="multipart/form-data" action="{{ route('profile.update') }}" method="POST">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                    </div>
+                                            <div class="modal-body">
+                                            <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Username</label>
+            <input type="text" class="form-control" name="username">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Message:</label>
+            <textarea class="form-control" id="message-text"></textarea>
+          </div>
+
+
+                                            </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="submit" class="pull-right btn btn-sm btn-primary">
+      </div>
+    </div>
+  </div>
+</div>        
+</form>       
             <form enctype="multipart/form-data" action="{{ route('profile.update') }}" method="POST">
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
                 <input type="file" name="avatar">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input type="submit" class="pull-right btn btn-sm btn-primary">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+                </div>
+            </div>
+            </div>
             </form>
        
                         <button class="btn btn-theme btn-sm">Follow</button>

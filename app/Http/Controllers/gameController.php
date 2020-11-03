@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\gameCRUD;
 use App\Models\Genre;
 use App\Models\gameGenre;
-use App\Models\Elq;
 use Image;
 use Illuminate\Http\Request;
 use Jenssegers\Mongodb\Eloquent\Model;
@@ -104,11 +103,14 @@ class gameController extends Controller
      */
     public function edit($id)
     {
-        $genre = gameGenre::with(['genre'])->where('game_id',$id)->get();
+        $game = gameCRUD::with(['genre'])->where('_id', '=', $id)->first();
+        $genreList = Genre::all();
+        /*$genre = gameGenre::with(['genre'])->where('game_id',$id)->get();
         $game = gameCRUD::with(['game_genre','game_genre.genre'])->get()->find($id);
         $filename = $id .".png";
         $path = 'uploads/gamePicture/' . $filename;
-        return view('gameAdmin.editGame',compact('game','genre'));
+        */
+        return view('gameAdmin.editGame',compact('game','genreList'));
     }
 
     /**
@@ -121,7 +123,8 @@ class gameController extends Controller
     public function update(Request $request, $id)
     {
         $gameUpdate = gameCRUD::with(['genre'])->where('_id', '=', $id)->first();
-        $arrayGenre = explode(',',$request->input('genre'));
+      
+        $arrayGenre = $request->genre;
         $arrayGenre_id = Genre::whereIn('title',$arrayGenre)->pluck('_id')->toArray();
         if(!$gameUpdate->genre()->exists()){
             $gameUpdate->genre()->attach($arrayGenre_id);
@@ -179,7 +182,7 @@ class gameController extends Controller
             $gameUpdate->gamePicture = $filename;
         }
         $gameUpdate->fill(array_filter($request->input()))->save();
-        return redirect()->route('gameView.index');
+       return redirect()->route('gameView.index');
      }
 
     /**

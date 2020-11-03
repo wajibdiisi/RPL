@@ -40,8 +40,8 @@
             </td>
 	        <td>
                 <form action="{{ route('gameView.destroy',$g->_id)}}" method="POST">
-                    <a class="btn btn-info" href="{{ route('gameView.show',$g['_id']) }}">Show</a>
-                    <a class="btn btn-primary" href="{{ route('gameView.edit',$g['_id']) }}">Edit</a>
+                    <a class="btn btn-info" href="{{ route('gameView.show',$g->_id) }}">Show</a>
+                    <a class="btn btn-primary" href="{{ route('gameView.edit',$g->_id) }}">Edit</a>
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Delete</button>

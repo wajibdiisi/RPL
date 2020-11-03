@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests;
+use App\Models\Profile;
+use Auth;
+use Image;  
 
 class HomeController extends Controller
 {
@@ -13,7 +17,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','verified']);
     }
 
     /**
@@ -21,8 +25,22 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
-    }
-}
+        if(!Profile::Where('user_id','=',Auth::user()->id)->exists()){
+            Profile::create([
+                'user_id' => Auth::user()->id,
+                'name' => Auth::user()->name,
+            ]);
+        }
+        $user = Profile::with('user')->where('user_id','=',Auth::user()->id)->first();
+        $request->session()->put('profile_id',$user->id);
+        if(!$user->username):
+            $request->session()->put('username',$user->id);
+            return redirect()->route('profile.show',$user->id);
+        elseif($user->username) :
+            $request->session()->put('username',$user->username);
+            return redirect()->route('profile.show',$user->username);
+        endif;
+}}
+
