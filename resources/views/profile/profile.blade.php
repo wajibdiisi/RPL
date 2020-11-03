@@ -226,7 +226,18 @@
 <body>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 <div class="container">
-
+    @if ($message = Session::get('error'))
+    <div class="alert alert-danger alert-block">
+      <button type="button" class="close" data-dismiss="alert">×</button> 
+      <strong>{{ $message }}</strong>
+    </div>
+  @endif
+@if ($message = Session::get('success'))
+    <div class="alert alert-success alert-block">
+      <button type="button" class="close" data-dismiss="alert">×</button> 
+        <strong>{{ $message }}</strong>
+    </div>
+@endif
 <flashy data-message="{{ flashy()->message() }}"></flashy>
 <div class="page-inner no-page-title">
     <!-- start page main wrapper -->
