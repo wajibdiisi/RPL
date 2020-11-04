@@ -7,6 +7,7 @@ use Auth;
 use Image;
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\ProfileManager;
 use Illuminate\Support\Facades\File;
 
 class UserProfileController extends Controller
@@ -14,7 +15,15 @@ class UserProfileController extends Controller
     public function show($id){
         
         $user = Profile::with('user')->where('user_id','=',Auth::user()->id)->first();
-        return view('profile/profile',compact('user'));
+        $checkUser = ProfileManager::where('profile_id','=',$user->id)->first();
+        $friendArray = array();
+        foreach($checkUser->friend_ids as $friendId){
+            if($friendId['status'] == 'approved')
+            array_push($friendArray,$friendId['id']);
+        }
+        $friendList = Profile::whereIn('_id',$friendArray)->get();
+        return view('profile/profile',compact('user','friendList'));
+        //$checkUser = ProfileManager::with('profileFriend')->where('profile_id','=',$user->id)->get();
     }
 
     public function editProfile(){

@@ -18,4 +18,10 @@ class Profile extends Eloquent
     public function user(){
         return $this->hasOne(User::class,'_id','user_id');
     }
+    public function profilemanager(){
+        return $this->hasOne(ProfileManager::class,'profile_id','_id');
+    }
+    public function friendmanager(){
+        return $this->embedsMany(ProfileManager::class,null,'friend_ids.id','_id');
+    }
 }

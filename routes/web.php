@@ -30,7 +30,10 @@ Route::post('profile', [App\Http\Controllers\UserProfileController::class, 'upda
 Route::get('/gameIndex', [App\Http\Controllers\gameController::class, 'index'])->name('gameIndex');
 Route::get('/gameEdit', [App\Http\Controllers\gameController::class, 'edit'])->name('gameEdit');
 Route::post('/gameUpdate/{id}', [App\Http\Controllers\gameController::class, 'update'])->name('game.Update');
+Route::get('{id}/friends/{username}',[App\Http\Controllers\FriendsController::class, 'show'])->name('friends.profile');
+Route::get('{id}/friends/{username}/add',[App\Http\Controllers\FriendsController::class, 'store'])->name('friends.add');
 Route::resource('gameView',App\Http\Controllers\gameController::class);
+Route::resource('friends',App\Http\Controllers\FriendsController::class);
 Route::get('profile', function (){
     return redirect()->route('profile.show',session()->get('username'));
 });

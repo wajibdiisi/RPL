@@ -238,6 +238,7 @@
         <strong>{{ $message }}</strong>
     </div>
 @endif
+<flashy data-message="{{ flashy()->message() }}"></flashy>
 <div class="page-inner no-page-title">
     <!-- start page main wrapper -->
     <div id="main-wrapper">
@@ -253,11 +254,24 @@
                         @if($user->username)
                         <?=$user->username?>@endif</h4>
                         <p class="text-center small">UI/UX Designer</p>
-                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModalCenter">
-                        <i class="fa fa-fw fa-camera"></i>
-                        <span>Change Photo</span>
-                      </button>
-                      <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#changeprofile">
+                        <?php
+                        $found = false;
+                        $loopCounter = 0;
+                        $countArr = count($currentUser->profilemanager->friend_ids);
+                        ?>
+                        @if($currentUser != null)
+                        @foreach($currentUser->profilemanager->friend_ids as $check)
+                        @if($check['id'] != $user->id && !$friendCheck)          
+                        <a class="btn btn-primary" href="{{ route('friends.add',['id'=>session()->get('username'),'username'=>$user->username]) }}">Add friend</a>
+                        @elseif($check['id'] == $user->id && $friendCheck && $check['status'] =='pending')
+                        <a class="btn btn-primary" href="{{ route('friends.add',['id'=>session()->get('username'),'username'=>$user->username]) }}">Waiting Approval</a>
+                        @elseif($check['id'] == $user->id && $friendCheck && $check['status'] =='approved')
+                        <a class="btn btn-primary" href="{{ route('friends.add',['id'=>session()->get('username'),'username'=>$user->username]) }}">Already in friendlist</a>
+                        @endif
+                        @endforeach
+                        @endif
+                        
+                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#changeprofile">
                         <i class="fa fa-fw fa-camera"></i>
                         <span>Change Profile</span>
                       </button>
@@ -453,17 +467,23 @@
             <div class="col-lg-12 col-xl-3">
                 <div class="card card-white grid-margin">
                     <div class="card-heading clearfix">
-                        <h4 class="card-title">Friendlist({{$friendList->count()}})</h4>
+                        <h4 class="card-title">Friends</h4>
                     </div>
                     <div class="card-body">
                         <div class="team">
-                            @foreach($friendList as $fl)
                             <div class="team-member">
                                 <div class="online on"></div>
-                                <a href="{{ route('friends.profile',['id'=>session()->get('username'),'username'=>$fl->username]) }}">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" /></a>
-                            @endforeach
-                           
+                                <a class="btn btn-info" href="{{ route('friends.profile',['id'=>$user->username,'username'=>'test123']) }}">Friends</a>
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
+                            </div>
+                            <div class="team-member">
+                                <div class="online on"></div>
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
+                            </div>
+                            <div class="team-member">
+                                <div class="online off"></div>
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
+                            </div>
                         </div>
                     </div>
                 </div>
