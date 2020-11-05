@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-
+use Laravel\Scout\Searchable;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 class Profile extends Eloquent
 {
     protected $connection = 'mongodb';
     protected $collection = 'profile';
     protected $fillable = [
-        'name',
+        'nama_lengkap',
         'username',
         'user_id',
         'tgl_lahir',
@@ -21,7 +21,12 @@ class Profile extends Eloquent
     public function profilemanager(){
         return $this->hasOne(ProfileManager::class,'profile_id','_id');
     }
-    public function friendmanager(){
-        return $this->embedsMany(ProfileManager::class,null,'friend_ids.id','_id');
+    /*public function searchableAs(){
+        return 'mygame';
     }
+    public function toSearchableArray()
+    {
+        $array = $this->only('nama_lengkap','username');
+        return $array;
+    }*/
 }

@@ -14,7 +14,8 @@ class UserProfileController extends Controller
 {
     public function show($id){
         
-        $user = Profile::with('user')->where('user_id','=',Auth::user()->id)->first();
+        $userView = Profile::with('profilemanager')->where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->first();
+        $user = Profile::with('profilemanager')->where('user_id','=',Auth::user()->id)->first();
         $checkUser = ProfileManager::where('profile_id','=',$user->id)->first();
         $friendArray = array();
         foreach($checkUser->friend_ids as $friendId){
@@ -22,25 +23,41 @@ class UserProfileController extends Controller
             array_push($friendArray,$friendId['id']);
         }
         $friendList = Profile::whereIn('_id',$friendArray)->get();
-        return view('profile/profile',compact('user','friendList'));
+        $friendCheck = ProfileManager::where('user_id','=',Auth::user()->id)->where('friend_ids.id',$userView->id)->exists();
+        
+        return view('profile/profile',compact('user','friendList','friendCheck','userView'));
         //$checkUser = ProfileManager::with('profileFriend')->where('profile_id','=',$user->id)->get();
     }
 
-    public function editProfile(){
-        
+    public function getProfile($id){
+
     }
-    public function update_avatar(Request $request){
+   
+
+    public function showRequest($id){
+    
+        $user = ProfileManager::with('embedsRequest')->where('user_id','=',Auth::user()->id)->first();
+        $reqArray=array();
+        foreach($user->embedsRequest as $req){
+            if($req->status == 'Need Action'){
+                array_push($reqArray,['id'=>$req->id,'timeAdded' =>$req->timeAdded]);
+            }
+        }
+        $friendReq = Profile::whereIn('_id',array_column($reqArray,'id'))->get();
+        return view('profile/friendRequest',compact('user','friendReq','reqArray'));
+        }
+
+    public function update_avatar(Request $request,$id){
     // Logic for user upload of avatar
-        $updateProfile = Profile::where('_id','=',$request->session()->get('profile_id'))->first();
-        if($request->hasFile('avatar')){
+       
+        $updateProfile = Profile::where('_id','=',$id)->first();
+        if($request->hasFile('avatar') && $updateProfile){
             $avatar = $request->file('avatar');
-            var_dump($request->session()->get('profile_id'));
-            $filename = $request->session()->get('profile_id') ."." . $avatar->getClientOriginalExtension();
+            $filename = $updateProfile->id ."." . $avatar->getClientOriginalExtension();
             $path = 'uploads/avatars/' . $filename;
             Image::make($avatar)->resize(300, 300)->save($path);
-            $user = Profile::find($request->session()->get('profile_id'));
-            $user->avatar = $filename;
-            $user->save();
+            $updateProfile->avatar = $filename;
+            $updateProfile->save();
         }
         $unique = Profile::where('username','=',$request->get('username'))->exists();
         if(!$unique && $request->get('username')){

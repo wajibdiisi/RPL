@@ -245,14 +245,15 @@
             <div class="col-lg-5 col-xl-3">
                 <div class="card card-white grid-margin">
                     <div class="card-heading clearfix">
-                        <h4 class="card-title">{{ $userView->nama_lengkap}}'s Profile</h4>
+                        <h4 class="card-title">{{ $user->name}}'s Profile</h4>
                     </div>
                     <div class="card-body user-profile-card mb-3">
-                        <img src="{{url('uploads/avatars/' . $userView->avatar)}}" class="user-profile-image rounded-circle" alt="" />
+                        <img src="{{url('uploads/avatars/' . $user->avatar)}}" class="user-profile-image rounded-circle" alt="" />
                         <h4 class="text-center h6 mt-2">
-                        <?=$userView->username?></h4>
+                        @if($user->username)
+                        <?=$user->username?>@endif</h4>
                         <p class="text-center small">UI/UX Designer</p>
-                        @if($userView->user_id == Auth::user()->id)
+                        @if($user->user_id == Auth::user()->id)
                         <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModalCenter">
                         <i class="fa fa-fw fa-camera"></i>
                         <span>Change Photo</span>
@@ -262,20 +263,20 @@
                         <span>Change Profile</span>
                       </button>
                       <a class="btn btn-primary" href="{{ route('friends.pending',['id'=> session()->get('username')]) }}">Friend Request</a>
-                      @else 
-                        @foreach($userView->profilemanager->friend_ids as $check)
-                        @if($check['id'] != session()->get('profile_id') && !$friendCheck)          
-                        <a class="btn btn-primary" href="{{ route('friends.add',['id'=>session()->get('username'),'username'=>$userView->username]) }}">Add friend</a><?php break?>
-                        @elseif($check['id'] ==  session()->get('profile_id') && $friendCheck && $check['status'] =='Need Action')
-                        <a class="btn btn-primary" href="{{ route('friends.add',['id'=>session()->get('username'),'username'=>$userView->username]) }}">Waiting Approval</a>
-                        @elseif($check['id'] ==  session()->get('profile_id') && $friendCheck && $check['status'] =='approved')
-                        <a class="btn btn-primary" href="{{ route('friends.add',['id'=>session()->get('username'),'username'=>$userView->username]) }}">Already in friendlist</a>
+                      @endif 
+                        @foreach($user->profilemanager->friend_ids as $check)
+                        @if($check['id'] != $user->id && !$friendCheck)          
+                        <a class="btn btn-primary" href="{{ route('friends.add',['id'=>session()->get('username'),'username'=>$user->username]) }}">Add friend</a>
+                        @elseif($check['id'] == $user->id && $friendCheck && $check['status'] =='pending')
+                        <a class="btn btn-primary" href="{{ route('friends.add',['id'=>session()->get('username'),'username'=>$user->username]) }}">Waiting Approval</a>
+                        @elseif($check['id'] == $user->id && $friendCheck && $check['status'] =='approved')
+                        <a class="btn btn-primary" href="{{ route('friends.add',['id'=>session()->get('username'),'username'=>$user->username]) }}">Already in friendlist</a>
                         @endif
                         @endforeach
-                    @endif                         
+                                             
                       
                         <div class="modal fade" id="changeprofile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <form enctype="multipart/form-data" action="{{ route('profile.update',$user->id) }}" method="POST">
+                        <form enctype="multipart/form-data" action="{{ route('profile.update') }}" method="POST">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -305,7 +306,7 @@
   </div>
 </div>        
 </form>       
-            <form enctype="multipart/form-data" action="{{ route('profile.update',$user->id) }}" method="POST">
+            <form enctype="multipart/form-data" action="{{ route('profile.update') }}" method="POST">
                         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -473,8 +474,8 @@
                             @foreach($friendList as $fl)
                             <div class="team-member">
                                 <div class="online on"></div>
-                                <a href="{{ route('friends.profile',['id'=>$fl->username]) }}">
-                                <img class="img-responsive" src="{{url('uploads/avatars/' . $fl->avatar)}}" alt="" /></a>
+                                <a href="{{ route('friends.profile',['id'=>session()->get('username'),'username'=>$fl->username]) }}">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" /></a>
                             @endforeach
                            
                         </div>

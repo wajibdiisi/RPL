@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\Profile;
+use App\Models\ProfileManager;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -52,6 +54,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'username' =>['required','string', 'max:20', 'unique:profile,username'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -64,10 +67,33 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        try{
+            $userData = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+            ]);
+            $profileData = Profile::create([
+                'username' => $data['username'],
+                'avatar' => 'profileDefault.png',
+                'nama_lengkap' => $data['name'],
+                'user_id' => $userData->id,
+                ]);
+            ProfileManager::create([
+                'user_id' => $userData->id,
+                'profile_id' => $profileData->id,
+                'friend_ids' => [
+                    ['id' => '',
+                      'status' => '',
+                      'time' => ''
+                ],
+                ],
+            ]);
+        } catch(\Exception $ex){
+            \DB::rollBack();
+            \Log::error("Error creating User and UserInformation: ".$ex->getMessage());
+            return false;
+        }
+        return $userData;
     }
 }

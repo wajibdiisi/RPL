@@ -7,6 +7,7 @@ use App\Models\User;
 use Auth;
 use Carbon\Carbon;
 use App\Models\Profile;
+use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use App\Models\ProfileManager;
 
 class FriendsController extends Controller
@@ -41,9 +42,11 @@ class FriendsController extends Controller
     {
         $addedFriend = Profile::where('user_id','=',$username)->orWhere('username','=',$username)->first();
         $user = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->first();
-        $insert = array('id'=> $addedFriend->id,'timeAdded' => Carbon::now()->toDateTimeString(),'status' => 'pending');
-        $currentUser = ProfileManager::where('profile_id','=',$user->id)->push('friend_ids',$insert,true);
-        return redirect()->route('friends.profile',['id'=>$user->username,'username'=>$addedFriend->username]);
+        $sender = array('id'=> $addedFriend->id,'timeAdded' => Carbon::now()->toDateTimeString(),'status' => 'pending');
+        $receiver = array('id' =>$user->id,'timeAdded' => Carbon::now()->toDateTimeString(),'status' => 'Need Action');
+        ProfileManager::where('profile_id','=',$user->id)->push('friend_ids',$sender,true);
+        ProfileManager::where('profile_id','=',$addedFriend->id)->push('friend_ids',$receiver,true);
+        return redirect()->route('profile.show',$addedFriend->username);
         
     }
 
@@ -53,16 +56,48 @@ class FriendsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id,$username)
+    public function show($username)
     {
-        $user = Profile::where('username','=',$username)->orWhere('user_id','=',$username)->first();
-        $currentUser = Profile::with('profilemanager')->where('user_id','=',$id)->orWhere('username','=',$id)->first();
-        $friendCheck = ProfileManager::where('user_id','=',Auth::user()->id)->where('friend_ids.id',$user->id)->exists();
-        if($user->user_id != Auth::user()->id){
-            return view('friends/friendprofiles',compact('user','currentUser','friendCheck'));
+        $userView = Profile::with('profilemanager')->where('user_id','=',$username)->orWhere('username','=',$username)->orWhere('_id','=',$username)->first();
+        $checkUser = ProfileManager::where('profile_id','=',$userView->id)->first();
+        $user = $userView;
+        $friendArray = array();
+        foreach($checkUser->friend_ids as $friendId){
+            if($friendId['status'] == 'approved')
+            array_push($friendArray,$friendId['id']);
+        }
+        $friendList = Profile::whereIn('_id',$friendArray)->get();
+        
+        $friendCheck = ProfileManager::where('user_id','=',$userView->user_id)->where('friend_ids.id',session()->get('profile_id'))->exists();
+        if($userView->user_id != Auth::user()->user_id){
+            return view('profile/profile',compact('user','userView','friendCheck','friendList'));
         }else{
             return redirect()->route('profile.show',$id);
         }
+    }
+    public function accept($id,$username){
+        $user = ProfileManager::where('user_id','=',Auth::user()->id)->first();
+        $selectedUser = Profile::where('username','=',$username)->first();
+        foreach($user->friend_ids as $req){
+            if($req['id'] == $selectedUser->id){
+                $receiver = array();
+                array_push($receiver,['id' => $req['id'],'status' => 'approved','timeAccepted' => Carbon::now()->toDateTimeString()]);
+                ProfileManager::where('user_id','=',$user->user_id)->pull('friend_ids',['id' =>$receiver[0]['id']]);
+                ProfileManager::where('user_id','=',$user->user_id)->push('friend_ids',$receiver);
+            }
+        }
+        $test = ProfileManager::where('profile_id','=',$selectedUser->id)->where('friend_ids.id',$user->profile_id)->first();
+        foreach($test->friend_ids as $update){
+            if($update['id'] == $user->profile_id){
+                $sender = array();
+                array_push($sender,['id' => $user->profile_id,'status' => 'approved','timeAccepted' => Carbon::now()->toDateTimeString()]);
+                ProfileManager::where('user_id','=',$user->user_id)->pull('friend_ids',['id' => $sender[0]['id']]);
+                ProfileManager::where('profile_id','=',$selectedUser->id)->push('friend_ids',$sender);
+                
+            break;
+            }
+        }
+        
     }
 
     /**

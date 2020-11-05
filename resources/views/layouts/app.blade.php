@@ -37,9 +37,7 @@
                     </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/gameIndex') }}">{{ __('Edit Game ') }}</a>
-                            </li>
+                   
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
@@ -51,8 +49,17 @@
                                 </li>
                             @endif
                         @else
+                        <form enctype="multipart/form-data" action="{{ route('search') }}" method="GET">
+                            <input class="form-control" type="text" name=search placeholder="Search" aria-label="Search">
+                            <input type="submit" class="pull-right btn btn-sm btn-primary">
+
+                        </form>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/gameIndex') }}">{{ __('Edit Game ') }}</a>
+                        </li>
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a class="navbar-brand" href="{{ route('myprofile') }}" class="text-sm text-gray-700 underline">Profile</a>
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="{{ url('/profile') }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 

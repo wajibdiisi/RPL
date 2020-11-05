@@ -10,13 +10,16 @@ class profileManager extends Eloquent
     protected $connection = 'mongodb';
     protected $collection = 'profileManager';
     protected $fillable = [
-        'friend_ids'
+        'user_id','profile_id','friend_ids','requestFriend_ids'
     ];
 
     public function profile(){
         return $this->belongsTo(Profile::class,'_id','profile_id');
     }
-    public function profileFriend(){
-        return $this->belongsToMany(Profile::class,null,'_id','friends_ids.id');
+    public function embedsRequest(){
+        return $this->embedsMany(profileManager::class,'friend_ids');
     }
+    /*public function profileFriend(){
+        return $this->belongsToMany(Profile::class,null,'_id','friends_ids.id');
+    }*/
 }

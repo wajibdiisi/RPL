@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\Profile;
+use App\Models\ProfileManager;
 use Auth;
 use Image;  
 
@@ -27,12 +28,6 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        if(!Profile::Where('user_id','=',Auth::user()->id)->exists()){
-            Profile::create([
-                'user_id' => Auth::user()->id,
-                'name' => Auth::user()->name,
-            ]);
-        }
         $user = Profile::with('user')->where('user_id','=',Auth::user()->id)->first();
         $request->session()->put('profile_id',$user->id);
         if(!$user->username):

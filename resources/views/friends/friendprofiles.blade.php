@@ -238,7 +238,6 @@
         <strong>{{ $message }}</strong>
     </div>
 @endif
-<flashy data-message="{{ flashy()->message() }}"></flashy>
 <div class="page-inner no-page-title">
     <!-- start page main wrapper -->
     <div id="main-wrapper">
@@ -246,7 +245,7 @@
             <div class="col-lg-5 col-xl-3">
                 <div class="card card-white grid-margin">
                     <div class="card-heading clearfix">
-                        <h4 class="card-title">{{ $user->name}}'s Profile</h4>
+                        <h4 class="card-title">{{ $user->nama_lengkap}}'s Profile</h4>
                     </div>
                     <div class="card-body user-profile-card mb-3">
                         <img src="{{url('uploads/avatars/' . $user->avatar)}}" class="user-profile-image rounded-circle" alt="" />
@@ -254,11 +253,6 @@
                         @if($user->username)
                         <?=$user->username?>@endif</h4>
                         <p class="text-center small">UI/UX Designer</p>
-                        <?php
-                        $found = false;
-                        $loopCounter = 0;
-                        $countArr = count($currentUser->profilemanager->friend_ids);
-                        ?>
                         @if($currentUser != null)
                         @foreach($currentUser->profilemanager->friend_ids as $check)
                         @if($check['id'] != $user->id && !$friendCheck)          

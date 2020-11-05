@@ -20,23 +20,27 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 Auth::routes(['verify' => true]);
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('profile/{id}', [App\Http\Controllers\UserProfileController::class, 'show'])->middleware('verified')->name('profile.show');
-Route::post('profile', [App\Http\Controllers\UserProfileController::class, 'update_avatar'])->middleware('auth')->name('profile.update');
+Route::get('/profile', function (){
+    return redirect()->route('profile.show',session()->get('username'));
+})->name('myprofile');
+Route::get('profile/{id}', [App\Http\Controllers\UserProfileController::class, 'show'])->name('profile.show');
+Route::get('myprofile', [App\Http\Controllers\UserProfileController::class, 'show'])->middleware('verified')->name('myprofile.show');
+Route::post('profile/updateProfile/{id}', [App\Http\Controllers\UserProfileController::class, 'update_avatar'])->middleware('auth')->name('profile.update');
+Route::get('/search',[App\Http\Controllers\SearchController::class,'search'])->middleware('auth')->name('search');
 Route::get('/gameIndex', [App\Http\Controllers\gameController::class, 'index'])->name('gameIndex');
 Route::get('/gameEdit', [App\Http\Controllers\gameController::class, 'edit'])->name('gameEdit');
 Route::post('/gameUpdate/{id}', [App\Http\Controllers\gameController::class, 'update'])->name('game.Update');
-Route::get('{id}/friends/{username}',[App\Http\Controllers\FriendsController::class, 'show'])->name('friends.profile');
-Route::get('{id}/friends/{username}/add',[App\Http\Controllers\FriendsController::class, 'store'])->name('friends.add');
+Route::get('/profiles/{id}',[App\Http\Controllers\FriendsController::class, 'show'])->name('friends.profile');
+Route::get('{id}/pending',[App\Http\Controllers\UserProfileController::class, 'showRequest'])->middleware('auth')->name('friends.pending');
+Route::get('{id}/pending/accept/{username}',[App\Http\Controllers\FriendsController::class, 'accept'])->middleware('auth')->name('friends.accept');
+Route::get('{id}/friends/{username}/add',[App\Http\Controllers\FriendsController::class, 'store'])->middleware('auth')->name('friends.add');
 Route::resource('gameView',App\Http\Controllers\gameController::class);
 Route::resource('friends',App\Http\Controllers\FriendsController::class);
-Route::get('profile', function (){
-    return redirect()->route('profile.show',session()->get('username'));
-});
 Auth::routes();
 Route::get('/{any}', [App\Http\Controllers\FrontController::class, 'index'])->where('any', '.*');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
