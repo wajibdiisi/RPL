@@ -15,7 +15,9 @@ class SearchController extends Controller
 {
     public function search(Request $request){
         //var_dump(Profile::search($request->get('search'))->get());
-        $result = Profile::where('nama_lengkap','like',$request->get('search'))->get();
+        //$result = Profile::where('nama_lengkap','like',$request->get('search'))->get();
+        $result = Profile::whereRaw(array('$text' => array('$search' => $request->get('search'))                            
+    ))->get();
         return view('friends/searchprofiles',compact('result'));
     }
 }

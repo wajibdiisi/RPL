@@ -51,7 +51,7 @@
       <li href="#" class="list-group-item text-left">
         <img class="img-thumbnail" src="https://bootdey.com/img/Content/User_for_snippets.png">
         <label class="name">
-            {{$query->nama_lengkap}}<br>
+            <a href ="{{ route('profile.show',['id'=>$query->username]) }}">{{$query->nama_lengkap}}</a><br>
         </label>
         <label class="pull-right">
 

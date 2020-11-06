@@ -7,6 +7,7 @@ use Auth;
 use Image;
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\userPost;
 use App\Models\ProfileManager;
 use Illuminate\Support\Facades\File;
 
@@ -14,24 +15,27 @@ class UserProfileController extends Controller
 {
     public function show($id){
         
-        $userView = Profile::with('profilemanager')->where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->first();
-        $user = Profile::with('profilemanager')->where('user_id','=',Auth::user()->id)->first();
-        $checkUser = ProfileManager::where('profile_id','=',$user->id)->first();
+        $userView = Profile::with('profilemanager','userpost')->where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->first();
+        if(Auth::user()){
+            $currentUser = Auth::user()->id;
+            $user = Profile::with('profilemanager')->where('user_id','=',$currentUser)->first();
+        }else{
+            $user = '';
+            $currentUser = '';
+        }
+        $checkUser = ProfileManager::where('profile_id','=',$userView->id)->first(); //awalnya $user->id 
         $friendArray = array();
         foreach($checkUser->friend_ids as $friendId){
             if($friendId['status'] == 'approved')
             array_push($friendArray,$friendId['id']);
         }
-        $friendList = Profile::whereIn('_id',$friendArray)->get();
-        $friendCheck = ProfileManager::where('user_id','=',Auth::user()->id)->where('friend_ids.id',$userView->id)->exists();
         
-        return view('profile/profile',compact('user','friendList','friendCheck','userView'));
+        $friendList = Profile::whereIn('_id',$friendArray)->get();
+        $friendCheck = ProfileManager::where('profile_id','=',$userView->id)->where('friend_ids.id',$user->id)->exists();
+        return view('profile/profile',compact('user','friendList','friendCheck','userView','currentUser'));
         //$checkUser = ProfileManager::with('profileFriend')->where('profile_id','=',$user->id)->get();
     }
 
-    public function getProfile($id){
-
-    }
    
 
     public function showRequest($id){

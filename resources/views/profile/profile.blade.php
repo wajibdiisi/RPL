@@ -252,7 +252,7 @@
                         <h4 class="text-center h6 mt-2">
                         <?=$userView->username?></h4>
                         <p class="text-center small">UI/UX Designer</p>
-                        @if($userView->user_id == Auth::user()->id)
+                        @if($userView->user_id == $currentUser)
                         <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModalCenter">
                         <i class="fa fa-fw fa-camera"></i>
                         <span>Change Photo</span>
@@ -262,19 +262,7 @@
                         <span>Change Profile</span>
                       </button>
                       <a class="btn btn-primary" href="{{ route('friends.pending',['id'=> session()->get('username')]) }}">Friend Request</a>
-                      @else 
-                        @foreach($userView->profilemanager->friend_ids as $check)
-                        @if($check['id'] != session()->get('profile_id') && !$friendCheck)          
-                        <a class="btn btn-primary" href="{{ route('friends.add',['id'=>session()->get('username'),'username'=>$userView->username]) }}">Add friend</a><?php break?>
-                        @elseif($check['id'] ==  session()->get('profile_id') && $friendCheck && $check['status'] =='Need Action')
-                        <a class="btn btn-primary" href="{{ route('friends.add',['id'=>session()->get('username'),'username'=>$userView->username]) }}">Waiting Approval</a>
-                        @elseif($check['id'] ==  session()->get('profile_id') && $friendCheck && $check['status'] =='approved')
-                        <a class="btn btn-primary" href="{{ route('friends.add',['id'=>session()->get('username'),'username'=>$userView->username]) }}">Already in friendlist</a>
-                        @endif
-                        @endforeach
-                    @endif                         
-                      
-                        <div class="modal fade" id="changeprofile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                      <div class="modal fade" id="changeprofile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <form enctype="multipart/form-data" action="{{ route('profile.update',$user->id) }}" method="POST">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
@@ -328,6 +316,21 @@
             </div>
             </div>
             </form>
+                      @else 
+                        @foreach($userView->profilemanager->friend_ids as $check)
+                        @if($check['id'] != session()->get('profile_id') && !$friendCheck)          
+                        <a class="btn btn-primary" href="{{ route('friends.add',['id'=>session()->get('username'),'username'=>$userView->username]) }}">Add friend</a><?php break?>
+                        @elseif($check['id'] ==  session()->get('profile_id') && $friendCheck && $check['status'] =='Need Action')
+                        <a class="btn btn-primary" href="{{ route('friends.add',['id'=>session()->get('username'),'username'=>$userView->username]) }}">Waiting Approval</a>
+                        @elseif($check['id'] ==  session()->get('profile_id') && $friendCheck && $check['status'] =='approved')
+                        <a class="btn btn-primary" href="{{ route('friends.add',['id'=>session()->get('username'),'username'=>$userView->username]) }}">Already in friendlist</a>
+                        @elseif(!Auth::user())
+                        <a class="btn btn-primary" href="{{ route('login')}}">Add friend</a><?php break?>
+                        @endif
+                        @endforeach
+                    @endif                         
+                      
+                        
        
                         <button class="btn btn-theme btn-sm">Follow</button>
                         <button class="btn btn-theme btn-sm">Message</button>
@@ -384,31 +387,40 @@
             <div class="col-lg-7 col-xl-6">
                 <div class="card card-white grid-margin">
                     <div class="card-body">
-                        <div class="post">
-                            <textarea class="form-control" placeholder="Post" rows="4"></textarea>
+                        <form enctype="multipart/form-data" action="{{ route('post.store',['id' => $user->id]) }}" method="POST">
+                            @csrf
+
+                            <div class="post">
+                            <textarea class="form-control" placeholder="Post" rows="4" name="content"></textarea>
                             <div class="post-options">
                                 <a href="#"><i class="fa fa-camera"></i></a>
                                 <a href="#"><i class="fas fa-video"></i></a>
                                 <a href="#"><i class="fa fa-music"></i></a>
                                 <button class="btn btn-outline-primary float-right">Post</button>
+                            </form>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="profile-timeline">
                     <ul class="list-unstyled">
+                        @foreach($userView->userpost as $post)
                         <li class="timeline-item">
                             <div class="card card-white grid-margin">
                                 <div class="card-body">
                                     <div class="timeline-item-header">
                                         <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
-                                        <p>Vikash smith <span>posted a status</span></p>
-                                        <small>3 hours ago</small>
+                                        <p>{{$userView->nama_lengkap}} <span>posted a status</span></p>
+                                        <small>{{($post->getCreatedTime()->diffForHumans())}}
+                                        @if($post->getCreatedTime() != $post->getUpdatedTime())
+                                            (Last Updated : {{$post->getUpdatedTime()->diffForHumans()}} )@endif
+                                        </small>
                                     </div>
                                     <div class="timeline-item-post">
-                                        <p>Elavita veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur.</p>
+                                    <p>{{$post->post_content}}</p>
                                         <div class="timeline-options">
-                                            <a href="#"><i class="fa fa-thumbs-up"></i> Like (15)</a>
+                                            @foreach($post->like as $likeCheck)
+                                            <a href="{{ route('post.addLike',['post_id' => $post->id ,'id' => $user->id]) }}"><i class="fa fa-thumbs-up"></i>Like({{count((array)$post->like)}})</a>
                                             <a href="#"><i class="fa fa-comment"></i> Comment (4)</a>
                                             <a href="#"><i class="fa fa-share"></i> Share (6)</a>
                                         </div>
@@ -432,34 +444,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="timeline-item">
-                            <div class="card card-white grid-margin">
-                                <div class="card-body">
-                                    <div class="timeline-item-header">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
-                                        <p>Veema Walkeror <span>uploaded a photo</span></p>
-                                        <small>7 hours ago</small>
-                                    </div>
-                                    <div class="timeline-item-post">
-                                        <p>totam rem aperiam, eaque ipsa quae ab illo inventore</p>
-                                        <img src="img/post-img01.jpg" alt="" />
-                                        <div class="timeline-options">
-                                            <a href="#"><i class="fa fa-thumbs-up"></i> Like (22)</a>
-                                            <a href="#"><i class="fa fa-comment"></i> Comment (7)</a>
-                                            <a href="#"><i class="fa fa-share"></i> Share (9)</a>
-                                        </div>
-                                        <div class="timeline-comment">
-                                            <div class="timeline-comment-header">
-                                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
-                                                <p>Memila moriya <small>1 hour ago</small></p>
-                                            </div>
-                                            <p class="timeline-comment-text">Explicabo Nemo enim ipsam voluptatem quia voluptas.</p>
-                                        </div>
-                                        <textarea class="form-control" placeholder="Replay"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -473,7 +458,7 @@
                             @foreach($friendList as $fl)
                             <div class="team-member">
                                 <div class="online on"></div>
-                                <a href="{{ route('friends.profile',['id'=>$fl->username]) }}">
+                                <a href="{{ route('profile.show',['id'=>$fl->username]) }}">
                                 <img class="img-responsive" src="{{url('uploads/avatars/' . $fl->avatar)}}" alt="" /></a>
                             @endforeach
                            
@@ -499,5 +484,7 @@
 </div>
 </div>
 </body>
+
 </html>
+
 @endsection

@@ -35,12 +35,14 @@ Route::get('/search',[App\Http\Controllers\SearchController::class,'search'])->m
 Route::get('/gameIndex', [App\Http\Controllers\gameController::class, 'index'])->name('gameIndex');
 Route::get('/gameEdit', [App\Http\Controllers\gameController::class, 'edit'])->name('gameEdit');
 Route::post('/gameUpdate/{id}', [App\Http\Controllers\gameController::class, 'update'])->name('game.Update');
-Route::get('/profiles/{id}',[App\Http\Controllers\FriendsController::class, 'show'])->name('friends.profile');
+//Route::get('/profile/{id}',[App\Http\Controllers\FriendsController::class, 'show'])->name('profile.show');
 Route::get('{id}/pending',[App\Http\Controllers\UserProfileController::class, 'showRequest'])->middleware('auth')->name('friends.pending');
 Route::get('{id}/pending/accept/{username}',[App\Http\Controllers\FriendsController::class, 'accept'])->middleware('auth')->name('friends.accept');
 Route::get('{id}/friends/{username}/add',[App\Http\Controllers\FriendsController::class, 'store'])->middleware('auth')->name('friends.add');
 Route::resource('gameView',App\Http\Controllers\gameController::class);
 Route::resource('friends',App\Http\Controllers\FriendsController::class);
 Auth::routes();
-Route::get('/{any}', [App\Http\Controllers\FrontController::class, 'index'])->where('any', '.*');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::post('profile/{id}/post',[App\Http\Controllers\User\userPostController::class,'store'])->name('post.store');
+Route::get('post/{post_id}/addLike/{id}',[App\Http\Controllers\User\userPostController::class,'addLike'])->name('post.addLike');
+//vue Route::get('/{any}', [App\Http\Controllers\FrontController::class, 'index'])->where('any', '.*');

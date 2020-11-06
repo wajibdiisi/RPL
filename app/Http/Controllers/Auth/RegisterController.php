@@ -75,7 +75,7 @@ class RegisterController extends Controller
             ]);
             $profileData = Profile::create([
                 'username' => $data['username'],
-                'avatar' => 'profileDefault.png',
+                'avatar' => 'defaultPicture.png',
                 'nama_lengkap' => $data['name'],
                 'user_id' => $userData->id,
                 ]);

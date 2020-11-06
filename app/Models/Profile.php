@@ -21,6 +21,9 @@ class Profile extends Eloquent
     public function profilemanager(){
         return $this->hasOne(ProfileManager::class,'profile_id','_id');
     }
+    public function userpost(){
+        return $this->hasMany(userPost::class,'profile_id','_id')->orderBy('created_at','DESC');
+    }
     /*public function searchableAs(){
         return 'mygame';
     }
