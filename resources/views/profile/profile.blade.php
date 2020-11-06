@@ -421,6 +421,7 @@
                                         <div class="timeline-options">
                                             @foreach($post->like as $likeCheck)
                                             <a href="{{ route('post.addLike',['post_id' => $post->id ,'id' => $user->id]) }}"><i class="fa fa-thumbs-up"></i>Like({{count((array)$post->like)}})</a>
+                                            @endforeach
                                             <a href="#"><i class="fa fa-comment"></i> Comment (4)</a>
                                             <a href="#"><i class="fa fa-share"></i> Share (6)</a>
                                         </div>
