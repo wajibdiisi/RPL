@@ -22,6 +22,9 @@ class userPost extends Eloquent
     public function getUpdatedTime(){
         return $this->updated_at;
     }
+    public function embedsComment(){
+        return $this->embedsMany(userPost::class,'comments');
+    }
 
 
 }
