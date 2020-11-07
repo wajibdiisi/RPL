@@ -24,6 +24,9 @@ class Profile extends Eloquent
     public function userpost(){
         return $this->hasMany(userPost::class,'profile_id','_id')->orderBy('created_at','DESC');
     }
+    public function comments(){
+        return $this->embedsMany(userPost::class,'_id');
+    }
     /*public function searchableAs(){
         return 'mygame';
     }

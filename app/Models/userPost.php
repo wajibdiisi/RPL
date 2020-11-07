@@ -11,7 +11,7 @@ class userPost extends Eloquent
     protected $collection = 'userPost';
 
     protected $fillable     = [
-        'profile_id','comment_id','post_content'
+        'profile_id','like','post_content','comments','posted_by'
     ];
     public function profile(){
         return $this->belongsTo(Profile::class,'_id','profile_id');

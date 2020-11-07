@@ -387,7 +387,7 @@
             <div class="col-lg-7 col-xl-6">
                 <div class="card card-white grid-margin">
                     <div class="card-body">
-                        <form enctype="multipart/form-data" action="{{ route('post.store',['id' => $user->id]) }}" method="POST">
+                        <form enctype="multipart/form-data" action="{{ route('post.store',['id' => $userView->id, 'posted_by'=> $user->id]) }}" method="POST">
                             @csrf
 
                             <div class="post">
@@ -410,7 +410,7 @@
                                 <div class="card-body">
                                     <div class="timeline-item-header">
                                         <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
-                                        <p>{{$userView->nama_lengkap}} <span>posted a status</span></p>
+                                        <p><a href ="{{ route('profile.show',UserHelp::get_username($post->posted_by))}}">{{UserHelp::get_fullname($post->posted_by)}}</a><span> posted a status</span></p>
                                         <small>{{($post->getCreatedTime()->diffForHumans())}}
                                         @if($post->getCreatedTime() != $post->getUpdatedTime())
                                             (Last Updated : {{$post->getUpdatedTime()->diffForHumans()}} )@endif
@@ -419,28 +419,32 @@
                                     <div class="timeline-item-post">
                                     <p>{{$post->post_content}}</p>
                                         <div class="timeline-options">
-                                            @foreach($post->like as $likeCheck)
+                                            @php
+                                            var_dump(array_search($user->id,$post->like))
+                                            @endphp
+                                            @if(array_search($user->id,$post->like) === FALSE)
                                             <a href="{{ route('post.addLike',['post_id' => $post->id ,'id' => $user->id]) }}"><i class="fa fa-thumbs-up"></i>Like({{count((array)$post->like)}})</a>
-                                            @endforeach
-                                            <a href="#"><i class="fa fa-comment"></i> Comment (4)</a>
+                                            @else
+                                            <a href="{{ route('post.removeLike',['post_id' => $post->id ,'id' => $user->id]) }}"><i class="fa fa-thumbs-up"></i>Like({{count((array)$post->like)}})</a>
+                                            @endif
+                                            <a href="#"><i class="fa fa-comment"></i> Comment ({{count((array)$post->comments)}})</a>
                                             <a href="#"><i class="fa fa-share"></i> Share (6)</a>
                                         </div>
+                                        @foreach($post->comments as $comment)
                                         <div class="timeline-comment">
                                             <div class="timeline-comment-header">
-                                                
-                                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
-                                                <p>Jamara Karle <small>1 hour ago</small></p>
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
+                                                <p>{{UserHelp::get_fullname($comment['profile_id'])}} <small>1 hour ago</small></p>
                                             </div>
-                                            <p class="timeline-comment-text">Xullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                                        <p class="timeline-comment-text">{{$comment['comment_content']}}</p>
                                         </div>
-                                        <div class="timeline-comment">
-                                            <div class="timeline-comment-header">
-                                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
-                                                <p>Lois Anderson <small>3 hours ago</small></p>
-                                            </div>
-                                            <p class="timeline-comment-text">Coluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
-                                        </div>
-                                        <textarea class="form-control" placeholder="Replay"></textarea>
+                                        @endforeach
+
+                                        <form enctype="multipart/form-data" method="post" action="{{ route('post.addComment',['post_id' => $post->id ,'id' => $user->id]) }}">
+                                        @csrf
+                                        <textarea class="form-control" placeholder="Reply" name="comment_content"></textarea>
+                                        <button type="submit" class ="btn btn-primary">Submit</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
