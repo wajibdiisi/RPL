@@ -385,71 +385,13 @@
                 </div>
             </div>
             <div class="col-lg-7 col-xl-6">
-                <div class="card card-white grid-margin">
-                    <div class="card-body">
-                        <form enctype="multipart/form-data" action="{{ route('post.store',['id' => $userView->id, 'posted_by'=> $user->id]) }}" method="POST">
-                            @csrf
-
-                            <div class="post">
-                            <textarea class="form-control" placeholder="Post" rows="4" name="content"></textarea>
-                            <div class="post-options">
-                                <a href="#"><i class="fa fa-camera"></i></a>
-                                <a href="#"><i class="fas fa-video"></i></a>
-                                <a href="#"><i class="fa fa-music"></i></a>
-                                <button class="btn btn-outline-primary float-right">Post</button>
-                            </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
+                    @livewire('profile',['postedProfile_id' => $userView->id, 'posted_by' => $user->id])
+                
                 <div class="profile-timeline">
                     <ul class="list-unstyled">
-                        @foreach($userView->userpost as $post)
-                        <li class="timeline-item">
-                            <div class="card card-white grid-margin">
-                                <div class="card-body">
-                                    <div class="timeline-item-header">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
-                                        <p><a href ="{{ route('profile.show',UserHelp::get_username($post->posted_by))}}">{{UserHelp::get_fullname($post->posted_by)}}</a><span> posted a status</span></p>
-                                        <small>{{($post->getCreatedTime()->diffForHumans())}}
-                                        @if($post->getCreatedTime() != $post->getUpdatedTime())
-                                            (Last Updated : {{$post->getUpdatedTime()->diffForHumans()}} )@endif
-                                        </small>
-                                    </div>
-                                    <div class="timeline-item-post">
-                                    <p>{{$post->post_content}}</p>
-                                        <div class="timeline-options">
-                                            @php
-                                            var_dump(array_search($user->id,$post->like))
-                                            @endphp
-                                            @if(array_search($user->id,$post->like) === FALSE)
-                                            <a href="{{ route('post.addLike',['post_id' => $post->id ,'id' => $user->id]) }}"><i class="fa fa-thumbs-up"></i>Like({{count((array)$post->like)}})</a>
-                                            @else
-                                            <a href="{{ route('post.removeLike',['post_id' => $post->id ,'id' => $user->id]) }}"><i class="fa fa-thumbs-up"></i>Like({{count((array)$post->like)}})</a>
-                                            @endif
-                                            <a href="#"><i class="fa fa-comment"></i> Comment ({{count((array)$post->comments)}})</a>
-                                            <a href="#"><i class="fa fa-share"></i> Share (6)</a>
-                                        </div>
-                                        @foreach($post->comments as $comment)
-                                        <div class="timeline-comment">
-                                            <div class="timeline-comment-header">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
-                                                <p>{{UserHelp::get_fullname($comment['profile_id'])}} <small>1 hour ago</small></p>
-                                            </div>
-                                        <p class="timeline-comment-text">{{$comment['comment_content']}}</p>
-                                        </div>
-                                        @endforeach
-
-                                        <form enctype="multipart/form-data" method="post" action="{{ route('post.addComment',['post_id' => $post->id ,'id' => $user->id]) }}">
-                                        @csrf
-                                        <textarea class="form-control" placeholder="Reply" name="comment_content"></textarea>
-                                        <button type="submit" class ="btn btn-primary">Submit</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        @endforeach
+                        @livewire('post-list',['profile_id' => $userView->id,'user_id' => $user->id])
+                        
                     </ul>
                 </div>
             </div>

@@ -47,5 +47,6 @@ Route::post('profile/{id}/post/{posted_by}',[App\Http\Controllers\User\userPostC
 Route::get('post/{post_id}/addLike/{id}',[App\Http\Controllers\User\userPostController::class,'addLike'])->name('post.addLike');
 Route::post('post/{post_id}/addComment/{id}',[App\Http\Controllers\User\userPostController::class,'addComment'])->name('post.addComment');
 Route::get('post/{post_id}/removeLike/{id}',[App\Http\Controllers\User\userPostController::class,'removeLike'])->name('post.removeLike');
-//Livewire Route::get('/profile/{any}', App\Http\Livewire\Profile::class);
+Route::get('/profile/{id}/post', App\Http\Livewire\Profile::class);
+Route::get('/profile/{id}/post/{posted_by}', App\Http\Livewire\Profile::class);
 //vue Route::get('/{any}', [App\Http\Controllers\FrontController::class, 'index'])->where('any', '.*');
