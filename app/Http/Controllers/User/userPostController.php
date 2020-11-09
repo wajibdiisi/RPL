@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\userPost;
-use App\Helpers\User;
+use App\Helpers\UserHelp;
 use Illuminate\Http\Request;
 
 class userPostController extends Controller
@@ -50,7 +50,7 @@ class userPostController extends Controller
         $post->like = array();
         $post->save();
         */
-        return redirect()->route('profile.show',User::get_username($id));
+        return redirect()->route('profile.show',UserHelp::get_username($id));
     }
 
     /**

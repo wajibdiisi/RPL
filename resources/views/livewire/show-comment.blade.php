@@ -1,4 +1,4 @@
-<div class="timeline-comment">
+<div class="timeline-comment ">
 @foreach($commentlist as $comment)
 @foreach($comment->embedsComment as $comments)
                                             <div class="timeline-comment-header">
@@ -15,6 +15,7 @@
                                                 <input type="hidden" wire:model="user_id" value="{{$user_id}}">
                                             <textarea class="form-control" wire:model ="comment_content" placeholder="Reply" name="comment_content"></textarea>
                                                                             <button type="submit" class ="btn btn-primary">Submit</button>
-                                            </form></div>                                       
+                                            </form>
+                                        </div>                                       
                                         
 </div>

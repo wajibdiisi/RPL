@@ -40,6 +40,7 @@ Route::get('{id}/pending',[App\Http\Controllers\UserProfileController::class, 's
 Route::get('{id}/pending/accept/{username}',[App\Http\Controllers\FriendsController::class, 'accept'])->middleware('auth')->name('friends.accept');
 Route::get('{id}/friends/{username}/add',[App\Http\Controllers\FriendsController::class, 'store'])->middleware('auth')->name('friends.add');
 Route::resource('gameView',App\Http\Controllers\gameController::class);
+Route::resource('game',App\Http\Controllers\Game\gameUserController::class);
 Route::resource('friends',App\Http\Controllers\FriendsController::class);
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -47,6 +48,9 @@ Route::post('profile/{id}/post/{posted_by}',[App\Http\Controllers\User\userPostC
 Route::get('post/{post_id}/addLike/{id}',[App\Http\Controllers\User\userPostController::class,'addLike'])->name('post.addLike');
 Route::post('post/{post_id}/addComment/{id}',[App\Http\Controllers\User\userPostController::class,'addComment'])->name('post.addComment');
 Route::get('post/{post_id}/removeLike/{id}',[App\Http\Controllers\User\userPostController::class,'removeLike'])->name('post.removeLike');
+Route::get('game/{id]',[App\Http\Controllers\Game\gameUserController::class,'show'])->name('game.show');
+Route::get('game/add/{game_id}',[App\Http\Controllers\Game\gameUserController::class,'store'])->name('game.store');
 Route::get('/profile/{id}/post', App\Http\Livewire\Profile::class);
-Route::get('/profile/{id}/post/{posted_by}', App\Http\Livewire\Profile::class);
+Route::get('/profile/{id}/post/{posted_by}', App\Http\Livewire\Profile::class); 
+
 //vue Route::get('/{any}', [App\Http\Controllers\FrontController::class, 'index'])->where('any', '.*');
