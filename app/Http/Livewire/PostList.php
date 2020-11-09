@@ -30,7 +30,7 @@ class PostList extends Component
     
     public function render()
     {
-        $this->posts = userPost::where('profile_id','=', $this->profile_id)->latest()->get();
+        $this->posts = userPost::where('profile_id','=', $this->profile_id)->orWhere('posted_by','=',$this->profile_id)->latest()->get();
         return view('livewire.post-list');
     
     }
