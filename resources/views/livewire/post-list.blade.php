@@ -6,6 +6,7 @@
        <div class="card-body">
            <div class="timeline-item-header">
                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
+              
                @if($post->posted_by == $post->profile_id)
                <p><a href ="{{ route('profile.show',UserHelp::get_username($post->posted_by))}}">{{UserHelp::get_fullname($post->posted_by)}}</a><span> posted a status</span></p>
                @elseif($post->posted_by != $post->profile_id)
