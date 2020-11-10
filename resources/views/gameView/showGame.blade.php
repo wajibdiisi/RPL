@@ -70,6 +70,10 @@
         .shadow-none {
             box-shadow: none !important;
         }
+        .servive-block-dark-blue {
+  background: #4765a0;
+}
+
     </style>
 </head>
 
@@ -136,7 +140,7 @@
                                         </path>
                                     </svg>Genre</h6>
                                 <span class="text-secondary">
-                                   
+
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
@@ -175,204 +179,297 @@
                     </div>
                 </div>
                 <div class="col-md-8">
-                    <div class="card mb-3">
+                    <div class="card mb-3"><div class="card-body servive-block-dark-blue"><div class="row">
+                        <div class="col-md-3">Rating</div>
+                        asdasd</div></div></div>
+                        <div class="card mb-3">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm-3">
-                                    @if (Auth::user())
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                                        data-target="#view<?= $game->id ?>">Add game</button>
-                                    <div class="modal fade" id="view<?= $game->id ?>" tabindex="-1" role="dialog"
-                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <form enctype="multipart/form-data" action="{{ route('game.store', ['game_id' =>$game->id ]) }}" method="GET">
-                                            @csrf
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="radio"
-                                                            id="defaultGroupExample1" name="groupOfDefaultRadios" value ="Want to Play">
-                                                        <label class="custom-control-label"
-                                                            for="defaultGroupExample1">Want to Play</label>
-                                                    </div>
+                                @if (Auth::user())
+                                <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
+                                    data-target="#add<?= $game->id ?>">Add game</button>
+                                <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
+                                    data-target="#rate<?= $game->id ?>">Rate this game</button>
+                                <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
+                                    data-target="#review<?= $game->id ?>">Review this game</button>
+                    @endif
+                    <div class="modal fade" id="add<?= $game->id ?>" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <form enctype="multipart/form-data"
+                            action="{{ route('game.store', ['game_id' =>$game->id ]) }}" method="GET">
+                            @csrf
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" class="custom-control-input"
+                                                id="add1" name="addRadio"
+                                                value="Want to Play">
+                                            <label class="custom-control-label"
+                                                for="add1">Want to Play</label>
+                                        </div>
 
 
-                                                    <div class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input"
-                                                            id="defaultGroupExample2" name="radio" value="Currently Playing">
-                                                        <label class="custom-control-label"
-                                                            for="defaultGroupExample2">Currently Playing</label>
-                                                    </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" class="custom-control-input"
+                                                id="add2" name="addRadio"
+                                                value="Currently Playing">
+                                            <label class="custom-control-label"
+                                                for="add2">Currently Playing</label>
+                                        </div>
 
 
-                                                    <div class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input"
-                                                            id="defaultGroupExample3" name="radio">
-                                                        <label class="custom-control-label"
-                                                            for="defaultGroupExample3" value="Beaten">Beaten</label>
-                                                    </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" class="custom-control-input"
+                                                id="add3" name="addRadio" value="Beaten">
+                                            <label class="custom-control-label" for="add3"
+                                                >Beaten</label>
+                                        </div>
 
-                                                    <div class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input"
-                                                            id="defaultGroupExample4" name="groupOfDefaultRadios">
-                                                        <label class="custom-control-label"
-                                                            for="defaultGroupExample4" value="Completed">Completed</label>
-                                                    </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" class="custom-control-input"
+                                                id="add4" name="addRadio" value="Completed">
+                                            <label class="custom-control-label" for="add4"
+                                                >Completed</label>
+                                        </div>
 
-                                                    <div class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input"
-                                                            id="defaultGroupExample5" name="groupOfDefaultRadios">
-                                                        <label class="custom-control-label"
-                                                            for="defaultGroupExample5" value="Dropped">Dropped</label>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Save changes</button>
-                                                </form>
-                                                </div>
-                                            </div>
-
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" class="custom-control-input"
+                                                id="add5" name="addRadio" value="Dropped">
+                                            <label class="custom-control-label" for="add5"
+                                                >Dropped</label>
                                         </div>
                                     </div>
-                                </div>
-                                @endif
-                                <div class="col-sm-9 text-secondary">
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        </form>
+                    </div>
+                </div>
 
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
+            </div>
+        </div>
+        <div class="modal fade" id="review<?= $game->id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form enctype="multipart/form-data"
+                  action="{{ route('game.storeRating', ['game_id' =>$game->id ]) }}" method="GET">
+                  
+                    <div class="form-group">
+                      <label for="recipient-name" class="col-form-label">Username</label>
+                    <input type="text" class="form-control" id="recipient-name" value="{{UserHelp::get_username(Auth::user()->id)}}" disabled>
+                    </div>
+                    <div class="form-group">
+                      <label for="message-text" class="col-form-label">Review</label>
+                      <textarea class="form-control" id="message-text" name="review_content"></textarea>
+                    </div>
+                    <p>Rating
+                    <input id="rateReview" class="multi-range" name="rating" type="range" min="1" max="5" /></p>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">Full Name</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">
-                                    {{ $game->summary }}
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">Email</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">
-                                    fip@jukmuh.al
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">Phone</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">
-                                    (239) 816-9029
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">Mobile</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">
-                                    (320) 380-4539
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">Address</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">
-                                    Bay Area, San Francisco, CA
-                                </div>
-                            </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-3">
+
+                        <div class="col-sm-9 text-secondary">
+
                         </div>
                     </div>
-                    <div class="row gutters-sm">
-                        <div class="col-sm-6 mb-3">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h6 class="d-flex align-items-center mb-3"><i
-                                            class="material-icons text-info mr-2">assignment</i>Project Status</h6>
-                                    <small>Web Design</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
-                                            aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <small>Website Markup</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 72%"
-                                            aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <small>One Page</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 89%"
-                                            aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <small>Mobile Template</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 55%"
-                                            aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <small>Backend API</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 66%"
-                                            aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
+                </div>
+                <hr>
+                <div class="row">
+
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Full Name</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{ $game->summary }}
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Email</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        fip@jukmuh.al
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Phone</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        (239) 816-9029
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Mobile</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        (320) 380-4539
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Address</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        Bay Area, San Francisco, CA
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row gutters-sm">
+            <div class="col-sm-6 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h6 class="d-flex align-items-center mb-3"><i
+                        class="material-icons text-info mr-2">User</i>Statistics (User : {{$dataBar['totalUser']}})</h6>
+                        <small>Want to Play</small>
+                        <div class="progress mb-3" style="height: 5px">
+                            <div class="progress-bar bg-primary" role="progressbar"  style="width: {{$dataBar['wtp']}}%"
+                               aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <div class="col-sm-6 mb-3">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h6 class="d-flex align-items-center mb-3"><i
-                                            class="material-icons text-info mr-2">assignment</i>Project Status</h6>
-                                    <small>Web Design</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
-                                            aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <small>Website Markup</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 72%"
-                                            aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <small>One Page</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 89%"
-                                            aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <small>Mobile Template</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 55%"
-                                            aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <small>Backend API</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 66%"
-                                            aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
+                        <small>Currently Playing</small>
+                        <div class="progress mb-3" style="height: 5px">
+                            <div class="progress-bar bg-primary" role="progressbar"  style="width: {{$dataBar['cp']}}%"
+                               aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small>Beaten</small>
+                        <div class="progress mb-3" style="height: 5px">
+                            <div class="progress-bar bg-primary" role="progressbar"  style="width: {{$dataBar['beaten']}}%"
+                                 aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small>Completed</small>
+                        <div class="progress mb-3" style="height: 5px">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{$dataBar['completed']}}%"
+                               aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small>Dropped</small>
+                        <div class="progress mb-3" style="height: 5px">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{$dataBar['dropped']}}%"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-sm-6 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h6 class="d-flex align-items-center mb-3"><i
+                                class="material-icons text-info mr-2">assignment</i>Project Status</h6>
+                        <small>Web Design</small>
+                        <div class="progress mb-3" style="height: 5px">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
+                                aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small>Website Markup</small>
+                        <div class="progress mb-3" style="height: 5px">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 72%"
+                                aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small>One Page</small>
+                        <div class="progress mb-3" style="height: 5px">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 89%"
+                                aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small>Mobile Template</small>
+                        <div class="progress mb-3" style="height: 5px">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 55%"
+                                aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small>Backend API</small>
+                        <div class="progress mb-3" style="height: 5px">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 66%"
+                                aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="bg-white rounded shadow-sm p-4 mb-4 restaurant-detailed-ratings-and-reviews">
+            <a href="#" class="btn btn-outline-primary btn-sm float-right">Top Rated</a>
+            <h5 class="mb-1">All Ratings and Reviews</h5>
+            
+            @foreach($game->review as $review)
+            <div class="reviews-members pt-2 pb-4">
+                <div class="media">
+                    <a href="#"><img alt="Generic placeholder image" src="http://bootdey.com/img/Content/avatar/avatar1.png" width="100" class="mr-3 rounded-pill"></a>
+                    <div class="media-body">
+                        <div class="reviews-members-header">
+                            <span class="star-rating float-right">
+                                  <a href="#"><i class="icofont-ui-rating active"></i></a>
+                                  <a href="#"><i class="icofont-ui-rating active"></i></a>
+                                  <a href="#"><i class="icofont-ui-rating active"></i></a>
+                                  <a href="#"><i class="icofont-ui-rating active"></i></a>
+                                  <a href="#"><i class="icofont-ui-rating"></i></a>
+                                  </span>
+                                <h6 class="mb-1"><a class="text-black" href="#">{{UserHelp::get_fullname($review->profile_id)}}</a></h6>
+                                <p class="text-gray">{{$review->created_at->diffForHumans()}}</p>
+                        </div>
+                        <div class="reviews-members-body">
+                        <p>{{$review->review_content}}</p>
+                        </div>
+                        <div class="reviews-members-footer">
+                            <a class="total-like" href="#"><i class="icofont-thumbs-up"></i> 856M</a> <a class="total-like" href="#"><i class="icofont-thumbs-down"></i> 158K</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            @endforeach    
+        </div>
+
+                    
+    </div>
+    </div>
+    </div>
     </div>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
+       
+var slider = document.getElementById("rateReview");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
 
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+      
     </script>
 </body>
 

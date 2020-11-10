@@ -6,6 +6,7 @@ use App\Models\gameCRUD;
 use App\Models\Genre;
 use App\Models\gameGenre;
 use Image;
+use App\Models\gameUser;
 use Illuminate\Http\Request;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -89,10 +90,35 @@ class gameController extends Controller
      */
     public function show($id)
     {
-        //$game = gameCRUD::find($id);
-        $game = gameCRUD::with(['genre'])->get()->find($id);
-        //$game = gameCRUD::with(['game_genre','game_genre.genre'])->get()->find($id);
-        return view('gameView.showGame',compact('game'));
+        
+        $game = gameCRUD::with(['genre','review'])->get()->find($id);
+        $totalUser = count($game->gameUser);
+        if($totalUser > 0){
+        $wtp = $game->gameUser->where('status','Want to Play')->count() / $totalUser * 100;
+        $cp = $game->gameUser->where('status','Currently Playing')->count() /$totalUser * 100;
+        $beaten =  $game->gameUser->where('status','Beaten')->count() / $totalUser * 100;
+        $completed =  $game->gameUser->where('status','Completed')->count() /$totalUser * 100;
+        $dropped =  $game->gameUser->where('status','Dropped')->count() / $totalUser * 100 ;
+        $dataBar = array(
+            'wtp' => $wtp,
+            'cp' => $cp,
+            'beaten' => $beaten,
+            'completed' => $completed,
+            'dropped' => $dropped,
+            'totalUser' =>$totalUser
+        );
+    }else{
+        $dataBar = array(
+            'wtp' => '',
+            'cp' => '',
+            'beaten' => '',
+            'completed' => '',
+            'dropped' => '',
+            'totalUser' => ''
+        );
+    }
+
+        return view('gameView.showGame',compact('game','dataBar'));
     }
 
     /**
@@ -125,6 +151,7 @@ class gameController extends Controller
         $gameUpdate = gameCRUD::with(['genre'])->where('_id', '=', $id)->first();
       
         $arrayGenre = $request->genre;
+        
         $arrayGenre_id = Genre::whereIn('title',$arrayGenre)->pluck('_id')->toArray();
         if(!$gameUpdate->genre()->exists()){
             $gameUpdate->genre()->attach($arrayGenre_id);

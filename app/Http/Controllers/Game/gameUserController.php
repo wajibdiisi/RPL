@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\gameUser;
 use Auth;
+use App\Models\Review;
+use App\Models\Profile;
 use App\Helpers\UserHelp;
 use App\Models\gameCRUD;
 
@@ -39,6 +41,7 @@ class gameUserController extends Controller
      */
     public function store(Request $request,$game_id)
     {
+        /*
         $profile_id =  UserHelp::getID(Auth::user()->id);
         $data = gameUser::create([
             'profile_id' => $profile_id,
@@ -56,9 +59,33 @@ class gameUserController extends Controller
         );
         $game->pull('userlist',['profile_id' =>$profile_id]);
         $game->push('userlist',$gameData);
+        */
+        $profile_id = UserHelp::getID(Auth::user()->id);
+        $userData = array(
+            'profile_id' => $profile_id,
+            'game_id' => $game_id,
+            'status' => $request->get('addRadio')
+        );
+        gameUser::updateOrCreate([
+            'game_id' => $game_id,'profile_id' => $profile_id
+        ],['status' => $request->get('addRadio')]);
+        
         return redirect()->route('gameView.show',$game_id);
     }
 
+    public function storeRating(Request $request,$game_id){
+        $profile_id = UserHelp::getID(Auth::user()->id);
+        
+        Review::updateOrCreate([
+            'game_id' => $game_id,
+            'profile_id' => $profile_id,
+        ],['rating' => $request->get('rating'),
+        'review_content' => $request->get('review_content')
+        ]);
+        return redirect()->route('gameView.show',$game_id);
+
+        
+    }
     /**
      * Display the specified resource.
      *

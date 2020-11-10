@@ -27,6 +27,12 @@ class Profile extends Eloquent
     public function comments(){
         return $this->embedsMany(userPost::class,'_id');
     }
+    public function game(){
+        return $this->hasMany(gameCRUD::class,'userlist.profile_id','_id');
+    }
+    public function showGame(){
+        return $this->hasMany(gameUser::class,'profile_id','_id');
+    }
     /*public function searchableAs(){
         return 'mygame';
     }

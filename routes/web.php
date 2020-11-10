@@ -49,7 +49,8 @@ Route::get('post/{post_id}/addLike/{id}',[App\Http\Controllers\User\userPostCont
 Route::post('post/{post_id}/addComment/{id}',[App\Http\Controllers\User\userPostController::class,'addComment'])->name('post.addComment');
 Route::get('post/{post_id}/removeLike/{id}',[App\Http\Controllers\User\userPostController::class,'removeLike'])->name('post.removeLike');
 Route::get('game/{id]',[App\Http\Controllers\Game\gameUserController::class,'show'])->name('game.show');
-Route::get('game/add/{game_id}',[App\Http\Controllers\Game\gameUserController::class,'store'])->name('game.store');
+Route::get('game/{game_id}/add',[App\Http\Controllers\Game\gameUserController::class,'store'])->name('game.store');
+Route::get('game/{game_id}/storeReview',[App\Http\Controllers\Game\gameUserController::class,'storeRating'])->name('game.storeRating');
 Route::get('/profile/{id}/post', App\Http\Livewire\Profile::class);
 Route::get('/profile/{id}/post/{posted_by}', App\Http\Livewire\Profile::class); 
 

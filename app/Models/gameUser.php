@@ -11,11 +11,13 @@ class gameUser extends Eloquent
     protected $connection = 'mongodb';
     protected $collection = 'gameUser';
     protected $fillable = [
-        'id',
+        'game_id',
         'profile_id',
-        'gamelist'
+        'status',
+        'rating',
+        'progress',
     ];
-    public function game(){
-        return $this->belongsToMany(gameCRUD::class,null,'userlist','gamelist');
+    public function gameData(){
+        return $this->hasOne(gameCRUD::class,'_id','game_id');
     }
 }

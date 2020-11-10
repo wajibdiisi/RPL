@@ -1,4 +1,4 @@
-<div class="timeline-comment ">
+<div class="timeline-comment">
 @foreach($commentlist as $comment)
 @foreach($comment->embedsComment as $comments)
                                             <div class="timeline-comment-header">
