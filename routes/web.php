@@ -55,5 +55,6 @@ Route::get('/profile/{id}/post', App\Http\Livewire\Profile::class);
 Route::get('/profile/{id}/post/{posted_by}', App\Http\Livewire\Profile::class); 
 Route::get('/game/{game_id}/addFav', [App\Http\Controllers\Game\gameUserController::class,'addFavourite'])->middleware('auth')->name('game.addFav'); 
 Route::get('/game/{game_id}/removeFav', [App\Http\Controllers\Game\gameUserController::class,'removeFavourite'])->middleware('auth')->name('game.removeFav'); 
+Route::get('/activities/{id}', [App\Http\Controllers\User\activityController::class,'show'])->middleware('auth')->name('activity'); 
 
 //vue Route::get('/{any}', [App\Http\Controllers\FrontController::class, 'index'])->where('any', '.*');

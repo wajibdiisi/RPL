@@ -10,7 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <style type="text/css">
         body {
             color: #1a202c;
@@ -74,6 +75,41 @@
         .servive-block-dark-blue {
   background: #4765a0;
 }
+.rating {
+    float:left;
+    border:none;
+}
+.rating:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+    clip:rect(0, 0, 0, 0);
+}
+.rating:not(:checked) > label {
+    float:right;
+    width:1em;
+    padding:0 .1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:200%;
+    line-height:1.2;
+    color:#ddd;
+}
+.rating:not(:checked) > label:before {
+    content:'★ ';
+}
+.rating > input:checked ~ label {
+    color: #f70;
+}
+.rating:not(:checked) > label:hover, .rating:not(:checked) > label:hover ~ label {
+    color: gold;
+}
+.rating > input:checked + label:hover, .rating > input:checked + label:hover ~ label, .rating > input:checked ~ label:hover, .rating > input:checked ~ label:hover ~ label, .rating > label:hover ~ input:checked ~ label {
+    color: #ea0;
+}
+.rating > label:active {
+    position:relative;
+}
 
     </style>
 </head>
@@ -110,7 +146,7 @@
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center">
                                 <img src="{{ url('uploads/gamePicture/' . $game->gamePicture) }}" alt="Admin"
-                                    class="rounded-circle" width="300">
+                                    class="" width="300">
                                 <div class="mt-3">
                                     <h4>{{ $game->gameName }}</h4>
                                     <p class="text-secondary mb-1">
@@ -196,9 +232,16 @@
                             <div class="row">
                                 <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
                                 data-target="#add<?= $game->id ?>">Add game</button>
-                                
-                                <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
-                                data-target="#rate<?= $game->id ?>">Rate this game</button>
+                                <button type="button" class="btn btn-primary ml-2" data-container="body" data-toggle="popover" data-placement="bottom" data-content="<fieldset class='rating'>
+                                    <input type='radio' id='star5' name='rating' value='5' /><label for='star5' title='Rocks!'>5 stars</label>
+                                    <input type='radio' id='star4' name='rating' value='4' /><label for='star4' title='Pretty good'>4 stars</label>
+                                    <input type='radio' id='star3' name='rating' value='3' /><label for='star3' title='Meh'>3 stars</label>
+                                    <input type='radio' id='star2' name='rating' value='2' /><label for='star2' title='Kinda bad'>2 stars</label>
+                                    <input type='radio' id='star1' name='rating' value='1' /><label for='star1' title='Sucks big time'>1 star</label>
+                                </fieldset>
+                                <button type ='submit' class='btn btn-primary btn-sm'>Submit</button>'">
+                                Rate this game
+</button>
                                 <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
                                 data-target="#review<?= $game->id ?>">Review this game</button>
                                 @if (Auth::user() && in_array($currentUser,$game->userfav))
@@ -293,19 +336,17 @@
                       <label for="message-text" class="col-form-label">Review</label>
                       <textarea class="form-control" id="message-text" name="review_content"></textarea>
                     </div>
-                    <p>Rating
-                    <input id="rateReview" class="multi-range" name="rating" type="range" min="1" max="5" /></p>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="reviewRadio" id="inlineRadio1" value="dislike">
-                        <label class="form-check-label" for="inlineRadio1"><i class="fa fa-frown-o fa-5x" aria-hidden="true"></i></label>
+                        <label class="form-check-label" for="inlineRadio1"><i class="far fa-frown-o fa-5x" aria-hidden="true"></i></label>
                       </div>
                       <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="reviewRadio" id="inlineRadio2" value="neutral">
-                        <label class="form-check-label" for="inlineRadio2"><i class="fa fa-meh-o fa-5x" aria-hidden="true"></i></label>
+                        <label class="form-check-label" for="inlineRadio2"><i class="far fa-meh-o fa-5x" aria-hidden="true"></i></label>
                       </div>
                       <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="reviewRadio" id="inlineRadio3" value="like">
-                        <label class="form-check-label" for="inlineRadio3"><i class="fa fa-smile-o fa-5x" aria-hidden="true"></i></label>
+                        <label class="form-check-label" for="inlineRadio3"><i class="far fa-smile-o fa-5x" aria-hidden="true"></i></label>
                       </div>
                     </div>
                     <div class="modal-footer">
@@ -323,15 +364,7 @@
         </div>
         <div class="card mb-3">
             <div class="card-body">
-                <div class="row">
-                    <div class="col-sm-3">
-
-                        <div class="col-sm-9 text-secondary">
-
-                        </div>
-                    </div>
-                </div>
-                <hr>
+               
                 <div class="row">
 
                     <div class="col-sm-3">
@@ -344,19 +377,23 @@
                 <hr>
                 <div class="row">
                     <div class="col-sm-3">
-                        <h6 class="mb-0">Email</h6>
+                        <h6 class="mb-0">Platform</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                        fip@jukmuh.al
+                        <button class="btn btn-primary btn-sm" disabled><i class="fab fa-playstation"></i> PS4</button>
+                        <button class="btn btn-dark btn-sm" disabled><i class="fab fa-steam"></i> <span>STEAM</span></button>
+                        <button class="btn btn-success btn-sm" disabled><i class="fab fa-xbox"></i> <span>Xbox One</span></button>
                     </div>
                 </div>
                 <hr>
                 <div class="row">
                     <div class="col-sm-3">
-                        <h6 class="mb-0">Phone</h6>
+                        <h6 class="mb-0">Category</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                        (239) 816-9029
+                        <button class="btn btn-success btn-sm" disabled><i class="fas fa-user"></i> <span>Single-player</span></button>
+                        <button class="btn btn-success btn-sm" disabled><i class="fas fa-user-friends"></i> <span>Co-Op</span></button>
+                        <button class="btn btn-success btn-sm" disabled><i class="fas fa-users"></i> <span>Multiplayer</span></button>
                     </div>
                 </div>
                 <hr>
@@ -379,6 +416,38 @@
                 </div>
             </div>
         </div>
+        <div class="card mb-3">
+            <div class="card-body">
+               
+                <h6> System Requirements </h6>
+                <div class="row">
+                    <div class="col-sm-6"> <p>Mininum</p> 
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">OS: Windows 7 or 10</li>
+                        <li class="list-group-item">Processor: Intel Core i5-3570K or AMD FX-8310</li>
+                        <li class="list-group-item">Memory: 8 GB RAM</li>
+                        <li class="list-group-item">Graphics: NVIDIA GeForce GTX 780 or AMD Radeon RX 470</li>
+                        <li class="list-group-item">DirectX: Version 12</li>
+                        <li class="list-group-item">Storage: 70 GB available space</li>
+
+                    </ul>
+
+
+                    </div>
+                    <div class="col-sm-6"><p> Recommended</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">OS: Windows 7 or 10</li>
+                            <li class="list-group-item">Processor: Intel Core i5-3570K or AMD FX-8310</li>
+                            <li class="list-group-item">Memory: 8 GB RAM</li>
+                            <li class="list-group-item">Graphics: NVIDIA GeForce GTX 780 or AMD Radeon RX 470</li>
+                            <li class="list-group-item">DirectX: Version 12</li>
+                            <li class="list-group-item">Storage: 70 GB available space</li>
+    
+                        </ul>
+                    
+                    
+                    </div>
+                </div></div></div>
         <div class="card mb-3">
             <div class="card-body">
                 <div class="row">
@@ -483,7 +552,14 @@
                                   <a href="#"><i class="icofont-ui-rating active"></i></a>
                                   <a href="#"><i class="icofont-ui-rating"></i></a>
                                   </span>
-                                <h6 class="mb-1"><a class="text-black" href="#">{{UserHelp::get_fullname($review->profile_id)}}</a></h6>
+                                <h6 class="mb-1"><a class="text-black" href="#">{{UserHelp::get_fullname($review->profile_id)}}</a>
+                                    @if($review->rating == "like")
+                                    <span><button type="button" class="btn btn-outline-success btn-sm" disabled><i class="far fa-smile-o " aria-hidden="true"></i> Recommending this Game</button></span></h6>
+                                    @elseif($review->rating == "neutral")
+                                    <span><button type="button" class="btn btn-outline-warning btn-sm" disabled><i class="far fa-meh-o " aria-hidden="true"></i> Feels Neutral about this Game</button></span></h6>
+                                    @elseif($review->rating =="dislike")
+                                    <span><button type="button" class="btn btn-outline-danger btn-sm" disabled><i class="far fa-frown-o " aria-hidden="true"></i> Not Recommending this Game</button></span></h6>
+                                    @endif
                                 <p class="text-gray">{{$review->created_at->diffForHumans()}}</p>
                         </div>
                         <div class="reviews-members-body">
@@ -508,13 +584,13 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
        
-var slider = document.getElementById("rateReview");
-var output = document.getElementById("demo");
-output.innerHTML = slider.value;
 
-slider.oninput = function() {
-  output.innerHTML = this.value;
-}
+       $(function () {
+  $('[data-toggle="popover"]').popover({
+      html: true,
+      sanitize: false
+  });
+})
       
     </script>
 </body>

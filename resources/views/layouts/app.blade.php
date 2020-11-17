@@ -60,6 +60,7 @@
                         </form>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/gameIndex') }}">{{ __('Edit Game ') }}</a>
+                            <a class="nav-link" href="{{ route('activity',UserHelp::getID(Auth::user()->id)) }}">{{ __('Activity ') }}</a>
                         </li>
                             <li class="nav-item dropdown">
                                 <a class="navbar-brand" href="{{ route('myprofile') }}" class="text-sm text-gray-700 underline">Profile</a>

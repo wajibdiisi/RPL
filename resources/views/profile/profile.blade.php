@@ -597,9 +597,7 @@
                                     <h4 class="card-title">Highest Achievement</h4>
                                 </div>
                                 <div class="card-body mb-3">
-                                    <img src="https://i0.wp.com/carijawaban.id/wp-content/uploads/2020/07/Mythical_Glory.png?resize=169%2C169&ssl=1"
-                                        class="user-profile-image rounded-circle" alt="" width="300" />
-                                    <img src="https://eloboost24.eu/images/valorant/6.png" />
+                                    
                                     <a href="#" class="label label-success mb-2">HTML</a>
                                     <a href="#" class="label label-success mb-2">CSS</a>
                                     <a href="#" class="label label-success mb-2">Sass</a>
@@ -626,16 +624,16 @@
                                         <table class="table table-borderless mb-0 text-muted">
                                             <tbody>
                                                 <tr>
-                                                    <th scope="row">Email:</th>
+                                                    <th scope="row">Steam : </th>
                                                     <td>addyour@emailhere</td>
                                                 </tr>
                                                 <tr>
-                                                    <th scope="row">Phone:</th>
-                                                    <td>(+44) 123 456 789</td>
+                                                    <th scope="row">Discord : </th>
+                                                    <td>asdsad #222222</td>
                                                 </tr>
                                                 <tr>
-                                                    <th scope="row">Address:</th>
-                                                    <td>74 Guild Street 542B, Great North Town MT.</td>
+                                                    <th scope="row">PSN : </th>
+                                                    <td>Habib habib</td>
                                                 </tr>
                                             </tbody>
                                         </table>

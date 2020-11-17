@@ -78,6 +78,7 @@ class RegisterController extends Controller
                 'avatar' => 'defaultPicture.png',
                 'nama_lengkap' => $data['name'],
                 'user_id' => $userData->id,
+                'favourite_game' => array()
                 ]);
             ProfileManager::create([
                 'user_id' => $userData->id,
