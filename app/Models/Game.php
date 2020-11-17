@@ -11,7 +11,7 @@ class Game extends Eloquent
     protected $connection = 'mongodb';
     protected $collection = 'game';
     protected $fillable = [
-        'gameName', 'picture','rating','developer','releaseDate','summary','userlist','genre_ids'
+        'gameName', 'picture','rating','developer','releaseDate','summary','userlist','genre_ids','userfav'
     ];
     public function game_genre(){
         return $this->hasMany(gameGenre::class,'game_id','_id');
@@ -24,5 +24,8 @@ class Game extends Eloquent
     }
     public function gameUser(){
         return $this->hasOne(gameUser::class,'game_id','_id');
+    }
+    public function user_favourite(){
+        return $this->belongsToMany(Profile::class,'null','favourite_game','userfav');
     }
 }

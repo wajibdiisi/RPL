@@ -34,5 +34,8 @@ class gameCRUD extends Eloquent
     public function review(){
         return $this->hasMany(Review::class,'game_id','_id');
     }
+    public function favUser(){
+        return $this->belongsToMany(Profile::class,null,'favourite_game','userfav');
+    }
     
 }

@@ -77,6 +77,7 @@ class gameController extends Controller
         $model->developer = $request->get('developer');      
         $model->releaseDate = $request->get('releaseDate');
         $model->summary = $request->get('summary');          
+        $model->userfav = array();
         $model->save();
         $model->genre()->attach($arrayGenre_id);
         return redirect()->route('gameView.index')->with('success','Game updated successfully');

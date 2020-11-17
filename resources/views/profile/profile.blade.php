@@ -29,7 +29,7 @@
             }
 
             .card.card-white {
-                background-color: #131f39;
+                background-color: #111D35;
                 color: #ffffff;
                 border: 1px solid transparent;
                 border-radius: 4px;
@@ -446,7 +446,8 @@
             }
             @media screen and (min-width: 1000px) {
                 .jumbotronSize {
-                    height:15%;
+                    height:25%;
+                    overflow:hiden;
                 }
             }
             
@@ -491,9 +492,11 @@
                                         <i class="fa fa-fw fa-camera"></i>
                                         <span>Change Photo</span>
                                     </button>
-                                    <button type="button"
-                                        class="bg-transparent border border-gray-500 hover:border-indigo-500 text-gray-500 hover:text-indigo-500 font-bold py-2 px-4 rounded-full"
-                                        @click="showModal = true">Open modal</button>
+                                    <button class="btn btn-primary" type="button" data-toggle="modal"
+                                        data-target="#changeprofile">
+                                       
+                                        <span>Change Profile</span>
+                                    </button>
 
                                     <a class="btn btn-primary"
                                         href="{{ route('friends.pending', ['id' => session()->get('username')]) }}">Friend
@@ -643,7 +646,7 @@
 
                         <div class="col-lg-8 col-xl-6">
                             
-                            <div class="jumbotron text-center jumbotronSize" style="background: #131f39">
+                            <div class="jumbotron text-center" style="background: #131f39">
                                 <div class="containDetails">
                                     <ul class="details">
                                         <li>5 <span>Games Owned</span></li>
@@ -656,15 +659,16 @@
                                     </div>
                                     <div class="row text-center">
                                     @foreach ($userView->showGame as $games)
-                                        <div class="col-xl-3 col-sm-6">
-                                        <a  class="tooltip-test" title="{{$games->gameData->gameName}}" href="{{ route('gameView.show',$games->gameData->id) }}">
+                                    
+                                    <div class="col-xl-3 col-sm-6">
+                                        <div class="col-xl-10">
+                                        <a  class="tooltip-test" title="{{$games->gameName}}" href="{{ route('gameView.show',$games->id) }}">
                                             <img
-                                                src="{{ url('uploads/gamePicture/' . $games->gameData->gamePicture) }}"
+                                                src="{{ url('uploads/gamePicture/' . $games->gamePicture) }}"
                                                 alt=""
                                                 class="img-fluid rounded-square img-thumbnail shadow-sm"
-                                                width="200"
-                                                style="height:50%"            
-                                            /></a>
+                                                         
+                                            /></a></div>
                                         </div>
                                         @endforeach
                                     </div>

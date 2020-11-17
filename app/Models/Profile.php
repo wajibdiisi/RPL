@@ -13,7 +13,8 @@ class Profile extends Eloquent
         'username',
         'user_id',
         'tgl_lahir',
-        'avatar'
+        'avatar',
+        'favourite_game'
     ];
     public function user(){
         return $this->hasOne(User::class,'_id','user_id');
@@ -30,8 +31,11 @@ class Profile extends Eloquent
     public function game(){
         return $this->hasMany(gameCRUD::class,'userlist.profile_id','_id');
     }
+    public function game_favourite(){
+        return $this->belongsToMany(gameCRUD::class,null,'userfav','favourite_game');
+    }
     public function showGame(){
-        return $this->hasMany(gameUser::class,'profile_id','_id');
+        return $this->belongsToMany(gameCRUD::class,null,'userfav','favourite_game');
     }
     /*public function searchableAs(){
         return 'mygame';

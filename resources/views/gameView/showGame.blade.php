@@ -9,6 +9,7 @@
     <title>profile with data and skills - Bootdey.com</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
     <style type="text/css">
         body {
@@ -78,9 +79,17 @@
 </head>
 
 <body>
-    @php
-    var_dump($game->gameName)
-    @endphp
+    @if (Auth::user())
+        @php
+        $currentUser = UserHelp::getID(Auth::user()->id);
+        $username = UserHelp::get_username(Auth::user()->id);
+        @endphp
+    @else
+        @php
+         $currentUser = '';   
+         $username = 'Guest';
+        @endphp
+    @endif
     <div class="container">
 
         <div class="main-body">
@@ -94,7 +103,7 @@
                 </ol>
             </nav>
             <!-- /Breadcrumb -->
-
+            
             <div class="row gutters-sm">
                 <div class="col-md-4 mb-3">
                     <div class="card">
@@ -185,14 +194,20 @@
                         <div class="card mb-3">
                         <div class="card-body">
                             <div class="row">
-                                @if (Auth::user())
                                 <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
-                                    data-target="#add<?= $game->id ?>">Add game</button>
+                                data-target="#add<?= $game->id ?>">Add game</button>
+                                
                                 <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
-                                    data-target="#rate<?= $game->id ?>">Rate this game</button>
+                                data-target="#rate<?= $game->id ?>">Rate this game</button>
                                 <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
-                                    data-target="#review<?= $game->id ?>">Review this game</button>
-                    @endif
+                                data-target="#review<?= $game->id ?>">Review this game</button>
+                                @if (Auth::user() && in_array($currentUser,$game->userfav))
+                                <a href="{{ route('game.removeFav', ['game_id' =>$game->id ]) }}" class="btn btn-primary ml-2">Remove Favourite</a>
+                                @elseif(Auth::user() && !in_array($currentUser,$game->userfav))
+                                <a href="{{ route('game.addFav', ['game_id' =>$game->id ]) }}" class="btn btn-primary ml-2">Add Favourite</a>
+                                @elseif(!Auth::user())
+                                <a href="{{ route('game.addFav', ['game_id' =>$game->id ]) }}" class="btn btn-primary ml-2">Add Favourite</a>
+                                @endif
                     <div class="modal fade" id="add<?= $game->id ?>" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <form enctype="multipart/form-data"
@@ -272,7 +287,7 @@
                   
                     <div class="form-group">
                       <label for="recipient-name" class="col-form-label">Username</label>
-                    <input type="text" class="form-control" id="recipient-name" value="{{UserHelp::get_username(Auth::user()->id)}}" disabled>
+                    <input type="text" class="form-control" id="recipient-name" value="{{$username}}" disabled>
                     </div>
                     <div class="form-group">
                       <label for="message-text" class="col-form-label">Review</label>
@@ -280,12 +295,25 @@
                     </div>
                     <p>Rating
                     <input id="rateReview" class="multi-range" name="rating" type="range" min="1" max="5" /></p>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                  </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="reviewRadio" id="inlineRadio1" value="dislike">
+                        <label class="form-check-label" for="inlineRadio1"><i class="fa fa-frown-o fa-5x" aria-hidden="true"></i></label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="reviewRadio" id="inlineRadio2" value="neutral">
+                        <label class="form-check-label" for="inlineRadio2"><i class="fa fa-meh-o fa-5x" aria-hidden="true"></i></label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="reviewRadio" id="inlineRadio3" value="like">
+                        <label class="form-check-label" for="inlineRadio3"><i class="fa fa-smile-o fa-5x" aria-hidden="true"></i></label>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                           
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
               </div>
             </div>
           </div>
@@ -307,7 +335,7 @@
                 <div class="row">
 
                     <div class="col-sm-3">
-                        <h6 class="mb-0">Full Name</h6>
+                        <h6 class="mb-0">Summary</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
                         {{ $game->summary }}
@@ -351,6 +379,24 @@
                 </div>
             </div>
         </div>
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Screenshot</h6>
+                    </div>
+                    <div class="mt-2 col-md-12 row">
+                        <div class="col-md-4">
+                        <img alt="Generic placeholder image" src="http://bootdey.com/img/Content/avatar/avatar1.png"  class="img-fluid">
+                        </div>
+                        <div class="col-md-4">
+                        <img alt="Generic placeholder image" src="http://bootdey.com/img/Content/avatar/avatar1.png"  class="img-fluid">
+                        </div>
+                        <div class="col-md-4">
+                            <img alt="Generic placeholder image" src="http://bootdey.com/img/Content/avatar/avatar1.png"  class="img-fluid">
+                            </div>
+                    </div>
+                </div></div></div>
         <div class="row gutters-sm">
             <div class="col-sm-6 mb-3">
                 <div class="card h-100">

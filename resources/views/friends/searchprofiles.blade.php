@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
 <div class="container bootstrap snippets bootdey">
 <style>
@@ -37,11 +36,12 @@
   <div class="header">
     <h3 class="text-muted prj-name">
         <span class="fa fa-users fa-2x principal-title"></span>
-        Friend zone
+        Search
     </h3>
   </div>
 
-
+  
+  @if(sizeof($result) > 0 )
   <div class="jumbotron list-content">
     <ul class="list-group">
       <li href="#" class="list-group-item title">
@@ -53,7 +53,7 @@
         <label class="name">
             <a href ="{{ route('profile.show',['id'=>$query->username]) }}">{{$query->nama_lengkap}}</a><br>
         </label>
-        <label class="pull-right">
+        <label class="float-right">
 
             <a  class="btn btn-success btn-xs glyphicon glyphicon-ok"  title="View">Accept</a>
             <a  class="btn btn-danger  btn-xs glyphicon glyphicon-trash" href="#" title="Delete">Decline</a>
@@ -70,6 +70,41 @@
       </li>
     </ul>
   </div>
+  @endif
+  @if(sizeof($resultGame)> 0)
+  <div class="jumbotron list-content">
+    <ul class="list-group">
+      <li href="#" class="list-group-item title">
+        Game found
+      </li>
+      @foreach($resultGame as $query)
+      <div href="#" class="list-group-item col-md-12">
+      <div class="row">
+      <div class="col-md-6">  
+        <img class="img-fluid" src="{{ url('uploads/gamePicture/' . $query->gamePicture) }}" style="width:150px;height:150px">
+        <label class="name">
+            <a href ="{{ route('gameView.show',$query->id) }}">{{$query->gameName}}</a>
+        </label>
+      </div>
+        <div class ="col-md-3 offset-md-3 align-middle text-right">
+          <label class="mt-5 pt-3">
+            @foreach($query->genre as $genre)
+            <a  class="btn btn-success btn-xs glyphicon glyphicon-ok"  title="View"><?=$genre->title?></a>
+            @endforeach
+          </label>
+          </div>
+        <div class="break"></div>
+      </div></div>
+      @endforeach
+      <li href="#" class="list-group-item text-left">
+        <a class="btn btn-block btn-primary">
+            <i class="glyphicon glyphicon-refresh"></i>
+            Load more...
+        </a>
+      </li>
+    </ul>
+  </div>
+  @endif
   </div>
 </div>   
 @endsection

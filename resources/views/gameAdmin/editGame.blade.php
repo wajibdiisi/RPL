@@ -2,9 +2,6 @@
 
 @section('content')
 <head>
-    <link href="{{ mix('css/app.css') }}" type="text/css" rel="stylesheet" />
-    <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
-
 </head>
 
 
@@ -32,7 +29,8 @@
                                 <label for="notifications-blog">{{$list->title}}</label>
                               </div>
                 @endforeach  
-                            <span id="" >Genre:<b-button variant ="primary" class="mr-1" v-for="genre in genres">@{{genre}}</b-button></span>  
+                            <span id="" >Genre:<b-button variant ="primary" class="mr-1" v-for="genre in genres">@{{genre}}</b-button></span> 
+                             
               </div>
 
                 <label for="summary">Summary</label>

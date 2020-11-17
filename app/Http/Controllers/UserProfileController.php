@@ -15,7 +15,7 @@ class UserProfileController extends Controller
 {
     public function show($id){
         
-        $userView = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->with('profilemanager','userpost','comments','showGame','showGame.gameData')->first();
+        $userView = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->with('profilemanager','userpost','comments','showGame')->first();
         if(Auth::user()){
             $currentUser = Auth::user()->id;
             $user = Profile::with('profilemanager')->where('user_id','=',$currentUser)->first();

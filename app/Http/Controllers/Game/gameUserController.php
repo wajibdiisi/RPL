@@ -79,11 +79,22 @@ class gameUserController extends Controller
         Review::updateOrCreate([
             'game_id' => $game_id,
             'profile_id' => $profile_id,
-        ],['rating' => $request->get('rating'),
+        ],['rating' => $request->get('reviewRadio'),
         'review_content' => $request->get('review_content')
         ]);
         return redirect()->route('gameView.show',$game_id);
 
+        
+    }
+    public function addFavourite($game_id){
+        $profile = Profile::with('game_favourite')->where('user_id','=',Auth::user()->id)->first();
+        $profile->game_favourite()->attach($game_id);
+        return redirect()->route('gameView.show',$game_id);
+    }
+    public function removeFavourite($game_id){
+        $profile = Profile::with('game_favourite')->where('user_id','=',Auth::user()->id)->first();
+        $profile->game_favourite()->detach($game_id);
+        return redirect()->route('gameView.show',$game_id);
         
     }
     /**

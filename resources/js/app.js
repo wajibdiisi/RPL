@@ -16,9 +16,6 @@ createApp({
       resolveComponent: name => require(`./Pages/${name}`).default,
     })
   }).use(plugin).mount(el)
-
-
-
 Vue.use(BootstrapVue);
 
 /**
@@ -49,4 +46,13 @@ const checkbox = new Vue({
         genres: []
     },
     template :''
+})
+const rating = new Vue({
+  el: '#rating',
+  data() {
+    return {
+      value: null
+    }
+  },
+  template :''
 })
