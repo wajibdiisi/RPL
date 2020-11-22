@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class profileManager extends Eloquent
+class ProfileManager extends Eloquent
 {
     protected $connection = 'mongodb';
     protected $collection = 'profileManager';
