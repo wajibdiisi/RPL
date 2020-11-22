@@ -68,5 +68,6 @@ Route::get('/gamelist/all',function(gameController $game){
     return $game->gameList('all');
 })->name('gamelist.all'); 
 Route::get('review/{id}/{user_id}',[App\Http\Controllers\Game\gameUserController::class,'like_review'])->middleware('auth')->name('like.review');
-
+Route::get('profile/{id}/detail',[App\Http\Controllers\UserProfileController::class, 'detail'])->name('profile.detail');
+Route::get('profile/ssss/detail/list',[App\Http\Controllers\UserProfileController::class, 'dataTable'])->name('dataTable');
 //vue Route::get('/{any}', [App\Http\Controllers\FrontController::class, 'index'])->where('any', '.*');

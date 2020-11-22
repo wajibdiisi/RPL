@@ -712,15 +712,14 @@
                                             doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
                                             veritatis architecto.</p>
                                     </div>
+                                    <a href="{{ route('profile.detail', ['id' => $userView->id]) }}" class="btn btn-primary">tes</a>
                                 </div>
                             </div>
                         </div>
                         <!-- Row -->
                     </div>
                     <!-- end page main wrapper -->
-                    <div class="page-footer">
-                        <p>Copyright © 2020 Evince All rights reserved.</p>
-                    </div>
+                    
                 </div>
             </div>
     </body>

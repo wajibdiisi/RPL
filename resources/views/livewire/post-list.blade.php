@@ -1,4 +1,4 @@
-<div>
+<div x-data="{open : false}">
     @foreach($posts as $post)
     <li class="timeline-item">
        <div class="card card-white grid-margin">
@@ -28,7 +28,7 @@
                    <a href="{{ route('post.removeLike',['post_id' => $post->id ,'id' => $currentUser_id]) }}"><i class="fa fa-thumbs-up"></i>Like({{count((array)$post->like)}})</a>
                    @endif
                    @if($openPost_id != $post->id)
-               <button class ="btn btn-outline-success" wire:click="$set('openPost_id','<?=$post->id?>')" wire:model = ><i class="fa fa-comment"></i>  Comment ({{count((array)$post->comments)}})</button>
+               <button class ="btn btn-outline-success" wire:click ="$set('openPost_id','{{$post->id}}')"><i class="fa fa-comment"></i>  Comment ({{count((array)$post->comments)}})</button>
                    @elseif($openPost_id == $post->id)
                    <button class ="btn btn-outline-success" wire:click="$set('openPost_id','')"><i class="fa fa-comment"></i> Comment ({{count((array)$post->comments)}})</button>
                    @endif

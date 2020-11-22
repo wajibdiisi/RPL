@@ -163,6 +163,9 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Yoeunes\Toastr\ToastrServiceProvider::class,
         Devmi\Flashy\FlashyServiceProvider::class, //tambahan
+        Yajra\Datatables\DatatablesServiceProvider::class,
+    
+    
 
         /*
          * Package Service Providers...
@@ -232,6 +235,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'UserHelp' => App\Helpers\UserHelp::class,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
 
     ],
 

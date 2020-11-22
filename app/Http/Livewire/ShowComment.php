@@ -8,7 +8,7 @@ use App\Models\Profile;
 
 class ShowComment extends Component
 {
-    public $commentlist,$post,$currentUser_id,$comment_content;
+    public $commentlist,$post,$currentUser_id,$comment_content,$user;
     protected $listeners = [
         'commentAdded','showComment'
     ];
@@ -17,12 +17,12 @@ class ShowComment extends Component
     }
     public function mount($post,$currentUser_id){
         $this->post = $post;
-        $this->user = Profile::find($user_id);
+        $this->user = Profile::find($currentUser_id);
     }
 
     public function store(){
         $comment = array('_id'  => new \MongoDB\BSON\ObjectID,
-        'profile_id' => $this->user_id,
+        'profile_id' => $this->user->id,
         'comment_content' => $this->comment_content,
 
 );

@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Profile;
 use App\Models\Game;
 use App\Models\ProfileManager;
+use DataTables;
 use Illuminate\Support\Facades\File;
 
 class UserProfileController extends Controller
@@ -83,4 +84,40 @@ class UserProfileController extends Controller
         flashy()->push('This message wisss.');
     return redirect()->route('profile.show',$request->session()->get('username'))->with(['success' => 'Data berhasil diubah']);
 }
+
+
+    public function detail(Request $request,$id){
+        $user = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->first();
+        $data = Profile::all();
+        if($request->ajax()){
+            return Datatables::of($data)
+            ->editColumn("created_at", function ($data) {
+                return date("m/d/Y", strtotime($data->created_at));
+            })
+            ->addColumn('_id', function ($data) {
+                $update = '<a href="javascript:void(0)" class="btn btn-primary">' . $data->id . '</a>';
+                return $update;
+            })
+            ->rawColumns(['_id'])
+            ->make(true);
+        }
+        return Datatables::of($data)
+        ->editColumn("created_at", function ($data) {
+            return date("m/d/Y", strtotime($data->created_at));
+        })
+        ->addColumn('_id', function ($data) {
+            $update = '<a href="javascript:void(0)" class="btn btn-primary">' . $data->id . '</a>';
+            return $update;
+        })
+        ->rawColumns(['_id'])
+        ->make(true);
+        
+        return view('profile.profile_detail',compact('user'));
+    }
+
+    public function dataTable(){
+        $data = Profile::all();
+        dd($data);
+        
+    }
 }
