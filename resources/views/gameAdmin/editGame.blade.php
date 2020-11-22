@@ -6,9 +6,10 @@
 
 
 
-<div class="container row col-md-10">
+<div class="container row col-md-12">
 <img src="{{url('uploads/gamePicture/' . $game->gamePicture)}}" alt="Admin" class="rounded-circle" width="300">
-<form enctype="multipart/form-data" action="{{ route('game.Update',$game->id)}}"  class ="col-md-4" method="POST">
+<div class="col-md-4">
+<form enctype="multipart/form-data" action="{{ route('game.Update',$game->id)}}"   method="POST">
                 <label for="gameName">Game Name : {{$game->gameName}}</label>
                 <input type="text" class="form-control" id="gameName" aria-describedby="emailHelp" name="gameName" value ="{{$game->gameName}}">    
                 <label for="rating">Rating : {{$game->rating}}</label>
@@ -36,9 +37,36 @@
                 <label for="summary">Summary</label>
                 <textarea type="text" class="form-control" id="summary" aria-describedby="emailHelp" name ="summary">{{$game->summary}}</textarea>   
                 <input type="file" name="gamePicture">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="submit" class="pull-right btn btn-sm btn-primary">
+                <br>
                 
-            </form>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  @foreach($platforms as $platform)
+                <label class="{{$platform->button_class}} active mr-2">
+                    <input type="checkbox" name="platform[]" id="{{$platform->title}}" value="{{$platform->title}}" autocomplete="off"> {{$platform->title}}
+                  </label>
+                  @endforeach
+                </div>    
+            </div>
+            
+              <div class="col-md-2">
+              <h3> Minimum Requirement </h3>
+              @foreach($game->min_requirement as $minreq)
+              <?php $label = (array_search($minreq,$game->min_requirement))?>
+            <label for="min_{{$label}}">{{$label}}</label>
+            <input type="text" class="form-control" id="min_{{$label}}" aria-describedby="emailHelp" name="min_{{$label}}" value ="{{$minreq}}">    
+            @endforeach     
+          </div>
+          <div class="col-md-2">
+            <h3> Recommended </h3>
+            @foreach($game->min_requirement as $minreq)
+            <?php $label = (array_search($minreq,$game->min_requirement))?>
+          <label for="min_{{$label}}">{{$label}}</label>
+          <input type="text" class="form-control" id="min_{{$label}}" aria-describedby="emailHelp" name="min_{{$label}}" value ="{{$minreq}}">    
+          @endforeach     
+          <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="submit" class="mt-2 pull-right btn btn-sm btn-primary">
+        </div>
+          </form>
+          
 </div>
 @endsection

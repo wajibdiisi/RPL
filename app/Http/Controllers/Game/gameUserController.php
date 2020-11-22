@@ -133,6 +133,10 @@ class gameUserController extends Controller
     {
         //
     }
+    public function like_review($id,$user_id){
+        $review = Review::find($id);
+        $review->push('thumbsup',$user_id,true);
+    }
 
     /**
      * Remove the specified resource from storage.

@@ -34,7 +34,7 @@ class Profile extends Eloquent
     public function game_favourite(){
         return $this->belongsToMany(gameCRUD::class,null,'userfav','favourite_game');
     }
-    public function showGame(){
+    public function showFavourite(){
         return $this->belongsToMany(gameCRUD::class,null,'userfav','favourite_game');
     }
     /*public function searchableAs(){

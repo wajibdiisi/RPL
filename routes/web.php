@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Models\Genre;
+use App\Models\gameCRUD;
+use App\Http\Controllers\gameController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +41,7 @@ Route::post('/gameUpdate/{id}', [App\Http\Controllers\gameController::class, 'up
 //Route::get('/profile/{id}',[App\Http\Controllers\FriendsController::class, 'show'])->name('profile.show');
 Route::get('{id}/pending',[App\Http\Controllers\UserProfileController::class, 'showRequest'])->middleware('auth')->name('friends.pending');
 Route::get('{id}/pending/accept/{username}',[App\Http\Controllers\FriendsController::class, 'accept'])->middleware('auth')->name('friends.accept');
-Route::get('{id}/friends/{username}/add',[App\Http\Controllers\FriendsController::class, 'store'])->middleware('auth')->name('friends.add');
+Route::get('{id}/friends/{username}/{action}',[App\Http\Controllers\FriendsController::class, 'store'])->middleware('auth')->name('friends.add');
 Route::resource('gameView',App\Http\Controllers\gameController::class);
 Route::resource('game',App\Http\Controllers\Game\gameUserController::class);
 Route::resource('friends',App\Http\Controllers\FriendsController::class);
@@ -48,13 +51,22 @@ Route::post('profile/{id}/post/{posted_by}',[App\Http\Controllers\User\userPostC
 Route::get('post/{post_id}/addLike/{id}',[App\Http\Controllers\User\userPostController::class,'addLike'])->middleware('auth')->name('post.addLike');
 Route::post('post/{post_id}/addComment/{id}',[App\Http\Controllers\User\userPostController::class,'addComment'])->middleware('auth')->name('post.addComment');
 Route::get('post/{post_id}/removeLike/{id}',[App\Http\Controllers\User\userPostController::class,'removeLike'])->middleware('auth')->name('post.removeLike');
-Route::get('game/{id]',[App\Http\Controllers\Game\gameUserController::class,'show'])->name('game.show');
+
 Route::get('game/{game_id}/add',[App\Http\Controllers\Game\gameUserController::class,'store'])->middleware('auth')->name('game.store');
 Route::get('game/{game_id}/storeReview',[App\Http\Controllers\Game\gameUserController::class,'storeRating'])->middleware('auth')->name('game.storeRating');
-Route::get('/profile/{id}/post', App\Http\Livewire\Profile::class);
+Route::get('/profile/{id}/post', App\Http\Livewire\Profile::class)->middleware('auth');
 Route::get('/profile/{id}/post/{posted_by}', App\Http\Livewire\Profile::class); 
 Route::get('/game/{game_id}/addFav', [App\Http\Controllers\Game\gameUserController::class,'addFavourite'])->middleware('auth')->name('game.addFav'); 
 Route::get('/game/{game_id}/removeFav', [App\Http\Controllers\Game\gameUserController::class,'removeFavourite'])->middleware('auth')->name('game.removeFav'); 
 Route::get('/activities/{id}', [App\Http\Controllers\User\activityController::class,'show'])->middleware('auth')->name('activity'); 
+Route::get('/gamelist/genre/{id:title}',function(gameController $game,Genre $id){
+    return $game->gameList($id);
+})->name('gameList'); 
+Route::get('/gamepage/{id:custom_url}',function (gameController $game, gameCRUD $id){
+    return $game->show($id->id);})->name('game.show');
+Route::get('/gamelist/all',function(gameController $game){
+    return $game->gameList('all');
+})->name('gamelist.all'); 
+Route::get('review/{id}/{user_id}',[App\Http\Controllers\Game\gameUserController::class,'like_review'])->middleware('auth')->name('like.review');
 
 //vue Route::get('/{any}', [App\Http\Controllers\FrontController::class, 'index'])->where('any', '.*');

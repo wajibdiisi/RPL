@@ -44,12 +44,6 @@
 		    </div>
         <div class="col-xs-12 col-sm-12 col-md-5 offset-md-2">
 		        <div class="form-group">
-		            <strong>Genre</strong>
-		            <input type="text" name="genre" class="form-control" placeholder="Name">
-		        </div>
-		    </div>
-        <div class="col-xs-12 col-sm-12 col-md-5 offset-md-2">
-		        <div class="form-group">
 		            <strong>Developer</strong>
 		            <input type="text" name="developer" class="form-control" placeholder="Name">
 		        </div>

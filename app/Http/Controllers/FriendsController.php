@@ -38,14 +38,19 @@ class FriendsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($id,$username)
+    public function store($id,$username,$action)
     {
         $addedFriend = Profile::where('user_id','=',$username)->orWhere('username','=',$username)->first();
         $user = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->first();
         $sender = array('id'=> $addedFriend->id,'timeAdded' => Carbon::now()->toDateTimeString(),'status' => 'pending');
         $receiver = array('id' =>$user->id,'timeAdded' => Carbon::now()->toDateTimeString(),'status' => 'Need Action');
+        if($action =="add"){
         ProfileManager::where('profile_id','=',$user->id)->push('friend_ids',$sender,true);
         ProfileManager::where('profile_id','=',$addedFriend->id)->push('friend_ids',$receiver,true);
+        }elseif($action =="remove"){
+          ProfileManager::where('profile_id','=',$user->id)->pull('friend_ids',['id' => $addedFriend->id]);
+            ProfileManager::where('profile_id','=',$addedFriend->id)->pull('friend_ids',['id' => $user->id]); 
+        }
         return redirect()->route('profile.show',$addedFriend->username);
         
     }

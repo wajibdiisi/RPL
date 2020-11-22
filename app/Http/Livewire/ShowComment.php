@@ -8,14 +8,14 @@ use App\Models\Profile;
 
 class ShowComment extends Component
 {
-    public $commentlist,$post,$user_id,$comment_content;
+    public $commentlist,$post,$currentUser_id,$comment_content;
     protected $listeners = [
         'commentAdded','showComment'
     ];
     public function commentAdded(){
         
     }
-    public function mount($post,$user_id){
+    public function mount($post,$currentUser_id){
         $this->post = $post;
         $this->user = Profile::find($user_id);
     }

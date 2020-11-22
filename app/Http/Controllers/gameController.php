@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\gameCRUD;
 use App\Models\Genre;
 use App\Models\gameGenre;
+use App\Models\Platform;
 use Image;
 use App\Models\gameUser;
 use Illuminate\Http\Request;
@@ -77,7 +78,22 @@ class gameController extends Controller
         $model->developer = $request->get('developer');      
         $model->releaseDate = $request->get('releaseDate');
         $model->summary = $request->get('summary');          
-        $model->userfav = array();
+        $model->userfav = array(); 
+        $model->min_requirement = [
+        'OS' => 'OS',
+        'Processor' => 'Processor',
+        'Memory' => 'Memory',
+        'Graphics' => 'Graphics',
+        'DirectX' => 'DirectX',
+        'Storage' => 'Storage',];
+        $model->rec_requirement = [
+            'OS' => 'OS',
+            'Processor' => 'Processor',
+            'Memory' => 'Memory',
+            'Graphics' => 'Graphics',
+            'DirectX' => 'DirectX',
+            'Storage' => 'Storage',];
+        
         $model->save();
         $model->genre()->attach($arrayGenre_id);
         return redirect()->route('gameView.index')->with('success','Game updated successfully');
@@ -92,7 +108,7 @@ class gameController extends Controller
     public function show($id)
     {
         
-        $game = gameCRUD::with(['genre','review'])->get()->find($id);
+        $game = gameCRUD::with(['genre','review','gameUser'])->get()->find($id);
         $totalUser = count($game->gameUser);
         if($totalUser > 0){
         $wtp = $game->gameUser->where('status','Want to Play')->count() / $totalUser * 100;
@@ -131,13 +147,14 @@ class gameController extends Controller
     public function edit($id)
     {
         $game = gameCRUD::with(['genre'])->where('_id', '=', $id)->first();
+        $platforms = Platform::all();
         $genreList = Genre::all();
         /*$genre = gameGenre::with(['genre'])->where('game_id',$id)->get();
         $game = gameCRUD::with(['game_genre','game_genre.genre'])->get()->find($id);
         $filename = $id .".png";
         $path = 'uploads/gamePicture/' . $filename;
         */
-        return view('gameAdmin.editGame',compact('game','genreList'));
+        return view('gameAdmin.editGame',compact('game','genreList','platforms'));
     }
 
     /**
@@ -149,7 +166,7 @@ class gameController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $gameUpdate = gameCRUD::with(['genre'])->where('_id', '=', $id)->first();
+        $gameUpdate = gameCRUD::with(['genre','platform'])->where('_id', '=', $id)->first();
       
         $arrayGenre = $request->genre;
         
@@ -159,15 +176,27 @@ class gameController extends Controller
         }else if($arrayGenre_id){
             $gameUpdate->genre()->sync($arrayGenre_id);
         }
+        $platform_id = Platform::whereIn('title',$request->platform)->pluck('_id')->toArray();
+        if(!$gameUpdate->platform()->exists()){
+            $gameUpdate->platform()->attach($platform_id);
+        }else{
+            $gameUpdate->platform()->sync($platform_id);
+        }
         $gameUpdate->gameName = $request->get('gameName');
         $gameUpdate->rating = $request->get('rating');
         $gameUpdate->genre = $request->get('genre');
         $gameUpdate->developer = $request->get('developer');      
         $gameUpdate->releaseDate = $request->get('releaseDate');
         $gameUpdate->summary = $request->get('summary');
-        
-        
-
+        $arrMin = [
+            'OS' => $request->get('min_OS'),
+            'Processor' => $request->get('min_Processor'),
+            'Memory' => $request->get('min_Memory'),
+            'Graphics' => $request->get('min_Graphics'),
+            'DirectX' => $request->get('min_DirectX'),
+            'Storage' => $request->get('min_Storage')
+        ];
+        $gameUpdate->min_requirement = $arrMin;
         /*foreach($gameUpdate->genre_ids as $genres){
             if($genres != NULL){$genre = Genre::where('game_ids',$id)->get()->first();
             $genre->game()->sync($arrayGenre_id);
@@ -223,10 +252,18 @@ class gameController extends Controller
     {
         $data = gameCRUD::find($id);
         $data->delete();
-        return redirect()->route('gameView.index')
-        ->with('success','Game deleted successfully');
+        toastr()->success('Data Deleted Successfully');
+        return redirect()->route('gameView.index');
     }
     public function getGenre($id){
         
+    }
+    public function gameList($id){
+        if($id == 'all'){
+        $data = gameCRUD::all();
+        }
+        else
+            $data = gameCRUD::where('genre_ids',$id->id)->get();
+        return view('gameView.gamehome',compact('data'));
     }
 }

@@ -486,7 +486,7 @@
                                     <h4 class="text-center h6 mt-2">
                                         <?= $userView->username ?></h4>
                                     <p class="text-center small">UI/UX Designer</p>
-                                    @if ($userView->user_id == $currentUser)
+                                    @if ($userView->user_id == $currentUser_id)
                                     <button class="btn btn-primary" type="button" data-toggle="modal"
                                         data-target="#exampleModalCenter">
                                         <i class="fa fa-fw fa-camera"></i>
@@ -504,7 +504,7 @@
                                     <div class="modal fade" id="changeprofile" tabindex="-1" role="dialog"
                                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                         <form enctype="multipart/form-data"
-                                            action="{{ route('profile.update', $user->id) }}" method="POST">
+                                            action="{{ route('profile.update', $currentUser_id) }}" method="POST">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -538,7 +538,7 @@
                                             </div>
                                     </div>
                                     </form>
-                                    <form enctype="multipart/form-data" action="{{ route('profile.update', $user->id) }}"
+                                    <form enctype="multipart/form-data" action="{{ route('profile.update', $currentUser_id) }}"
                                         method="POST">
                                         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
                                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -569,18 +569,20 @@
                                     @foreach ($userView->profilemanager->friend_ids as $check)
                                     @if ($check['id'] != session()->get('profile_id') && !$friendCheck)
                                     <a class="btn btn-primary"
-                                        href="{{ route('friends.add', ['id' => session()->get('username'), 'username' => $userView->username]) }}">Add
+                                        href="{{ route('friends.add', ['id' => UserHelp::get_username(Auth::user()->id), 'username' => $userView->username,'action' => 'add']) }}">Add
                                         friend</a><?php break; ?>
                                 @elseif($check['id'] == session()->get('profile_id') && $friendCheck && $check['status']
                                     =='Need Action')
                                     <a class="btn btn-primary"
-                                        href="{{ route('friends.add', ['id' => session()->get('username'), 'username' => $userView->username]) }}">Waiting
+                                        href="{{ route('friends.add', ['id' => UserHelp::get_username(Auth::user()->id), 'username' => $userView->username,'action' => 'add']) }}">Waiting
                                         Approval</a>
                                 @elseif($check['id'] == session()->get('profile_id') && $friendCheck && $check['status']
                                     =='approved')
                                     <a class="btn btn-primary"
-                                        href="{{ route('friends.add', ['id' => session()->get('username'), 'username' => $userView->username]) }}">Already
+                                        href="{{ route('friends.add', ['id' => UserHelp::get_username(Auth::user()->id), 'username' => $userView->username,'action' => 'add']) }}">Already
                                         in friendlist</a>
+                                        <a class="btn btn-primary"
+                                        href="{{ route('friends.add', ['id' => UserHelp::get_username(Auth::user()->id), 'username' => $userView->username,'action' => 'remove']) }}">Remove Friend</a>
                                 @elseif(!Auth::user())
                                     <a class="btn btn-primary" href="{{ route('login') }}">Add friend</a><?php break; ?>
                                     @endif
@@ -647,8 +649,8 @@
                             <div class="jumbotron text-center" style="background: #131f39">
                                 <div class="containDetails">
                                     <ul class="details">
-                                        <li>5 <span>Games Owned</span></li>
-                                        <li>3<span>Favorite</span></li>
+                                        <li>5 <span>Games on Collection</span></li>
+                                        <li>{{$userView->showFavourite->count()}}<span>Favourite</span></li>
                                         <li>1 <span>Review</span></li>
                                     </ul>
                                 </div>
@@ -656,11 +658,11 @@
                                     <div class="row mb-3">
                                     </div>
                                     <div class="row text-center">
-                                    @foreach ($userView->showGame as $games)
+                                    @foreach ($userView->showFavourite as $games)
                                     
                                     <div class="col-xl-3 col-sm-6">
                                         <div class="col-xl-10">
-                                        <a  class="tooltip-test" title="{{$games->gameName}}" href="{{ route('gameView.show',$games->id) }}">
+                                        <a  class="tooltip-test" title="{{$games->gameName}}" href="{{ route('game.show',$games->custom_url) }}">
                                             <img
                                                 src="{{ url('uploads/gamePicture/' . $games->gamePicture) }}"
                                                 alt=""
@@ -675,10 +677,10 @@
                                         
                             
                        
-                            @livewire('profile',['postedProfile_id' => $userView->id, 'posted_by' => $user->id])
+                            @livewire('profile',['postedProfile_id' => $userView->id, 'posted_by' => $currentUser_id])
                             <div class="profile-timeline">
                                 <ul class="list-unstyled">
-                                    @livewire('post-list',['profile_id' => $userView->id,'user_id' => $user->id])
+                                    @livewire('post-list',['profile_id' => $userView->id,'currentUser_id' => $currentUser_id])
 
                                 </ul>
                             </div>

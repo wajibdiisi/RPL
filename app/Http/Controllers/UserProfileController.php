@@ -15,13 +15,13 @@ class UserProfileController extends Controller
 {
     public function show($id){
         
-        $userView = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->with('profilemanager','userpost','comments','showGame')->first();
+        $userView = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->with('profilemanager','userpost','comments','showFavourite')->first();
         if(Auth::user()){
             $currentUser = Auth::user()->id;
             $user = Profile::with('profilemanager')->where('user_id','=',$currentUser)->first();
+            $currentUser_id = $user->id;
         }else{
-            $user = '';
-            $currentUser = '';
+            $currentUser_id = 'guest';
         }
         $checkUser = ProfileManager::where('profile_id','=',$userView->id)->first(); //awalnya $user->id 
         $friendArray = array();
@@ -32,8 +32,12 @@ class UserProfileController extends Controller
         $gamelist = Game::where('userlist.profile_id' ,'=', $userView->id)->get();
        
         $friendList = Profile::whereIn('_id',$friendArray)->get();
-        $friendCheck = ProfileManager::where('profile_id','=',$userView->id)->where('friend_ids.id',$user->id)->exists();
-        return view('profile/profile',compact('user','friendList','friendCheck','userView','currentUser','gamelist'));
+        if($currentUser_id != "guest")
+        $friendCheck = ProfileManager::where('profile_id','=',$userView->id)->where('friend_ids.id',$currentUser_id)->exists();
+        else{
+            $friendCheck = false;
+        }
+        return view('profile/profile',compact('friendList','friendCheck','userView','currentUser_id','gamelist'));
         //$checkUser = ProfileManager::with('profileFriend')->where('profile_id','=',$user->id)->get();
     }
 

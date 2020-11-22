@@ -59,7 +59,7 @@
             <div class="mb-5"></div>
             <form method="POST" action="{{ route('login') }}">
                 @csrf
-
+                
                 <div class="form-group">
                     <input id="email" type="email" placeholder="Email address" class="form-control rounded-pill bekgron @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                     @error('email')
@@ -68,7 +68,7 @@
                     </span>
                     @enderror
                 </div>
-
+                
                 <div class="form-group mb-5">
                     <div>
                         <input id="password" type="password" placeholder="Password" class="form-control rounded-pill bekgron @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
@@ -79,18 +79,18 @@
                         @enderror
                         <div class="form-check col-form-label">
                             <input class="form-check-input " type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
+                            
                             <label class="form-check-label" for="remember">
                                 {{ __('Remember Me') }}
                             </label>
                         </div>
                     </div>
                 </div>
-
+                
                 <button type="submit" class="btn btn-outline-primary">
                     {{ __('Login') }}
                 </button>
-
+                
                 @if (Route::has('password.request'))
                 <a class="btn btn-outline-primary float-right" href="{{ route('password.request') }}">
                     {{ __('Forgot Your Password?') }}
@@ -98,7 +98,7 @@
                 @endif
             </form>
         </div>
-
+        
         <div class="col-lg-8">
             <div class="mb-5">
                 <div class="mb-5 mt-5">

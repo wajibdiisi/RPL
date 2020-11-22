@@ -22,10 +22,10 @@
            <p>{{$post->post_content}}</p>
                <div class="timeline-options">
 
-                   @if(array_search($user->id,$post->like) === FALSE)
-                   <a href="{{ route('post.addLike',['post_id' => $post->id ,'id' => $user->id]) }}"><i class="fa fa-thumbs-up"></i>Like({{count((array)$post->like)}})</a>
+                   @if(array_search($currentUser_id,$post->like) === FALSE)
+                   <a href="{{ route('post.addLike',['post_id' => $post->id ,'id' => $currentUser_id]) }}"><i class="fa fa-thumbs-up"></i>Like({{count((array)$post->like)}})</a>
                    @else
-                   <a href="{{ route('post.removeLike',['post_id' => $post->id ,'id' => $user->id]) }}"><i class="fa fa-thumbs-up"></i>Like({{count((array)$post->like)}})</a>
+                   <a href="{{ route('post.removeLike',['post_id' => $post->id ,'id' => $currentUser_id]) }}"><i class="fa fa-thumbs-up"></i>Like({{count((array)$post->like)}})</a>
                    @endif
                    @if($openPost_id != $post->id)
                <button class ="btn btn-outline-success" wire:click="$set('openPost_id','<?=$post->id?>')" wire:model = ><i class="fa fa-comment"></i>  Comment ({{count((array)$post->comments)}})</button>
@@ -35,7 +35,7 @@
                    
                </div>
                @if($openPost_id == $post->id)
-               @livewire('show-comment',['post' => $post,'user_id' => $user->id], key($post->id))
+               @livewire('show-comment',['post' => $post,'currentUser_id' => $currentUser_id], key($post->id))
                @elseif($openPost_id != $post->id)
                @endif
            </div>

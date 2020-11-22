@@ -19,4 +19,5 @@ class Genre extends Eloquent
     public function game(){
         return $this->belongsToMany(gameCRUD::class,null,'userlist','gamelist');
     }
+    
 }

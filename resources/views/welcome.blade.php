@@ -45,7 +45,7 @@
                             @endif
                     @else
                     <li class="nav-item dropdown">
-                        <a class="navbar-brand" href="{{ route('myprofile') }}" class="text-sm text-gray-700 underline">Profile</a>
+                        <a class="navbar-brand" href="{{ route('profile.show',UserHelp::get_username(Auth::user()->id)) }}" class="text-sm text-gray-700 underline">Profile</a>
                     </li>
                     @endguest             
             </ul>

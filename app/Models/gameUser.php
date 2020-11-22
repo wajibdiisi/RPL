@@ -20,4 +20,7 @@ class gameUser extends Eloquent
     public function gameData(){
         return $this->hasOne(gameCRUD::class,'_id','game_id');
     }
+    public function profile(){
+        return $this->hasOne(Profile::class,'_id','profile_id');
+    }
 }

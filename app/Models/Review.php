@@ -12,7 +12,9 @@ class Review extends Eloquent
        'game_id',
        'profile_id',
        'rating',
-       'review_content'
+       'review_content',
+       'thumbsup',
+       'thumbsdown'
     ];
     
 }

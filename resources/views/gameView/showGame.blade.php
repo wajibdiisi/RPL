@@ -29,6 +29,7 @@
 
         .card {
             position: relative;
+            
             display: flex;
             flex-direction: column;
             min-width: 0;
@@ -42,6 +43,7 @@
         .card-body {
             flex: 1 1 auto;
             min-height: 1px;
+            
             padding: 1rem;
         }
 
@@ -92,7 +94,7 @@
     white-space:nowrap;
     cursor:pointer;
     font-size:200%;
-    line-height:1.2;
+    line-height:0.8;
     color:#ddd;
 }
 .rating:not(:checked) > label:before {
@@ -111,488 +113,227 @@
     position:relative;
 }
 
+.p-15px {
+    padding: 15px;
+}
+.border-color-gray {
+    border-color: #f2f3fa;
+}
+.border-all-1 {
+    border: 1px solid;
+}
+.hover-top {
+    position: relative;
+    top: 0;
+}
+.m-15px-tb {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.overlay-link {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 0;
+}
+.border-radius-50 {
+    border-radius: 50%;
+}
+.icon-50 {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 21px;
+}
+.white-color {
+    color: #ffffff;
+}
+.theme-bg {
+    background-color: #0050d8;
+}
+.icon-50 i.number {
+    font-style: normal;
+}
+.icon-50 i {
+    line-height: 50px;
+}
+.p-20px-l {
+    padding-left: 20px;
+}
+.p-10px-lr {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.p-0px-tb {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.border-radius-15 {
+    border-radius: 15px;
+}
+.white-color {
+    color: #ffffff;
+}
+.theme2nd-bg {
+    background-color: #53d267;
+}
+.m-0px {
+    margin: 0px;
+}
+.font-small {
+    font-size: .75rem;
+    line-height: 1rem;
+}
+
+.green-bg-alt {
+  background-color: rgba(17, 226, 121, 0.1);
+}
+
+.green-bg {
+  background-color: #11e279;
+}
+
+.green-after:after {
+  background-color: #11e279;
+}
+
+.green-before:before {
+  background-color: #11e279;
+}
+
+.green-color-alt {
+  color: rgba(17, 226, 121, 0.65);
+}
+
+.green-color {
+  color: #11e279;
+}
+
+.blue-bg-alt {
+  background-color: rgba(21, 178, 236, 0.1);
+}
+
+.blue-bg {
+  background-color: #15b2ec;
+}
+
+.blue-after:after {
+  background-color: #15b2ec;
+}
+
+.blue-before:before {
+  background-color: #15b2ec;
+}
+
+.blue-color-alt {
+  color: rgba(21, 178, 236, 0.65);
+}
+
+.blue-color {
+  color: #15b2ec;
+}
+
+.pink-bg-alt {
+  background-color: rgba(241, 38, 153, 0.1);
+}
+
+.pink-bg {
+  background-color: #f12699;
+}
+
+.pink-after:after {
+  background-color: #f12699;
+}
+
+.pink-before:before {
+  background-color: #f12699;
+}
+
+.pink-color-alt {
+  color: rgba(241, 38, 153, 0.65);
+}
+
+.pink-color {
+  color: #f12699;
+}
+
+.body-bg-alt {
+  background-color: rgba(113, 128, 150, 0.1);
+}
+
+.body-bg {
+  background-color: #718096;
+}
+
+.body-after:after {
+  background-color: #718096;
+}
+
+.body-before:before {
+  background-color: #718096;
+}
+
+.body-color-alt {
+  color: rgba(113, 128, 150, 0.65);
+}
+
+.body-color {
+  color: #718096;
+}
+
+.white-color-light {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.bg-transparent {
+  background-color: transparent;
+}
+
+.theme-g-bg {
+  background: linear-gradient(to right, #0050d8, #002a72);
+}
+
+.dark-g-bg {
+  background: linear-gradient(50deg, #273444 0, #272b44 100%);
+}
+.yellow-bg {
+    background-color: #ffbe3d;
+}
+.border-radius-50 {
+    border-radius: 50%;
+}
+.icon-50 {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 21px;
+}
+
+.box-shadow-only-hover:hover {
+  box-shadow: 0 1.5rem 4rem rgba(22, 28, 45, 0.1);
+}
+.border-color-gray {
+    border-color: #f2f3fa !important;
+}
+.border-all-1 {
+    border: 1px solid;
+}
+.rating-block{
+	background-color:#FAFAFA;
+	border:1px solid #EFEFEF;
+	padding:15px 15px 20px 15px;
+	border-radius:3px;
+}
+
+
     </style>
 </head>
-
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
 <body>
-    @if (Auth::user())
-        @php
-        $currentUser = UserHelp::getID(Auth::user()->id);
-        $username = UserHelp::get_username(Auth::user()->id);
-        @endphp
-    @else
-        @php
-         $currentUser = '';   
-         $username = 'Guest';
-        @endphp
-    @endif
-    <div class="container">
+    @livewire('game.show-game',['game' => $game,'dataBar' =>$dataBar])
 
-        <div class="main-body">
-
-            <!-- Breadcrumb -->
-            <nav aria-label="breadcrumb" class="main-breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ url('/gameIndex') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ url('/gameIndex') }}">Game</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ $game->gameName }}</li>
-                </ol>
-            </nav>
-            <!-- /Breadcrumb -->
-            
-            <div class="row gutters-sm">
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex flex-column align-items-center text-center">
-                                <img src="{{ url('uploads/gamePicture/' . $game->gamePicture) }}" alt="Admin"
-                                    class="" width="300">
-                                <div class="mt-3">
-                                    <h4>{{ $game->gameName }}</h4>
-                                    <p class="text-secondary mb-1">
-                                        @foreach ($game->genre as $genre)
-                                        <div class="btn btn-info">{{ $genre->title }}</div>
-                                        @endforeach
-                                    </p>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card mt-3">
-
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-globe mr-2 icon-inline">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <line x1="2" y1="12" x2="22" y2="12"></line>
-                                        <path
-                                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
-                                        </path>
-                                    </svg>Rating</h6>
-                                <span class="text-secondary">{{ $game->rating }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-github mr-2 icon-inline">
-                                        <path
-                                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                                        </path>
-                                    </svg>Genre</h6>
-                                <span class="text-secondary">
-
-                                </span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-twitter mr-2 icon-inline text-info">
-                                        <path
-                                            d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
-                                        </path>
-                                    </svg>Developer</h6>
-                                <span class="text-secondary">{{ $game->developer }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-instagram mr-2 icon-inline text-danger">
-                                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                                    </svg>Release Date</h6>
-                                <span class="text-secondary">{{ $game->releaseDate }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-facebook mr-2 icon-inline text-primary">
-                                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z">
-                                        </path>
-                                    </svg>Facebook</h6>
-                                <span class="text-secondary">bootdey</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="card mb-3"><div class="card-body servive-block-dark-blue"><div class="row">
-                        <div class="col-md-3">Rating</div>
-                        asdasd</div></div></div>
-                        <div class="card mb-3">
-                        <div class="card-body">
-                            <div class="row">
-                                <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
-                                data-target="#add<?= $game->id ?>">Add game</button>
-                                <button type="button" class="btn btn-primary ml-2" data-container="body" data-toggle="popover" data-placement="bottom" data-content="<fieldset class='rating'>
-                                    <input type='radio' id='star5' name='rating' value='5' /><label for='star5' title='Rocks!'>5 stars</label>
-                                    <input type='radio' id='star4' name='rating' value='4' /><label for='star4' title='Pretty good'>4 stars</label>
-                                    <input type='radio' id='star3' name='rating' value='3' /><label for='star3' title='Meh'>3 stars</label>
-                                    <input type='radio' id='star2' name='rating' value='2' /><label for='star2' title='Kinda bad'>2 stars</label>
-                                    <input type='radio' id='star1' name='rating' value='1' /><label for='star1' title='Sucks big time'>1 star</label>
-                                </fieldset>
-                                <button type ='submit' class='btn btn-primary btn-sm'>Submit</button>'">
-                                Rate this game
-</button>
-                                <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
-                                data-target="#review<?= $game->id ?>">Review this game</button>
-                                @if (Auth::user() && in_array($currentUser,$game->userfav))
-                                <a href="{{ route('game.removeFav', ['game_id' =>$game->id ]) }}" class="btn btn-primary ml-2">Remove Favourite</a>
-                                @elseif(Auth::user() && !in_array($currentUser,$game->userfav))
-                                <a href="{{ route('game.addFav', ['game_id' =>$game->id ]) }}" class="btn btn-primary ml-2">Add Favourite</a>
-                                @elseif(!Auth::user())
-                                <a href="{{ route('game.addFav', ['game_id' =>$game->id ]) }}" class="btn btn-primary ml-2">Add Favourite</a>
-                                @endif
-                    <div class="modal fade" id="add<?= $game->id ?>" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <form enctype="multipart/form-data"
-                            action="{{ route('game.store', ['game_id' =>$game->id ]) }}" method="GET">
-                            @csrf
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                        <button type="button" class="close" data-dismiss="modal"
-                                            aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" class="custom-control-input"
-                                                id="add1" name="addRadio"
-                                                value="Want to Play">
-                                            <label class="custom-control-label"
-                                                for="add1">Want to Play</label>
-                                        </div>
-
-
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" class="custom-control-input"
-                                                id="add2" name="addRadio"
-                                                value="Currently Playing">
-                                            <label class="custom-control-label"
-                                                for="add2">Currently Playing</label>
-                                        </div>
-
-
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" class="custom-control-input"
-                                                id="add3" name="addRadio" value="Beaten">
-                                            <label class="custom-control-label" for="add3"
-                                                >Beaten</label>
-                                        </div>
-
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" class="custom-control-input"
-                                                id="add4" name="addRadio" value="Completed">
-                                            <label class="custom-control-label" for="add4"
-                                                >Completed</label>
-                                        </div>
-
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" class="custom-control-input"
-                                                id="add5" name="addRadio" value="Dropped">
-                                            <label class="custom-control-label" for="add5"
-                                                >Dropped</label>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Save changes</button>
-                        </form>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="modal fade" id="review<?= $game->id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form enctype="multipart/form-data"
-                  action="{{ route('game.storeRating', ['game_id' =>$game->id ]) }}" method="GET">
-                  
-                    <div class="form-group">
-                      <label for="recipient-name" class="col-form-label">Username</label>
-                    <input type="text" class="form-control" id="recipient-name" value="{{$username}}" disabled>
-                    </div>
-                    <div class="form-group">
-                      <label for="message-text" class="col-form-label">Review</label>
-                      <textarea class="form-control" id="message-text" name="review_content"></textarea>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="reviewRadio" id="inlineRadio1" value="dislike">
-                        <label class="form-check-label" for="inlineRadio1"><i class="far fa-frown-o fa-5x" aria-hidden="true"></i></label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="reviewRadio" id="inlineRadio2" value="neutral">
-                        <label class="form-check-label" for="inlineRadio2"><i class="far fa-meh-o fa-5x" aria-hidden="true"></i></label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="reviewRadio" id="inlineRadio3" value="like">
-                        <label class="form-check-label" for="inlineRadio3"><i class="far fa-smile-o fa-5x" aria-hidden="true"></i></label>
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                           
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
-              </div>
-            </div>
-          </div>
-
-                </div>
-            </div>
-        </div>
-        <div class="card mb-3">
-            <div class="card-body">
-               
-                <div class="row">
-
-                    <div class="col-sm-3">
-                        <h6 class="mb-0">Summary</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                        {{ $game->summary }}
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <h6 class="mb-0">Platform</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                        <button class="btn btn-primary btn-sm" disabled><i class="fab fa-playstation"></i> PS4</button>
-                        <button class="btn btn-dark btn-sm" disabled><i class="fab fa-steam"></i> <span>STEAM</span></button>
-                        <button class="btn btn-success btn-sm" disabled><i class="fab fa-xbox"></i> <span>Xbox One</span></button>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <h6 class="mb-0">Category</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                        <button class="btn btn-success btn-sm" disabled><i class="fas fa-user"></i> <span>Single-player</span></button>
-                        <button class="btn btn-success btn-sm" disabled><i class="fas fa-user-friends"></i> <span>Co-Op</span></button>
-                        <button class="btn btn-success btn-sm" disabled><i class="fas fa-users"></i> <span>Multiplayer</span></button>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <h6 class="mb-0">Mobile</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                        (320) 380-4539
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <h6 class="mb-0">Address</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                        Bay Area, San Francisco, CA
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card mb-3">
-            <div class="card-body">
-               
-                <h6> System Requirements </h6>
-                <div class="row">
-                    <div class="col-sm-6"> <p>Mininum</p> 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">OS: Windows 7 or 10</li>
-                        <li class="list-group-item">Processor: Intel Core i5-3570K or AMD FX-8310</li>
-                        <li class="list-group-item">Memory: 8 GB RAM</li>
-                        <li class="list-group-item">Graphics: NVIDIA GeForce GTX 780 or AMD Radeon RX 470</li>
-                        <li class="list-group-item">DirectX: Version 12</li>
-                        <li class="list-group-item">Storage: 70 GB available space</li>
-
-                    </ul>
-
-
-                    </div>
-                    <div class="col-sm-6"><p> Recommended</p>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">OS: Windows 7 or 10</li>
-                            <li class="list-group-item">Processor: Intel Core i5-3570K or AMD FX-8310</li>
-                            <li class="list-group-item">Memory: 8 GB RAM</li>
-                            <li class="list-group-item">Graphics: NVIDIA GeForce GTX 780 or AMD Radeon RX 470</li>
-                            <li class="list-group-item">DirectX: Version 12</li>
-                            <li class="list-group-item">Storage: 70 GB available space</li>
-    
-                        </ul>
-                    
-                    
-                    </div>
-                </div></div></div>
-        <div class="card mb-3">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <h6 class="mb-0">Screenshot</h6>
-                    </div>
-                    <div class="mt-2 col-md-12 row">
-                        <div class="col-md-4">
-                        <img alt="Generic placeholder image" src="http://bootdey.com/img/Content/avatar/avatar1.png"  class="img-fluid">
-                        </div>
-                        <div class="col-md-4">
-                        <img alt="Generic placeholder image" src="http://bootdey.com/img/Content/avatar/avatar1.png"  class="img-fluid">
-                        </div>
-                        <div class="col-md-4">
-                            <img alt="Generic placeholder image" src="http://bootdey.com/img/Content/avatar/avatar1.png"  class="img-fluid">
-                            </div>
-                    </div>
-                </div></div></div>
-        <div class="row gutters-sm">
-            <div class="col-sm-6 mb-3">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h6 class="d-flex align-items-center mb-3"><i
-                        class="material-icons text-info mr-2">User</i>Statistics (User : {{$dataBar['totalUser']}})</h6>
-                        <small>Want to Play</small>
-                        <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar"  style="width: {{$dataBar['wtp']}}%"
-                               aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <small>Currently Playing</small>
-                        <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar"  style="width: {{$dataBar['cp']}}%"
-                               aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <small>Beaten</small>
-                        <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar"  style="width: {{$dataBar['beaten']}}%"
-                                 aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <small>Completed</small>
-                        <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{$dataBar['completed']}}%"
-                               aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <small>Dropped</small>
-                        <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{$dataBar['dropped']}}%"
-                                aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-sm-6 mb-3">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h6 class="d-flex align-items-center mb-3"><i
-                                class="material-icons text-info mr-2">assignment</i>Project Status</h6>
-                        <small>Web Design</small>
-                        <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
-                                aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <small>Website Markup</small>
-                        <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 72%"
-                                aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <small>One Page</small>
-                        <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 89%"
-                                aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <small>Mobile Template</small>
-                        <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 55%"
-                                aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <small>Backend API</small>
-                        <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 66%"
-                                aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="bg-white rounded shadow-sm p-4 mb-4 restaurant-detailed-ratings-and-reviews">
-            <a href="#" class="btn btn-outline-primary btn-sm float-right">Top Rated</a>
-            <h5 class="mb-1">All Ratings and Reviews</h5>
-            
-            @foreach($game->review as $review)
-            <div class="reviews-members pt-2 pb-4">
-                <div class="media">
-                    <a href="#"><img alt="Generic placeholder image" src="http://bootdey.com/img/Content/avatar/avatar1.png" width="100" class="mr-3 rounded-pill"></a>
-                    <div class="media-body">
-                        <div class="reviews-members-header">
-                            <span class="star-rating float-right">
-                                  <a href="#"><i class="icofont-ui-rating active"></i></a>
-                                  <a href="#"><i class="icofont-ui-rating active"></i></a>
-                                  <a href="#"><i class="icofont-ui-rating active"></i></a>
-                                  <a href="#"><i class="icofont-ui-rating active"></i></a>
-                                  <a href="#"><i class="icofont-ui-rating"></i></a>
-                                  </span>
-                                <h6 class="mb-1"><a class="text-black" href="#">{{UserHelp::get_fullname($review->profile_id)}}</a>
-                                    @if($review->rating == "like")
-                                    <span><button type="button" class="btn btn-outline-success btn-sm" disabled><i class="far fa-smile-o " aria-hidden="true"></i> Recommending this Game</button></span></h6>
-                                    @elseif($review->rating == "neutral")
-                                    <span><button type="button" class="btn btn-outline-warning btn-sm" disabled><i class="far fa-meh-o " aria-hidden="true"></i> Feels Neutral about this Game</button></span></h6>
-                                    @elseif($review->rating =="dislike")
-                                    <span><button type="button" class="btn btn-outline-danger btn-sm" disabled><i class="far fa-frown-o " aria-hidden="true"></i> Not Recommending this Game</button></span></h6>
-                                    @endif
-                                <p class="text-gray">{{$review->created_at->diffForHumans()}}</p>
-                        </div>
-                        <div class="reviews-members-body">
-                        <p>{{$review->review_content}}</p>
-                        </div>
-                        <div class="reviews-members-footer">
-                            <a class="total-like" href="#"><i class="icofont-thumbs-up"></i> 856M</a> <a class="total-like" href="#"><i class="icofont-thumbs-down"></i> 158K</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr>
-            @endforeach    
-        </div>
-
-                    
-    </div>
-    </div>
-    </div>
-    </div>
-    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-       
-
-       $(function () {
-  $('[data-toggle="popover"]').popover({
-      html: true,
-      sanitize: false
-  });
-})
-      
-    </script>
 </body>
 
 
