@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\userPost;
-use App\Models\review;
+use App\Models\Review;
 use App\Models\gameUser;
-use App\Models\profileManager;
+use App\Models\ProfileManager;
 use App\Helpers\UserHelp;
 use Illuminate\Http\Request;
 
@@ -24,7 +24,7 @@ class activityController extends Controller
             }    
         }
         $game = gameUser::whereIn('profile_id',$data)->get();
-        $review = review::whereIn('profile_id',$data)->get();
+        $review = Review::whereIn('profile_id',$data)->get();
         $merged = $game->merge($review)->sortByDesc('updated_at');
         return view('profile.activity',compact('merged'));
     }

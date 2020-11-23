@@ -14,7 +14,8 @@ class Profile extends Eloquent
         'user_id',
         'tgl_lahir',
         'avatar',
-        'favourite_game'
+        'favourite_game',
+        'last_seen'
     ];
     public function user(){
         return $this->hasOne(User::class,'_id','user_id');
@@ -36,6 +37,9 @@ class Profile extends Eloquent
     }
     public function showFavourite(){
         return $this->belongsToMany(gameCRUD::class,null,'userfav','favourite_game');
+    }
+    public function gameCollection(){
+        return $this->hasMany(gameUser::class,'profile_id','_id');
     }
     /*public function searchableAs(){
         return 'mygame';

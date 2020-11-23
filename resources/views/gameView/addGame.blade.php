@@ -53,6 +53,12 @@
 		            <strong>Release Date</strong>
 		            <input type="text" name="releaseDate" class="form-control" placeholder="Name">
 		        </div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-5 offset-md-2">
+		        <div class="form-group">
+		            <strong>custom_url</strong>
+		            <input type="text" name="custom_url" class="form-control" placeholder="Enter Custom Url">
+		        </div>
 		    </div>
         
 		    <div class="col-xs-12 col-md-5 offset-md-2">

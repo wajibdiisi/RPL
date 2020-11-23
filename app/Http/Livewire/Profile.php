@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\userPost;
+use App\Models\Review;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Profile extends Component
@@ -13,6 +14,9 @@ class Profile extends Component
     public $postedProfile_id;
     public $content;
     public $post;
+    public $currentUser_id;
+    public $reviews;
+    public $userView;
     
     public function resetData(){
         $this->content = '';
@@ -43,6 +47,7 @@ class Profile extends Component
 
     public function render()
     {
+        $this->reviews = Review::where('profile_id',$this->postedProfile_id)->get();
         return view('livewire.postView');
     }
     

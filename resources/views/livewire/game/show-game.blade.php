@@ -46,7 +46,7 @@
 
             .user-list tbody td .user-link {
                 display: block;
-                font-size: 1.25em;
+                font-size: 1em;
                 padding-top: 3px;
                 margin-left: 60px;
             }
@@ -87,6 +87,22 @@
             a:hover {
                 text-decoration: none;
             }
+            .icon-container {
+  width: 50px;
+  height: 50px;
+  float: left;
+  margin-right: 15px;
+  position: relative;
+}
+
+.icon-container img {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+
+
+
         </style>
 
         <div class="main-body">
@@ -128,7 +144,7 @@
                                 <h6 class="mb-0"><i class="fas fa-exclamation-circle mr-2"></i>Rating</h6>
                                 <span class="text-secondary">{{ $game->rating }}</span>
                             </li>
-                            
+
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                 <h6 class="mb-0"><i class="fas fa-hammer mr-2"></i>Developer</h6>
                                 <span class="text-secondary">{{ $game->developer }}</span>
@@ -147,8 +163,7 @@
                 <template x-if="tab === 'foo'">
                     <div class="col-md-8" x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 transform scale-90"
-                        x-transition:enter-end="opacity-100 transform scale-100"
-                        >
+                        x-transition:enter-end="opacity-100 transform scale-100">
                         <div class="card mb-3">
                             <div class="card-body servive-block-dark-blue">
                                 <div class="row">
@@ -252,10 +267,10 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
+                                    <form enctype="multipart/form-data"
+                                        action="{{ route('game.storeRating', ['game_id' =>$game->id ]) }}"
+                                        method="GET">
                                     <div class="modal-body">
-                                        <form enctype="multipart/form-data"
-                                            action="{{ route('game.storeRating', ['game_id' =>$game->id ]) }}"
-                                            method="GET">
 
                                             <div class="form-group">
                                                 <label for="recipient-name" class="col-form-label">Username</label>
@@ -367,8 +382,7 @@
                         <div class="row md-m-25px-b m-45px-b justify-content-center text-center">
                             <div class="col-lg-8">
                                 <h3 class="h1 m-15px-b">Latest Users</h3>
-                                <p class="m-0px font-2">Luper is a HTML5 template based on Sass and Bootstrap 4 with
-                                    modern and creative multipurpose design you can use it as a startups.</p>
+                                <p class="m-0px font-2"></p>
                             </div>
                         </div>
                         <div class="row">
@@ -386,7 +400,7 @@
                                             {{$user->status}}</div>
 
                                         <h6 class="m-5px-tb">{{$user->profile->nama_lengkap}}</h6>
-                                        <p class="m-0px font-small">San Francisco, US</p>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -615,9 +629,8 @@
 
 <template x-if="tab === 'bar'">
     <div class="col-md-8" x-transition:enter="transition ease-out duration-300"
-    x-transition:enter-start="opacity-0 transform scale-90"
-    x-transition:enter-end="opacity-100 transform scale-100"
-    >
+        x-transition:enter-start="opacity-0 transform scale-90"
+        x-transition:enter-end="opacity-100 transform scale-100">
         <div class="main-box no-header clearfix card-body">
             <div class="main-box-body clearfix">
                 <div class="table-responsive">
@@ -638,9 +651,23 @@
                             @foreach($game->gameUser->sortByDesc('updated_at') as $users)
                             <tr>
                                 <td>
-                                    <img src="{{ url('uploads/avatars/' . $users->profile->avatar) }}" alt="">
-                                    <a href="{{ route('profile.show', ['id' => $users->profile->username]) }}" class="user-link">{{$users->profile->nama_lengkap}}</a>
-                                    <span class="user-subhead">Member</span>
+                                    <div><div class="icon-container">
+                                    <img class ="rounded-circle" src="{{ url('uploads/avatars/' . $users->profile->avatar) }}" alt="">
+                                    @if(Carbon\Carbon::parse($users->profile->last_seen->toDateTime()->format('Y-m-d H:i:s'))->diffForHumans() <= "20 minutes ago")
+                                    <div class='status-circle'>
+                                    </div>
+                                  </div>
+                                    <a href="{{ route('profile.show', ['id' => $users->profile->username]) }}"
+                                        class="user-link">{{$users->profile->nama_lengkap}}</a>
+                                    <span class="user-subhead">Online</span></div>
+                                    @else
+                                    <div class='status-circle-offline'>
+                                    </div>
+                                  </div>
+                                    <a href="{{ route('profile.show', ['id' => $users->profile->username]) }}"
+                                        class="user-link">{{$users->profile->nama_lengkap}}</a>
+                                    <span class="user-subhead">Offline</span></div>
+                                    @endif
                                 </td>
                                 <td>{{$users->updated_at->diffForHumans()}}</td>
                                 <td class="text-center">
@@ -678,103 +705,104 @@
         </div>
     </div>
 </template>
-<template x-if="tab === 'review'" >
+<template x-if="tab === 'review'">
     <div class="col-md-8" x-transition:enter="transition ease-out duration-300"
-    x-transition:enter-start="opacity-0 transform scale-90"
-    x-transition:enter-end="opacity-100 transform scale-100"
-    >
-        
-            
-                <div class="card">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-5 col-lg-5">
-                            <div class="card-body">
+        x-transition:enter-start="opacity-0 transform scale-90"
+        x-transition:enter-end="opacity-100 transform scale-100">
 
-                                <h4 class="card-title">Reviews</h4>
-                                <h5 class="card-subtitle">Numbers of Review</h5>
-                                <h2 class="font-medium mt-5 mb-0 mb-4">25426</h2>
-                                <div class="image-box mt-2 mb-2" style="display:flex">
-                                    <a href="#" class="mr-2" title="" data-original-title="Simmons"><img
-                                            src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                                            class="rounded-circle" width="45" alt="user"></a>
-                                    <a href="#" class="mr-2" title="" data-original-title="Simmons"><img
-                                            src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                                            class="rounded-circle" width="45" alt="user"></a>
-                                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title=""
-                                        data-original-title="Simmons"><img
-                                            src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                                            class="rounded-circle" width="45" alt="user"></a>
-                                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title=""
-                                        data-original-title="Simmons"><img
-                                            src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                                            class="rounded-circle" width="45" alt="user"></a>
 
-                                </div>
+        <div class="card">
+            <div class="row">
+                <div class="col-sm-12 col-md-5 col-lg-5">
+                    <div class="card-body">
 
-                            </div>
+                        <h4 class="card-title">Reviews</h4>
+                        <h5 class="card-subtitle">Numbers of Review</h5>
+                        <h2 class="font-medium mt-5 mb-0 mb-4">25426</h2>
+                        <div class="image-box mt-2 mb-2" style="display:flex">
+                            <a href="#" class="mr-2" title="" data-original-title="Simmons"><img
+                                    src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle"
+                                    width="45" alt="user"></a>
+                            <a href="#" class="mr-2" title="" data-original-title="Simmons"><img
+                                    src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle"
+                                    width="45" alt="user"></a>
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title=""
+                                data-original-title="Simmons"><img
+                                    src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle"
+                                    width="45" alt="user"></a>
+                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title=""
+                                data-original-title="Simmons"><img
+                                    src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle"
+                                    width="45" alt="user"></a>
+
                         </div>
-                        <div class="col-sm-12 col-lg-7 border-left">
-                            <button type="button" class="close mr-2" aria-label="Close" x-on:click="tab = 'foo'">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <div class="card-body">
-                                <ul class="list-style-none">
-                                    <li class="mt-4">
-                                        <div class="d-flex align-items-center">
-                                            <i class="fa fa-smile-o fa-2x text-muted"></i>
-                                            <div class="ml-2">
-                                                <h5 class="mb-0">Positive Reviews</h5>
-                                                <span class="text-muted">25547 Reviews</span>
-                                            </div>
-                                        </div>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 47%"
-                                                aria-valuenow="47" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </li>
-                                    <li class="mt-5">
-                                        <div class="d-flex align-items-center">
-                                            <i class="fa fa-frown-o fa-2x text-muted"></i>
-                                            <div class="ml-2">
-                                                <h5 class="mb-0">Negative Reviews</h5>
-                                                <span class="text-muted">5547 Reviews</span>
-                                            </div>
-                                        </div>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-orange" role="progressbar" style="width: 33%"
-                                                aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </li>
-                                    <li class="mt-5 mb-5">
-                                        <div class="d-flex align-items-center">
-                                            <i class="fa fa-meh-o fa-2x text-muted"></i>
-                                            <div class="ml-2">
-                                                <h5 class="mb-0">Neutral Reviews</h5>
-                                                <span class="text-muted">547 Reviews</span>
-                                            </div>
-                                        </div>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 20%"
-                                                aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
-            
-        
+                <div class="col-sm-12 col-lg-7 border-left">
+                    <button type="button" class="close mr-2" aria-label="Close" x-on:click="tab = 'foo'">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div class="card-body">
+                        <ul class="list-style-none">
+                            <li class="mt-4">
+                                <div class="d-flex align-items-center">
+                                    <i class="fa fa-smile-o fa-2x text-muted"></i>
+                                    <div class="ml-2">
+                                        <h5 class="mb-0">Positive Reviews</h5>
+                                        <span class="text-muted">25547 Reviews</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 47%"
+                                        aria-valuenow="47" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </li>
+                            <li class="mt-5">
+                                <div class="d-flex align-items-center">
+                                    <i class="fa fa-frown-o fa-2x text-muted"></i>
+                                    <div class="ml-2">
+                                        <h5 class="mb-0">Negative Reviews</h5>
+                                        <span class="text-muted">5547 Reviews</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-orange" role="progressbar" style="width: 33%"
+                                        aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </li>
+                            <li class="mt-5 mb-5">
+                                <div class="d-flex align-items-center">
+                                    <i class="fa fa-meh-o fa-2x text-muted"></i>
+                                    <div class="ml-2">
+                                        <h5 class="mb-0">Neutral Reviews</h5>
+                                        <span class="text-muted">547 Reviews</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 20%"
+                                        aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="mt-3">
             <div class="bg-white rounded shadow-sm p-4 mb-4 restaurant-detailed-ratings-and-reviews">
                 <a href="#" class="btn btn-outline-primary btn-sm float-right">Top Rated</a>
                 <h5 class="mb-1">Reviews ({{count($game->review)}})</h5>
 
                 @foreach($game->review as $review)
+                <?php 
+                    $user_review = UserHelp::getProfile($review->profile_id);?>
                 <div class="reviews-members pt-2 pb-4">
                     <div class="media">
                         <a href="#"><img alt="Generic placeholder image"
-                                src="http://bootdey.com/img/Content/avatar/avatar1.png" width="100"
+                                src="{{ url('uploads/avatars/' . $user_review->avatar) }}" width="100"
                                 class="mr-3 rounded-pill"></a>
                         <div class="media-body">
                             <div class="reviews-members-header">
@@ -786,7 +814,7 @@
                                     <a href="#"><i class="icofont-ui-rating"></i></a>
                                 </span>
                                 <h6 class="mb-1"><a class="text-black"
-                                        href="{{ route('profile.show', ['id' => UserHelp::get_username($review->profile_id)]) }}">{{UserHelp::get_fullname($review->profile_id)}}</a>
+                                        href="{{ route('profile.show', ['id' => $user_review->username]) }}">{{$user_review->nama_lengkap}}</a>
                                     @if($review->rating == "like")
                                     <span><button type="button" class="btn btn-outline-success btn-sm" disabled><i
                                                 class="far fa-smile-o " aria-hidden="true"></i> Recommending this
@@ -815,8 +843,11 @@
                                     <a class="total-like btn btn-outline-primary" href="#"><i
                                             class="icofont-thumbs-down"></i>
                                         <i class="fas fa-thumbs-down"></i></a>
+                                    </div>
                                 </div>
-                            </div>
+                                @if($review->thumbsup)
+                                    {{count($review->thumbsup)}} Users found this review useful
+                                @endif
                         </div>
                     </div>
                 </div>
@@ -828,10 +859,9 @@
 </template>
 <template x-if="tab === 'rate'">
 
-    <div class="col-md-8 bg-white rounded shadow-sm p-4 mb-4 clearfix graph-star-rating" style="height:30%" x-transition:enter="transition ease-out duration-300"
-    x-transition:enter-start="opacity-0 transform scale-90"
-    x-transition:enter-end="opacity-100 transform scale-100"
-    >
+    <div class="col-md-8 bg-white rounded shadow-sm p-4 mb-4 clearfix graph-star-rating" style="height:30%"
+        x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90"
+        x-transition:enter-end="opacity-100 transform scale-100">
         <button type="button" class="close" aria-label="Close" x-on:click="tab = 'foo'">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -952,11 +982,11 @@
 </div>
 <script type="text/javascript">
     $(function () {
-$('[data-toggle="popover"]').popover({
-  html: true,
-  sanitize: false
-});
-})
-  
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            sanitize: false
+        });
+    })
+
 </script>
 </div>

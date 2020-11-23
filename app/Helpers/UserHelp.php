@@ -25,5 +25,10 @@ class UserHelp extends Eloquent {
     }
     public static function getGame($id){
         $game = gameCRUD::find($id);
-        return (isset($game) ? $game : ''); 
-}}
+        return (isset($game) ? $game : '');
+    } 
+    public static function getGame_URL($id){
+        $game = gameCRUD::find($id);
+        return (isset($game->custom_url)? $game->custom_url : '');
+    }
+}

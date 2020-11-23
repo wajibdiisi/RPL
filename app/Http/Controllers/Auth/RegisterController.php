@@ -89,6 +89,7 @@ class RegisterController extends Controller
                       'time' => ''
                 ],
                 ],
+                'last_seen' => new \MongoDB\BSON\UTCDateTime()
             ]);
         } catch(\Exception $ex){
             \DB::rollBack();

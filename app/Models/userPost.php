@@ -25,6 +25,9 @@ class userPost extends Eloquent
     public function embedsComment(){
         return $this->embedsMany(userPost::class,'comments');
     }
+    public function review(){
+        return $this->hasMany(userPost::class,'profile_id','profile_id');
+    }
 
 
 }

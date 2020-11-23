@@ -8,6 +8,7 @@ use Image;
 use App\Models\User;
 use App\Models\Profile;
 use App\Models\Game;
+use App\Models\gameUser;
 use App\Models\ProfileManager;
 use DataTables;
 use Illuminate\Support\Facades\File;
@@ -16,7 +17,7 @@ class UserProfileController extends Controller
 {
     public function show($id){
         
-        $userView = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->with('profilemanager','userpost','comments','showFavourite')->first();
+        $userView = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->with('profilemanager','userpost','comments','showFavourite','gameCollection')->first();
         if(Auth::user()){
             $currentUser = Auth::user()->id;
             $user = Profile::with('profilemanager')->where('user_id','=',$currentUser)->first();
@@ -88,29 +89,21 @@ class UserProfileController extends Controller
 
     public function detail(Request $request,$id){
         $user = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->first();
-        $data = Profile::all();
         if($request->ajax()){
+            $data = gameUser::where('profile_id',$id)->with('gameData')->get();
             return Datatables::of($data)
-            ->editColumn("created_at", function ($data) {
-                return date("m/d/Y", strtotime($data->created_at));
-            })
-            ->addColumn('_id', function ($data) {
-                $update = '<a href="javascript:void(0)" class="btn btn-primary">' . $data->id . '</a>';
-                return $update;
-            })
-            ->rawColumns(['_id'])
-            ->make(true);
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+                    return $actionBtn;
+                })->addColumn('title', function($data){
+                    return '<a class ="text-decoration-none" href="' . route('game.show', $data->gameData->custom_url) .'">'.$data->gameData->gameName.'</a>';      
+                })->editColumn('updated_at',function($data){
+                    return $data->updated_at->diffForHumans();
+                })
+                ->rawColumns(['action','title'])
+                ->make(true);
         }
-        return Datatables::of($data)
-        ->editColumn("created_at", function ($data) {
-            return date("m/d/Y", strtotime($data->created_at));
-        })
-        ->addColumn('_id', function ($data) {
-            $update = '<a href="javascript:void(0)" class="btn btn-primary">' . $data->id . '</a>';
-            return $update;
-        })
-        ->rawColumns(['_id'])
-        ->make(true);
         
         return view('profile.profile_detail',compact('user'));
     }

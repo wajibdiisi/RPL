@@ -136,6 +136,7 @@ class gameUserController extends Controller
     public function like_review($id,$user_id){
         $review = Review::find($id);
         $review->push('thumbsup',$user_id,true);
+        return redirect()->route('game.show',UserHelp::getGame_URL($review->game_id));
     }
 
     /**

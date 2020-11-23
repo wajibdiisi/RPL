@@ -79,6 +79,7 @@ class gameController extends Controller
         $model->releaseDate = $request->get('releaseDate');
         $model->summary = $request->get('summary');          
         $model->userfav = array(); 
+        $model->custom_url = $request->get('custom_url');
         $model->min_requirement = [
         'OS' => 'OS',
         'Processor' => 'Processor',
