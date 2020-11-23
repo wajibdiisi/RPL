@@ -96,7 +96,6 @@ class gameController extends Controller
             'Storage' => 'Storage',];
         
         $model->save();
-        $model->genre()->attach($arrayGenre_id);
         return redirect()->route('gameView.index')->with('success','Game updated successfully');
     }
 
