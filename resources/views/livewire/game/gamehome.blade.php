@@ -1,5 +1,8 @@
 <div>
-<div class="page-banner-area" style="margin-top:-20px;background-image: url({{$genre_jumbotron->genre_background}});background-size : cover">
+<div class="page-banner-area" style="margin-top:-20px;background-image: url(
+    @if ($genre_jumbotron){{$genre_jumbotron->genre_background}} 
+    @else https://www.itl.cat/pngfile/big/7-73802_4k-gaming-wallpapers-1080p-bozhuwallpaper-2017-games.jpg @endif);
+    background-size : cover">
     <div class="container">
         <div class="row">
             <div class="col-12">
