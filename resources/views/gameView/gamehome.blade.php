@@ -348,15 +348,27 @@
       display: none; }
     .page-breadcrumb li a:hover {
       color: #f64140; }
+      .card.card-white {
+            background-color: #111D35;
+            color: #ffffff;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            box-shadow: 0 0.05rem 0.01rem rgba(75, 75, 90, 0.075);
+            padding: 25px;
+        }
+
+        .grid-margin {
+            margin-bottom: 2rem;
+        }
 
       </style>
     
 <div id="main-wrapper">
     
-    
+    <div class="">
     <!--Games Area Start-->
     @livewire('game.gamehome',['data' => $data,'genre' =>$genre,'selectedGenre' => $id])
-
+    </div>
 <!-- Placed js at the end of the document so the pages load faster -->
 
 <!-- All jquery file included here -->

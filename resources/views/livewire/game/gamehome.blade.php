@@ -24,7 +24,7 @@
     </div>
 </div>
 <div class="games-area section pt-85 pt-lg-65 pt-md-55 pt-sm-55 pt-xs-45 mt-5">
-    <div class="container">
+    <div class="container card card-white grid-margin">
         <div class="row">
             <div class="col-12">
                 <!--Game Toolbar Start-->
