@@ -93,12 +93,12 @@
                 
                 @foreach ($userView->showFavourite as $games)
 
-                <div class="col-xl-3 col-sm-6 mr-3">
+                <div class="col-xl-3 col-sm-6">
                     
                         <a class="tooltip-test" title="{{$games->gameName}}"
                             href="{{ route('game.show',$games->custom_url) }}">
                             <img src="{{ url('uploads/gamePicture/' . $games->gamePicture) }}" alt=""
-                                class="img-fluid rounded-square img-thumbnail shadow-sm" /></a></div>
+                                class="img-fluid rounded-square shadow-sm" /></a></div>
               
                 @endforeach
             </div>

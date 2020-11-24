@@ -73,7 +73,11 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                        <form enctype="multipart/form-data" action="{{ route('search') }}" method="GET">
+                            <input class="form-control" type="text" name=search placeholder="Search" aria-label="Search">
+                            <input type="submit" class="pull-right btn btn-sm btn-primary">
 
+                        </form>
                     </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -89,11 +93,6 @@
                                 </li>
                             @endif
                         @else
-                        <form enctype="multipart/form-data" action="{{ route('search') }}" method="GET">
-                            <input class="form-control" type="text" name=search placeholder="Search" aria-label="Search">
-                            <input type="submit" class="pull-right btn btn-sm btn-primary">
-
-                        </form>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/gameIndex') }}">{{ __('Edit Game ') }}</a>
                             <a class="nav-link" href="{{ route('gamelist.all') }}">{{ __('Gamelist') }}</a>
