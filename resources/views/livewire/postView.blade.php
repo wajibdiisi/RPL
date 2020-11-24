@@ -3,7 +3,7 @@
         <div class="mt-3" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 transform scale-90"
         x-transition:enter-end="opacity-100 transform scale-100">
-            <div class="bg-white rounded shadow-sm p-4 mb-4 restaurant-detailed-ratings-and-reviews">
+            <div class="text-white rounded shadow-sm p-4 mb-4 restaurant-detailed-ratings-and-reviews" style="background-color: #111D35">
                 <button type="button" class="close" aria-label="Close" x-on:click="tab = 'foo'">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -28,7 +28,7 @@
                                     <a href="#"><i class="icofont-ui-rating active"></i></a>
                                     <a href="#"><i class="icofont-ui-rating"></i></a>
                                 </span>
-                                <h6 class="mb-1"><a class="text-black"
+                                <h6 class="mb-1"><a class="text-decoration-none text-link"
                                         href="{{ route('game.show', ['id' => $game_review->id]) }}">{{$game_review->gameName}}</a>
                                     @if($review->rating == "like")
                                     <span><button type="button" class="btn btn-outline-success btn-sm" disabled><i
@@ -81,8 +81,9 @@
                 <li><a class="text-decoration-none"
                         href="{{ route('profile.detail', ['id' => $userView->username]) }}">{{$userView->gameCollection->count()}}
                         <span>Games on Collection</span></a></li>
-                <li>{{$userView->showFavourite->count()}}<span>Wishlist</span></li>
-                <li><button class="text-decoration-none" x-on:click ="tab = 'review'">{{count($reviews)}} <span>Review</span></button></li>
+                <li><a class="text-decoration-none"
+                    href="{{ route('profile.detail', ['id' => $userView->username]) }}">{{$userView->showFavourite->count()}}<span>Wishlist</span></a></li>
+                <li><a class="text-decoration-none" href="#" x-on:click ="tab = 'review'">{{count($reviews)}} <span>Review</span></a></li>
             </ul>
         </div>
         <div class="container py-5">
@@ -104,11 +105,14 @@
         </div>
     </div>
     <div x-show="open === false">
+        <div class="card card-white grid-margin">
         <button class="btn btn-outline-primary" x-on:click ="open = true">Create new post</button>
     </div>
-    
-                    <div class="card card-white grid-margin card-body" x-show.transition ="open">
-                        <form wire:submit.prevent="store">
+</div>
+    <div class="card card-white grid-margin card-body" x-show.transition ="open">
+        
+        <form wire:submit.prevent="store">
+            
                             <div class="post">
                                 <input type="hidden" wire:model="postedProfile_id" value="{{$postedProfile_id}}">
             <input type="hidden" wire:model="posted_by" value="{{$posted_by}}">
@@ -117,18 +121,28 @@
                                 <a href="#"><i class="fa fa-camera"></i></a>
                                 <a href="#"><i class="fas fa-video"></i></a>
                                 <a href="#"><i class="fa fa-music"></i></a>
-                                <button class="btn btn-outline-primary float-right" x-on:click ="open = false">Post</button>
+                                <button class="btn btn-outline-primary float-right" x-on:click ="open = false"><i class="fas fa-clipboard mr-1"></i>Post</button>
+                                <a class="text-danger btn btn-outline-danger float-right mr-2" x-on:click ="open = false"><i class="far fa-times-circle mr-1"></i>Close</a>
                             </form>
                             </div>
                         </div>
                     </div>
                     <div class="profile-timeline">
-                        <ul class="list-unstyled">
+                        <ul class="">
                             @livewire('post-list',['profile_id' => $userView->id,'currentUser_id' => $currentUser_id])
     
                         </ul>
                     
                 </div>
             </div>
-                </template>        
+                </template>   
+                @if (session()->has('message'))
+
+                <script>
+                
+                    toastr.success('  {{ session('message') }}');
+                
+                </script>
+                
+                @endif
                 </div>

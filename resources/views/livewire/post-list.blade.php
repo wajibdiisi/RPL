@@ -14,9 +14,14 @@
               
                @if($post->posted_by == $post->profile_id)
                <p><a class="text-decoration-none" href ="{{ route('profile.show',$profile_posted_by->username)}}">{{$profile_posted_by->nama_lengkap}}</a><span> posted a status</span> 
-                @if($profile_posted_by->user_id == $currentUser_id)
-                <button class="float-right btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i></button>@endif
-            </p>
+                @if($profile_posted_by->id == $currentUser_id)
+                    @if($confirm_action == $post->id)
+                    <button class="float-right btn btn-outline-success btn-sm"  wire:click.prevent ="deletePost('{{$post->id}}')"><i class="far fa-check-circle"></i></button>
+                    @else
+                    <button class="float-right btn btn-outline-danger btn-sm"  wire:click.prevent ="confirmDelete('{{$post->id}}')"><i class="far fa-trash-alt"></i></button>
+                    @endif
+                @endif
+                </p>
                @elseif($post->posted_by != $post->profile_id)
                <p><a href ="{{ route('profile.show',$profile_posted_by->username)}}">{{$profile_posted_by->nama_lengkap}}</a><span> posted a status on 
                     <a class="text-decoration-none" href ="{{ route('profile.show',UserHelp::get_username($post->profile_id))}}">{{UserHelp::get_fullname($post->profile_id)}}</a> profile</span> @if($profile_posted_by->user_id == $currentUser_id)
@@ -30,11 +35,11 @@
            <div class="timeline-item-post">
            <p>{{$post->post_content}}</p>
                <div class="timeline-options">
-
+                
                    @if(array_search($currentUser_id,$post->like) === FALSE)
-                   <a class="btn btn-outline-primary text-primary" href="{{ route('post.addLike',['post_id' => $post->id ,'id' => $currentUser_id]) }}"><i class="fa fa-thumbs-up"></i>Like({{count((array)$post->like)}})</a>
+                   <button class="btn btn-outline-primary" wire:click ="addLike('{{$post->id}}', '{{$currentUser_id}}')"><i class="fa fa-thumbs-up"></i>Like({{count((array)$post->like)}})</button>
                    @else
-                   <a class="btn btn-outline-primary text-primary" href="{{ route('post.removeLike',['post_id' => $post->id ,'id' => $currentUser_id]) }}"><i class="fa fa-thumbs-up"></i>Like({{count((array)$post->like)}})</a>
+                   <button class="btn btn-outline-primary" wire:click ="removeLike('{{$post->id}}', '{{$currentUser_id}}')"><i class="fa fa-thumbs-up"></i>Like({{count((array)$post->like)}})</button>
                    @endif
                    @if($openPost_id != $post->id)
                <button class ="btn btn-outline-success" wire:click ="$set('openPost_id','{{$post->id}}')"><i class="fa fa-comment"></i>  Comment ({{count((array)$post->comments)}})</button>
@@ -52,7 +57,33 @@
    </div></div>
    </li>
    @endforeach
+   <div class="row">
+    <div class="col-12">
+        <div class="blog-pagination text-center mt-3">
+            <ul class="pagination justify-content-center">
+               
+                {{$posts->links()}}
+              
+              </ul>
+        </div>
+    </div>
+</div>
 </div>
 </template>
+@if (session()->has('message'))
+
+                <script>
+                
+                    toastr.success('  {{ session('message') }}');
+                
+                </script>
+@elseif(session()->has('danger'))
+<script>
+                
+    toastr.error('  {{ session('danger') }}');
+
+</script>
+                
+                @endif
 
    </div>

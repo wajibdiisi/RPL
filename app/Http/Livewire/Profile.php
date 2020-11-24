@@ -42,8 +42,11 @@ class Profile extends Component
             'post_content' =>$this->content,
             'comments' =>array()
         ]);
+        session()->flash('message', 'Post Created Successfully');
         $this->emit('postStored');
     }
+
+   
 
     public function render()
     {

@@ -16,14 +16,20 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
      
     <!-- Modernizr JS -->
-    <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 </head>
 <style>
     
 </style>
 <body>
     <style>
-media only screen and (min-width: 1200px) and (max-width: 1499px) {
+        body {
+            background: #071224;
+
+        }
+@media only screen and (min-width: 1200px) and (max-width: 1499px) {
   .games-area {
     margin-bottom: -5px; } }
 
@@ -220,7 +226,7 @@ media only screen and (min-width: 1200px) and (max-width: 1499px) {
       color: #252525; }   
 
       .page-banner-area {
-  display: -webkit-box;
+      display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
@@ -233,7 +239,7 @@ media only screen and (min-width: 1200px) and (max-width: 1499px) {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  height: 400px;
+  height: 600px;
   position: relative; }
   .page-banner-area::before {
     position: absolute;
@@ -347,23 +353,9 @@ media only screen and (min-width: 1200px) and (max-width: 1499px) {
     
 <div id="main-wrapper">
     
-    <div class="page-banner-area" style="margin-top:-20px;background-image: url(https://i.ytimg.com/vi/8DiPyJskfyI/maxresdefault.jpg)">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="page-content text-center">
-                        <h1>Adventure</h1>
-                        <ul class="page-breadcrumb">
-                            <li><a href="index.html">Home</a></li>
-                            <li>Games</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <!--Games Area Start-->
-    @livewire('game.gamehome',['data' => $data])
+    @livewire('game.gamehome',['data' => $data,'genre' =>$genre,'selectedGenre' => $id])
 
 <!-- Placed js at the end of the document so the pages load faster -->
 

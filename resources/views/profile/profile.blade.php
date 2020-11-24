@@ -10,6 +10,10 @@
     <title>profile with contact information - Bootdey.com</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    
+      rel="stylesheet">
+  
     
 
     <style type="text/css">
@@ -125,7 +129,7 @@
         }
 
         .timeline-comment .timeline-comment-header p {
-            color: #000;
+           
             float: left;
             margin: 0;
             font-weight: 500;
@@ -149,7 +153,7 @@
             margin-left: 15px;
         }
 
-        .post-options a {
+        .post-options .backup {
             display: block;
             margin-top: 5px;
             margin-right: 20px;
@@ -431,11 +435,11 @@
             margin: 0px;
             padding: 0px;
             font-size: 30px;
-            color: #ffffff;
             font-weight: bold;
             text-align: center;
             padding-left: 48px;
         }
+    
 
         .details {
             padding: 0px;
@@ -461,6 +465,21 @@
                 overflow: hidden;
             }
         }
+        .notification {
+            position : relative;
+        }
+        .notification .badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+}
+    .text-link {
+        color : #007BFF
+    }
 
     </style>
 </head>
@@ -480,7 +499,6 @@
             <strong>{{ $message }}</strong>
         </div>
         @endif
-
         <div class="page-inner no-page-title" style="background: #071224;">
             <!-- start page main wrapper -->
             <div id="main-wrapper">
@@ -507,7 +525,7 @@
                             <h4 class="text-center h6 mt-2">
                                 <?= $userView->username ?></h4>
                             <p class="text-center small">Currently Online</p>
-                            @elseif($last_seen > "20 minutes ago")
+                            @elseif($last_seen > "20 minutes ago") 
                             <div class='status-circle-offline'>
                             </div>
                         </div>
@@ -517,16 +535,20 @@
                         @endif
 
                         @if ($userView->id == $currentUser_id)
-                        <button class="btn btn-primary" type="button" data-toggle="modal"
+                        <button class="btn btn-outline-primary" type="button" data-toggle="modal"
                             data-target="#exampleModalCenter">
                             <i class="fa fa-fw fa-camera"></i>
-                            <span>Change Photo</span>
+                            
                         </button>
-
-                        <a class="btn btn-primary"
+                        @if($needAction == true)
+                        <a class="btn btn-outline-primary notification "
                             href="{{ route('friends.pending', ['id' => session()->get('username')]) }}"> <i
-                                class="fas fa-users"></i> Friend
-                            Request</a>
+                                class="fas fa-user-plus"></i> <span class="badge"><i class="fas fa-exclamation"></i></span></a>
+                                @else 
+                                <a class="btn btn-outline-primary "
+                                href="{{ route('friends.pending', ['id' => session()->get('username')]) }}"> <i
+                                    class="fas fa-user-plus"></i> <span class="badge"></span></a>
+                                @endif
                         <div class="modal fade" id="changeprofile" tabindex="-1" role="dialog"
                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <form enctype="multipart/form-data" action="{{ route('profile.update', $currentUser_id) }}"
@@ -589,7 +611,9 @@
                                 </div>
                             </div>
                         </form>
+                        
                         @else
+                        
                         @foreach ($userView->profilemanager->friend_ids as $check)
                         @if($currentUser_id != "guest")
                         @if ($check['id'] != $currentUser_id && !$friendCheck)
@@ -597,20 +621,23 @@
                             href="{{ route('friends.add', ['id' => UserHelp::get_username($currentUser_id), 'username' => $userView->username,'action' => 'add']) }}"><i class="fas fa-user-plus"></i></a><?php break; ?>
                         @elseif($check['id'] == session()->get('profile_id') && $friendCheck && $check['status']
                         =='Need Action')
-                        <a class="btn btn-primary"
-                            href="{{ route('friends.add', ['id' => UserHelp::get_username($currentUser_id), 'username' => $userView->username,'action' => 'add']) }}"><i class="far fa-hourglass"> Waiting Approval</i></a>
+                        <a class="btn btn-outline-primary"
+                            href="{{ route('friends.add', ['id' => UserHelp::get_username($currentUser_id), 'username' => $userView->username,'action' => 'add']) }}"><i class="far fa-hourglass"></i></a>
                         @elseif($check['id'] == session()->get('profile_id') && $friendCheck && $check['status']
                         =='approved')
-                        <a class="btn btn-primary"
-                            href="{{ route('friends.add', ['id' => UserHelp::get_username($currentUser_id), 'username' => $userView->username,'action' => 'add']) }}">Already
-                            in friendlist</a>
-                        <a class="btn btn-outline-danger"
+                        <a class="btn btn-outline-primary"
+                            href=""><i class="fas fa-user-friends"></i></a>
+                        <a class="btn btn-outline-danger" data-toggle="confirmation" data-title="Are you sure?" data-btn-ok-label="Confirm" data-btn-ok-class="btn-success mr-1"
+                        data-btn-ok-icon-class="far fa-check-circle mr-1"  
+                        data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
+                        data-btn-cancel-icon-class="far fa-times-circle mr-1"
                             href="{{ route('friends.add', ['id' => UserHelp::get_username($currentUser_id), 'username' => $userView->username,'action' => 'remove']) }}"><i class="fas fa-user-times"></i></a>
                         @endif
                         @elseif(!Auth::user())
                         <a class="btn btn-outline-primary" href="{{ route('login') }}"><i class="fas fa-user-plus"></i></a><?php break; ?>
                         @endif
                         @endforeach
+                        <p class="text-center small mt-2">Friends since </p>
                         @endif
 
                     </div>
@@ -695,9 +722,16 @@
             <!-- Row -->
         </div>
         <!-- end page main wrapper -->
-
+        <button class="btn btn-default" data-toggle="confirmation">Confirmation</button>
+        
     </div>
     </div>
+    <script>
+        $('[data-toggle=confirmation]').confirmation({
+  rootSelector: '[data-toggle=confirmation]',
+  // other options
+});
+    </script>
 </body>
 
 </html>

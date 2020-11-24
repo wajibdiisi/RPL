@@ -264,6 +264,7 @@ class gameController extends Controller
         }
         else
             $data = gameCRUD::where('genre_ids',$id->id)->get();
-        return view('gameView.gamehome',compact('data'));
+        $genre = Genre::all();
+        return view('gameView.gamehome',compact('data','genre','id'));
     }
 }

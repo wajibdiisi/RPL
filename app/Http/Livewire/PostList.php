@@ -5,14 +5,18 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Profile;
 use App\Models\userPost;
+use Livewire\WithPagination;
 use App\Models\Review;
 
 class PostList extends Component
 {
-    public $posts,$user,$profile_id,$currentUser_id,$post_id,$comment_content,$openPost_id,$reviews;
+    use WithPagination;
+    public $postData,$user,$profile_id,$currentUser_id,$post_id,$comment_content,$openPost_id,$reviews;
+    public $confirm_action;
     public $updateMode = false;
+    protected $paginationTheme = 'bootstrap';
     protected $listeners = [
-        'postStored'
+        'postStored','likeStored'
     ];
 
    
@@ -23,6 +27,10 @@ class PostList extends Component
     public function postStored(){
         
     }
+    public function likeStored(){
+
+    }
+
     public function openComment(){
         $this->updateMode = true;
     }
@@ -30,11 +38,36 @@ class PostList extends Component
         $this->updateMode = false;
     }
     
+    public function addLike($post_id,$currentUser_id){
+        $postData = userPost::find($post_id);
+        $postData->push('like',$currentUser_id,true);
+        session()->flash('message', 'Like Added Successfully');
+        $this->emit('likeStored');
+    }
+    public function removeLike($post_id,$currentUser_id){
+        $post = userPost::find($post_id);
+        session()->flash('danger', 'Like Deleted Successfully');
+        $post->pull('like',$currentUser_id);
+        
+        $this->emit('likeStored');
+    }
+    public function deletePost($post_id){
+        $data = userPost::find($post_id);
+        $data->delete();
+        session()->flash('message', 'Post Deleted Successfully');
+        $this->emit('postStored');
+    }
+    public function confirmDelete($id){
+        $this->confirm_action = $id;
+    }
+
     public function render()
     {
         $this->reviews = Review::where('profile_id',$this->profile_id)->get();
-        $this->posts = userPost::where('profile_id','=', $this->profile_id)->orWhere('posted_by','=',$this->profile_id)->latest()->get();
-        return view('livewire.post-list');
+        $this->postData = userPost::where('profile_id','=', $this->profile_id)->orWhere('posted_by','=',$this->profile_id)->latest()->get();
+        return view('livewire.post-list',[
+            'posts' => userPost::where('profile_id','=', $this->profile_id)->orWhere('posted_by','=',$this->profile_id)->latest()->paginate(4)
+        ]);
     
     }
 }

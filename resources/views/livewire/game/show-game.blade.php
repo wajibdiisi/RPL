@@ -793,7 +793,7 @@
 
         <div class="mt-3">
             <div class="bg-white rounded shadow-sm p-4 mb-4 restaurant-detailed-ratings-and-reviews">
-                <a href="#" class="btn btn-outline-primary btn-sm float-right">Top Rated</a>
+                <button href="#" class="btn btn-outline-primary btn-sm float-right" >Top Rated</button>
                 <h5 class="mb-1">Reviews ({{count($game->review)}})</h5>
 
                 @foreach($game->review as $review)

@@ -25,7 +25,7 @@ class UserProfileController extends Controller
         }else{
             $currentUser_id = 'guest';
         }
-        $checkUser = ProfileManager::where('profile_id','=',$userView->id)->first(); //awalnya $user->id 
+        $checkUser = ProfileManager::with('embedsRequest')->where('profile_id','=',$userView->id)->first();
         $friendArray = array();
         foreach($checkUser->friend_ids as $friendId){
             if($friendId['status'] == 'approved')
@@ -39,7 +39,8 @@ class UserProfileController extends Controller
         else{
             $friendCheck = false;
         }
-        return view('profile/profile',compact('friendList','friendCheck','userView','currentUser_id','gamelist'));
+        $needAction = $checkUser->embedsRequest->contains('status','Need Action');
+        return view('profile/profile',compact('friendList','friendCheck','userView','currentUser_id','gamelist','needAction'));
         //$checkUser = ProfileManager::with('profileFriend')->where('profile_id','=',$user->id)->get();
     }
 

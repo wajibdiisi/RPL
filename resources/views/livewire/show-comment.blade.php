@@ -4,7 +4,7 @@
 @foreach($comment->embedsComment as $comments)
                                             <div class="timeline-comment-header">
                                             <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
-                                                <p>{{UserHelp::get_fullname($comments->profile_id)}} <small>1 hour ago</small></p>
+                                                <p style="color:#007bff">{{UserHelp::get_fullname($comments->profile_id)}} <small>1 hour ago</small></p>
                                             </div>
                                         <p class="timeline-comment-text">{{$comments->comment_content}}</p>
                                         @endforeach
