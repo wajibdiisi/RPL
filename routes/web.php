@@ -53,7 +53,7 @@ Route::post('post/{post_id}/addComment/{id}',[App\Http\Controllers\User\userPost
 Route::get('post/{post_id}/removeLike/{id}',[App\Http\Controllers\User\userPostController::class,'removeLike'])->middleware('auth')->name('post.removeLike');
 
 Route::get('game/{game_id}/add',[App\Http\Controllers\Game\gameUserController::class,'store'])->middleware('auth')->name('game.store');
-Route::get('game/{game_id}/storeReview',[App\Http\Controllers\Game\gameUserController::class,'storeRating'])->middleware('auth')->name('game.storeRating');
+Route::get('game/{game_id}/review/store',[App\Http\Controllers\Game\gameUserController::class,'store_review'])->middleware('auth')->name('game.store_review');
 Route::get('/profile/{id}/post', App\Http\Livewire\Profile::class)->middleware('auth');
 Route::get('/profile/{id}/post/{posted_by}', App\Http\Livewire\Profile::class); 
 Route::get('/game/{game_id}/addFav', [App\Http\Controllers\Game\gameUserController::class,'addFavourite'])->middleware('auth')->name('game.addFav'); 
@@ -70,4 +70,5 @@ Route::get('/gamelist/all',function(gameController $game){
 Route::get('review/{id}/{user_id}',[App\Http\Controllers\Game\gameUserController::class,'like_review'])->middleware('auth')->name('like.review');
 Route::get('profile/{id}/detail',[App\Http\Controllers\UserProfileController::class, 'detail'])->name('profile.detail');
 Route::get('profile/ssss/detail/list',[App\Http\Controllers\UserProfileController::class, 'dataTable'])->name('dataTable');
+Route::get('game/{game_id}/store_rating',[App\Http\Controllers\Game\gameUserController::class,'store_rating'])->middleware('auth')->name('store_rating');
 //vue Route::get('/{any}', [App\Http\Controllers\FrontController::class, 'index'])->where('any', '.*');

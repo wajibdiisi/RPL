@@ -100,27 +100,54 @@
   width: 100%;
   border-radius: 50%;
 }
+.card-body{
+    background-color: #111D35;
+    color : white;
+}
+.tab-color{
+    background-color: #111D35;
+}
+.list-group .list-group-item{
+    background-color: #111D35;
+  border-top: 1px solid #e7ebee;
+  border-left-color: #e7ebee;
+  border-right-color: #111D35;
+}
+.rating_star {
+    font-size: 48px;
+    color: orange;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.rating_star::before {
+    font-family : FontAwesome;
+    content: "★★★★★"
+}
+
+
+
+
 
 
 
         </style>
-
         <div class="main-body">
 
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="main-breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ url('/gameIndex') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ url('/gameIndex') }}">Game</a></li>
+                <ol class="breadcrumb"  style="background-color : #111D35">>
+                    <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('gamelist.all') }}">Game</a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{ $game->gameName }}</li>
                 </ol>
             </nav>
             <!-- /Breadcrumb -->
-
+            
             <div class="row gutters-sm">
                 <div class="col-md-4 mb-3">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body" style="">
                             <div class="d-flex flex-column align-items-center text-center">
                                 <img src="{{ url('uploads/gamePicture/' . $game->gamePicture) }}" alt="Admin" class=""
                                     width="300">
@@ -129,7 +156,7 @@
                                     <p class="text-secondary mb-1">
                                         @foreach ($game->genre as $genre)
                                         <a href="{{ route('gameList',['id' =>$genre->title]) }}"
-                                            class="btn btn-info">{{ $genre->title }}</a>
+                                            class="btn btn-outline-primary text-light mt-2">{{ $genre->title }}</a>
                                         @endforeach
                                     </p>
 
@@ -137,41 +164,50 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="card-columns mt-3" style="column-count : 1">
+                        <div class="card-body servive-block-dark-blue">
+                            <div class="row">
+                                <div class="col-md-3">Rating </div>
+                                <div>
+                                    <style>
+                                  </style>
+                                      <div id="rating1" class="rating_star" style="display:inline-block"></div></div>
+                            </div>
+                           
+                        </div>
+                    </div>
                     <div class="card mt-3">
 
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <h6 class="mb-0"><i class="fas fa-exclamation-circle mr-2"></i>Rating</h6>
+                                <h6 class="mb-0 text-light"><i class="fas fa-exclamation-circle mr-2"></i>Rating</h6>
                                 <span class="text-secondary">{{ $game->rating }}</span>
                             </li>
 
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <h6 class="mb-0"><i class="fas fa-hammer mr-2"></i>Developer</h6>
+                                <h6 class="mb-0 text-light"><i class="fas fa-hammer mr-2"></i>Developer</h6>
                                 <span class="text-secondary">{{ $game->developer }}</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <h6 class="mb-0"><i class="fas fa-globe mr-2"></i>Release Date</h6>
+                                <h6 class="mb-0 text-light"><i class="fas fa-globe mr-2"></i>Release Date</h6>
                                 <span class="text-secondary">{{ $game->releaseDate }}</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <h6 class="mb-0"><i class="fas fa-building mr-2"></i>Publisher</h6>
+                                <h6 class="mb-0 text-light"><i class="fas fa-building mr-2"></i>Publisher</h6>
                                 <span class="text-secondary">bootdey</span>
                             </li>
                         </ul>
                     </div>
+                    
                 </div>
+                
+                
                 <template x-if="tab === 'foo'">
                     <div class="col-md-8" x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 transform scale-90"
                         x-transition:enter-end="opacity-100 transform scale-100">
-                        <div class="card mb-3">
-                            <div class="card-body servive-block-dark-blue">
-                                <div class="row">
-                                    <div class="col-md-3">Rating</div>
-                                    asdasd
-                                </div>
-                            </div>
-                        </div>
+                       
                         <div class="card mb-3">
                             <div class="card-body">
                                 <div class="row">
@@ -268,8 +304,9 @@
                                         </button>
                                     </div>
                                     <form enctype="multipart/form-data"
-                                        action="{{ route('game.storeRating', ['game_id' =>$game->id ]) }}"
+                                        action="{{ route('game.store_review', ['game_id' =>$game->id ]) }}"
                                         method="GET">
+                                        @csrf
                                     <div class="modal-body">
 
                                             <div class="form-group">
@@ -333,11 +370,9 @@
                         <h6 class="mb-0">Platform</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                        <button class="btn btn-primary btn-sm" disabled><i class="fab fa-playstation"></i> PS4</button>
-                        <button class="btn btn-dark btn-sm" disabled><i class="fab fa-steam"></i>
-                            <span>STEAM</span></button>
-                        <button class="btn btn-success btn-sm" disabled><i class="fab fa-xbox"></i> <span>Xbox
-                                One</span></button>
+                        @foreach($game->platform as $platform)
+                        <button class="{{$platform->button_class}} btn-sm" disabled><i class="{{$platform->i_class}}"></i> {{$platform->title}}</button>
+                        @endforeach
                     </div>
                 </div>
                 <hr>
@@ -389,7 +424,7 @@
                             @foreach($game->gameUser->sortByDesc('updated_at')->take('3') as $user)
                             <div class="col-sm-6 col-lg-4 m-15px-tb">
                                 <div
-                                    class="media box-shadow-only-hover hover-top border-all-1 border-color-gray p-15px">
+                                    class="media box-shadow-only-hover hover-top p-15px">
                                     <a class="overlay-link" href="#"></a>
                                     <div class="">
                                         <img src="{{ url('uploads/avatars/' . $user->profile->avatar) }}"
@@ -424,7 +459,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <p>Mininum</p>
-                        <ul class="list-group list-group-flush">
+                        <ul class="list-group list-group-flush" style="  background-color: #111D35;">
                             @foreach($game->min_requirement as $spec)
                             <li class="list-group-item">{{array_search($spec,$game->min_requirement)}} : {{$spec}}</li>
                             @endforeach
@@ -543,11 +578,11 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="row">
-                        <div class="col-sm-12 col-lg-5">
-                            <div class="card-body">
+                        <div class="col-sm-12 col-lg-5" style="background-color :#071224">
+                            <div class="card-body" style="height : 100%">
                                 <h4 class="card-title">Reviews</h4>
                                 <h5 class="card-subtitle">Numbers of Review</h5>
-                                <h2 class="font-medium mt-5 mb-0 mb-4">25426</h2>
+                                <h2 class="font-medium mt-5 mb-4 mb-5">25426</h2>
                                 <div class="image-box mt-2 mb-2" style="display:flex">
                                     <a href="#" class="mr-2" title="" data-original-title="Simmons"><img
                                             src="https://bootdey.com/img/Content/avatar/avatar1.png"
@@ -565,11 +600,11 @@
                                             class="rounded-circle" width="45" alt="user"></a>
 
                                 </div>
-                                <a href="javascript:void(0)" class="btn btn-lg btn-info waves-effect waves-light btn-md"
+                                <a href="javascript:void(0)" class="btn btn-lg btn-info waves-effect waves-light btn-md mt-5"
                                     x-on:click="tab = 'review'">All Reviews</a>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-lg-7 border-left">
+                        <div class="col-sm-12 col-lg-7" style="background-color:#071224;">
                             <div class="card-body">
                                 <ul class="list-style-none">
                                     <li class="mt-4">
@@ -640,7 +675,7 @@
                                 <th><span>User</span></th>
                                 <th><span>Updated</span></th>
                                 <th class="text-center"><span>Status</span></th>
-                                <th><span>Progression</span></th>
+                                <th><span class="text-light">Progression</span></th>
                                 <th><button type="button" class="close" aria-label="Close" x-on:click="tab = 'foo'">
                                         <span aria-hidden="true">&times;</span>
                                     </button></th>
@@ -713,12 +748,12 @@
 
         <div class="card">
             <div class="row">
-                <div class="col-sm-12 col-md-5 col-lg-5">
-                    <div class="card-body">
+                <div class="col-sm-12 col-lg-5" style="background-color :#071224">
+                    <div class="card-body" style="height : 100%">
 
                         <h4 class="card-title">Reviews</h4>
                         <h5 class="card-subtitle">Numbers of Review</h5>
-                        <h2 class="font-medium mt-5 mb-0 mb-4">25426</h2>
+                        <h2 class="font-medium mt-5 mb-4 mb-5">25426</h2>
                         <div class="image-box mt-2 mb-2" style="display:flex">
                             <a href="#" class="mr-2" title="" data-original-title="Simmons"><img
                                     src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle"
@@ -739,7 +774,7 @@
 
                     </div>
                 </div>
-                <div class="col-sm-12 col-lg-7 border-left">
+                <div class="col-sm-12 col-lg-7" style="background-color:#071224;">
                     <button type="button" class="close mr-2" aria-label="Close" x-on:click="tab = 'foo'">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -813,7 +848,7 @@
                                     <a href="#"><i class="icofont-ui-rating active"></i></a>
                                     <a href="#"><i class="icofont-ui-rating"></i></a>
                                 </span>
-                                <h6 class="mb-1"><a class="text-black"
+                                <h6 class="mb-1"><a class="text-light"
                                         href="{{ route('profile.show', ['id' => $user_review->username]) }}">{{$user_review->nama_lengkap}}</a>
                                     @if($review->rating == "like")
                                     <span><button type="button" class="btn btn-outline-success btn-sm" disabled><i
@@ -859,7 +894,7 @@
 </template>
 <template x-if="tab === 'rate'">
 
-    <div class="col-md-8 bg-white rounded shadow-sm p-4 mb-4 clearfix graph-star-rating" style="height:30%"
+    <div class="col-md-8 card-body rounded shadow-sm p-4 mb-4 clearfix graph-star-rating" style="height:30%"
         x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90"
         x-transition:enter-end="opacity-100 transform scale-100">
         <button type="button" class="close" aria-label="Close" x-on:click="tab = 'foo'">
@@ -867,7 +902,7 @@
         </button>
         <div class="row">
             <div class="col-md-3">
-                <div class="rating-block">
+                <div class="rating-block btn btn-outline-primary">
                     <h4>Average Rating</h4>
                     <h2 class="bold padding-bottom-7">4.3 <small>/ 5</small></h2>
                     <h6 class="">4344 Users</h6>
@@ -877,7 +912,7 @@
                 <div class="">
                     <div class="graph-star-rating-body">
                         <div class="rating-list">
-                            <div class="rating-list-left text-black">
+                            <div class="rating-list-left">
                                 5 Star
                             </div>
                             <div class="rating-list-center">
@@ -888,10 +923,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="rating-list-right text-black">56%</div>
+                            <div class="rating-list-right">56%</div>
                         </div>
                         <div class="rating-list">
-                            <div class="rating-list-left text-black">
+                            <div class="rating-list-left">
                                 4 Star
                             </div>
                             <div class="rating-list-center">
@@ -902,10 +937,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="rating-list-right text-black">23%</div>
+                            <div class="rating-list-right text-light">23%</div>
                         </div>
                         <div class="rating-list">
-                            <div class="rating-list-left text-black">
+                            <div class="rating-list-left text-light">
                                 3 Star
                             </div>
                             <div class="rating-list-center">
@@ -916,10 +951,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="rating-list-right text-black">11%</div>
+                            <div class="rating-list-right text-light">11%</div>
                         </div>
                         <div class="rating-list">
-                            <div class="rating-list-left text-black">
+                            <div class="rating-list-left text-light">
                                 2 Star
                             </div>
                             <div class="rating-list-center">
@@ -930,10 +965,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="rating-list-right text-black">02%</div>
+                            <div class="rating-list-right text-light">02%</div>
                         </div>
                         <div class="rating-list">
-                            <div class="rating-list-left text-black">
+                            <div class="rating-list-left text-light">
                                 1 Star
                             </div>
                             <div class="rating-list-center">
@@ -944,29 +979,33 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="rating-list-right text-black">02%</div>
+                            <div class="rating-list-right text-light">02%</div>
                         </div>
                     </div>
 
 
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <h6 class="mb-0">Rate This Game</h6>
                         </div>
-                        <div class="col-sm-9 text-secondary">
-                            <fieldset class='rating'>
-                                <input type='radio' id='star5' name='rating' value='5' /><label for='star5'
+                        <div class="col-sm-8 text-secondary">
+                            <form enctype="multipart/form-data"
+                            action="{{ route('store_rating', ['game_id' =>$game->id ]) }}"
+                            method="GET">
+                                <fieldset class='rating'>
+                                <input type='radio' id="star5" wire:model ="rating" name="rating" value='5' /><label for='star5'
                                     title='Rocks!'>5 stars</label>
-                                <input type='radio' id='star4' name='rating' value='4' /><label for='star4'
+                                <input type='radio' id="star4" wire:model ="rating" name="rating" value='4' /><label for='star4'
                                     title='Pretty good'>4 stars</label>
-                                <input type='radio' id='star3' name='rating' value='3' /><label for='star3'
+                                <input type='radio' id="star3" wire:model ="rating" name="rating" value='3' /><label for='star3'
                                     title='Meh'>3 stars</label>
-                                <input type='radio' id='star2' name='rating' value='2' /><label for='star2'
+                                <input type='radio' id="star2" wire:model ="rating" name="rating" value='2' /><label for='star2'
                                     title='Kinda bad'>2 stars</label>
-                                <input type='radio' id='star1' name='rating' value='1' /><label for='star1'
+                                <input type='radio' id="star1" wire:model ="rating" name="rating" value='1' /><label for='star1'
                                     title='Sucks big time'>1 star</label>
-                            </fieldset>
-                            <button type='submit' class='btn btn-primary btn-sm'>Submit</button>
+                                </fieldset>
+                                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                            </form>
                         </div>
                     </div>
 
@@ -987,6 +1026,11 @@
             sanitize: false
         });
     })
+    var cw = window.rating1.clientWidth; // save original 100% pixel width
 
+    function rating(stars) {
+        window.rating1.style.width = Math.round(cw * (stars / 5)) + 'px';
+    }
+    rating({{$star_rating}});
 </script>
 </div>

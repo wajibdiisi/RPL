@@ -16,7 +16,7 @@
         body {
             color: #1a202c;
             text-align: left;
-            background-color: #e2e8f0;
+            background-color: #071224;
         }
 
         .main-body {
@@ -321,8 +321,6 @@
     border: 1px solid;
 }
 .rating-block{
-	background-color:#FAFAFA;
-	border:1px solid #EFEFEF;
 	padding:15px 15px 20px 15px;
 	border-radius:3px;
 }
@@ -332,7 +330,7 @@
 </head>
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
 <body>
-    @livewire('game.show-game',['game' => $game,'dataBar' =>$dataBar])
+    @livewire('game.show-game',['game' => $game,'dataBar' =>$dataBar,'star_rating' => $star_rating])
 
 </body>
 

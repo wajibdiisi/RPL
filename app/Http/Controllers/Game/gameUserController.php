@@ -73,19 +73,32 @@ class gameUserController extends Controller
         return redirect()->route('gameView.show',$game_id);
     }
 
-    public function storeRating(Request $request,$game_id){
+    public function store_review(Request $request,$game_id){
         $profile_id = UserHelp::getID(Auth::user()->id);
-        
+        $game_url = UserHelp::getGame_URL($game_id);
         Review::updateOrCreate([
             'game_id' => $game_id,
             'profile_id' => $profile_id,
         ],['rating' => $request->get('reviewRadio'),
         'review_content' => $request->get('review_content')
         ]);
-        return redirect()->route('gameView.show',$game_id);
-
-        
+        return redirect()->route('game.show',$game_url);
     }
+
+    public function store_rating(Request $request,$game_id){
+        $profile_id = UserHelp::getID(Auth::user()->id);
+        $game_url = UserHelp::getGame_URL($game_id);
+        gameUser::updateOrCreate([
+            'game_id' => $game_id,
+            'profile_id' => $profile_id,
+        ],[
+            'rating' => $request->get('rating')
+        ]);
+        return redirect()->route('game.show',$game_url);
+    }
+
+
+
     public function addFavourite($game_id){
         $profile = Profile::with('game_favourite')->where('user_id','=',Auth::user()->id)->first();
         $profile->game_favourite()->attach($game_id);

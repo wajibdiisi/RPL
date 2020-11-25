@@ -50,12 +50,12 @@
                             </div>
                             <div class="reviews-members-footer row">
                                 <div class="col-md-1">
-                                    <a class="total-like btn btn-outline-primary"
+                                    <a class="total-like btn btn-outline-success"
                                         href="{{ route('like.review',['id' =>$review->id,'user_id' =>$currentUser_id]) }}"><i
                                             class="icofont-thumbs-up"></i> <i class="fas fa-thumbs-up"></i></a>
                                 </div>
                                 <div class="col-md-1">
-                                    <a class="total-like btn btn-outline-primary" href="#"><i
+                                    <a class="total-like btn btn-outline-danger" href="#"><i
                                             class="icofont-thumbs-down"></i>
                                         <i class="fas fa-thumbs-down"></i></a>
                                     </div>

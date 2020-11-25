@@ -134,8 +134,8 @@ class gameController extends Controller
             'totalUser' => ''
         );
     }
-
-        return view('gameView.showGame',compact('game','dataBar'));
+        $star_rating = $game->gameUser->avg('rating');
+        return view('gameView.showGame',compact('game','dataBar','star_rating'));
     }
 
     /**
