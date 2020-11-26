@@ -5,17 +5,9 @@
  */
 
 require('./bootstrap');
-import { createApp, h } from 'vue'
-import { App, plugin } from '@inertiajs/inertia-vue3'
 import BootstrapVue from 'bootstrap-vue' //Importing
 window.Vue = require('vue');
-const el = document.getElementById('app')
-createApp({
-    render: () => h(App, {
-      initialPage: JSON.parse(el.dataset.page),
-      resolveComponent: name => require(`./Pages/${name}`).default,
-    })
-  }).use(plugin).mount(el)
+
 Vue.use(BootstrapVue);
 
 /**
@@ -30,7 +22,7 @@ Vue.use(BootstrapVue);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('flashy', require('./vendor/devmi/Flashy.vue'));
+Vue.config.productionTip = false;
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -46,13 +38,4 @@ const checkbox = new Vue({
         genres: []
     },
     template :''
-})
-const rating = new Vue({
-  el: '#rating',
-  data() {
-    return {
-      value: null
-    }
-  },
-  template :''
 })

@@ -9,12 +9,9 @@
     "license": "MIT",
     "require": {
         "php": "^7.3",
-        "algolia/algoliasearch-client-php": "^2.7",
-        "devmi/flashy": "^2.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "inertiajs/inertia-laravel": "^0.3.3",
         "intervention/image": "^2.5",
         "jenssegers/mongodb": "^3.8",
         "kartik-v/bootstrap-star-rating": "@dev",
@@ -64,7 +61,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan vendor:publish --force --tag=livewire:assets --ansi"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""

@@ -162,7 +162,6 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Yoeunes\Toastr\ToastrServiceProvider::class,
-        Devmi\Flashy\FlashyServiceProvider::class, //tambahan
         Yajra\Datatables\DatatablesServiceProvider::class,
     
     
