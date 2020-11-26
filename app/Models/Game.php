@@ -11,7 +11,7 @@ class Game extends Eloquent
     protected $connection = 'mongodb';
     protected $collection = 'game';
     protected $fillable = [
-        'gameName', 'picture','rating','developer','releaseDate','summary','userlist','genre_ids','userfav','custom_url'
+        'gameName', 'picture','rating','developer','releaseDate','summary','userlist','genre_ids','userfav','custom_url','view_counter','wishlist'
     ];
     public function game_genre(){
         return $this->hasMany(gameGenre::class,'game_id','_id');

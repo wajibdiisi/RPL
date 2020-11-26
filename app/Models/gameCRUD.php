@@ -40,5 +40,8 @@ class gameCRUD extends Eloquent
     public function favUser(){
         return $this->belongsToMany(Profile::class,null,'favourite_game','userfav');
     }
+    public function userWishlist(){
+        return $this->belongsToMany(gameCRUD::class,null,'game_wishlist','wishlist');
+    }
     
 }

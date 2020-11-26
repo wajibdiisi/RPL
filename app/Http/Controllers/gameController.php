@@ -94,7 +94,7 @@ class gameController extends Controller
             'Graphics' => 'Graphics',
             'DirectX' => 'DirectX',
             'Storage' => 'Storage',];
-        
+        $model->wishlist = array();
         $model->save();
         return redirect()->route('gameView.index')->with('success','Game updated successfully');
     }
@@ -109,6 +109,15 @@ class gameController extends Controller
     {
         
         $game = gameCRUD::with(['genre','review','gameUser'])->get()->find($id);
+
+        $key = 'game' . $game->id;
+       
+        if(\Session::has($key)){
+            
+        }else{
+            $game->increment('view_counter',1);
+            \Session::put($key,1);   
+        }
         $totalUser = count($game->gameUser);
         if($totalUser > 0){
         $wtp = $game->gameUser->where('status','Want to Play')->count() / $totalUser * 100;
@@ -248,6 +257,8 @@ class gameController extends Controller
      * @param  \App\Models\gameCRUD  $gameCRUD
      * @return \Illuminate\Http\Response
      */
+
+    
     public function destroy($id)
     {
         $data = gameCRUD::find($id);

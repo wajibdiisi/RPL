@@ -16,5 +16,9 @@ class Review extends Eloquent
        'thumbsup',
        'thumbsdown'
     ];
+
+    public function profile(){
+        return $this->hasOne(Profile::class,'_id','profile_id');
+    }
     
 }

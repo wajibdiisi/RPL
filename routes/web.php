@@ -71,4 +71,5 @@ Route::get('review/{id}/{user_id}',[App\Http\Controllers\Game\gameUserController
 Route::get('profile/{id}/detail',[App\Http\Controllers\UserProfileController::class, 'detail'])->name('profile.detail');
 Route::get('profile/ssss/detail/list',[App\Http\Controllers\UserProfileController::class, 'dataTable'])->name('dataTable');
 Route::get('game/{game_id}/store_rating',[App\Http\Controllers\Game\gameUserController::class,'store_rating'])->middleware('auth')->name('store_rating');
+Route::get('game/{game_id}/wishlist/{profile_id}/action',[App\Http\Controllers\userProfileController::class,'add_wishlist'])->middleware('auth')->name('add_wishlist');
 //vue Route::get('/{any}', [App\Http\Controllers\FrontController::class, 'index'])->where('any', '.*');

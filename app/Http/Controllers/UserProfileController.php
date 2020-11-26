@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Models\Profile;
 use App\Models\Game;
 use App\Models\gameUser;
+use App\Models\gameCRUD;
+use App\Helpers\UserHelp;
 use App\Models\ProfileManager;
 use DataTables;
 use Illuminate\Support\Facades\File;
@@ -42,6 +44,19 @@ class UserProfileController extends Controller
         $needAction = $checkUser->embedsRequest->contains('status','Need Action');
         return view('profile/profile',compact('friendList','friendCheck','userView','currentUser_id','gamelist','needAction'));
         //$checkUser = ProfileManager::with('profileFriend')->where('profile_id','=',$user->id)->get();
+    }
+    public function add_wishlist($game_id,$profile_id){
+        $data = Profile::with('gameWishlist')->find($profile_id);
+        $array = $data->gameWishlist->toArray();
+        $check = in_array($game_id,$data->game_wishlist);
+        if(!$check)
+        $data->gameWishlist()->attach($game_id);
+        else
+        $data->gameWishlist()->detach($game_id);
+        $game_url = UserHelp::getGame_URL($game_id);
+        $test = gameCRUD::all();
+        return redirect()->route('game.show',$game_url);
+        
     }
 
    

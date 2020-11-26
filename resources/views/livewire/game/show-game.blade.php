@@ -69,7 +69,8 @@
             }
 
             .table thead tr th {
-                border-bottom: 2px solid #e7ebee;
+                border-style : none;
+                
             }
 
             .table tbody tr td:first-child {
@@ -80,7 +81,7 @@
             .table tbody tr td {
                 font-size: 0.875em;
                 vertical-align: middle;
-                border-top: 1px solid #e7ebee;
+                border-style : none;
                 padding: 12px 8px;
             }
 
@@ -122,7 +123,8 @@
 
 .rating_star::before {
     font-family : FontAwesome;
-    content: "★★★★★"
+    font-size : 45px;
+    content: "\f005 \f005 \f005 \f005 \f005"
 }
 
 
@@ -168,15 +170,31 @@
                     <div class="card-columns mt-3" style="column-count : 1">
                         <div class="card-body servive-block-dark-blue">
                             <div class="row">
-                                <div class="col-md-3">Rating </div>
+                                <div class="col-md-3 text-sm">Rating({{$star_rating}}) </div>
                                 <div>
-                                    <style>
-                                  </style>
-                                      <div id="rating1" class="rating_star" style="display:inline-block"></div></div>
+                                    @if($star_rating != null)
+                                      <div id="rating1" class="rating_star" style="display:inline-block"></div>
+                                    @else
+                                    <div id="rating1" class="rating_star" style="display:inline-block;color:grey"></div>
+                                    @endif
+                                    </div>
                             </div>
                            
                         </div>
                     </div>
+
+                    <div class="card mt-3">
+                        <div class="card-body" style="">
+                       <button class="btn btn-outline-primary btn-sm text-light"> <i class="fas fa-eye mr-1"></i>{{$game->view_counter}}</button>
+                       <a class="btn btn-outline-primary btn-sm text-light ml-1" data-toggle="confirmation" data-title="Are you sure?" data-btn-ok-label="Confirm" data-btn-ok-class="btn-success mr-1"
+                        data-btn-ok-icon-class="far fa-check-circle mr-1"  
+                        data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
+                        data-btn-cancel-icon-class="far fa-times-circle mr-1"
+                        href="{{ route('add_wishlist', ['game_id' =>$game->id,'profile_id' => UserHelp::getID(Auth::user()->id)]) }}"><i class="fas fa-heart mr-1"></i>{{count($game->wishlist)}}</a>
+                       <button class="btn btn-outline-primary btn-sm text-light ml-1"> <i class="fas fa-heart mr-1"></i>{{$game->view_counter}}</button>
+                        </div>
+                    </div>
+                    
                     <div class="card mt-3">
 
                         <ul class="list-group list-group-flush">
@@ -295,10 +313,10 @@
                         </div>
                         <div class="modal fade" id="review<?= $game->id ?>" tabindex="-1" role="dialog"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
+                            <div class="modal-dialog" role="document" >
+                                <div class="modal-content" style="background-color : #111D35">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Add Review</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -582,23 +600,15 @@
                             <div class="card-body" style="height : 100%">
                                 <h4 class="card-title">Reviews</h4>
                                 <h5 class="card-subtitle">Numbers of Review</h5>
-                                <h2 class="font-medium mt-5 mb-4 mb-5">25426</h2>
+                            <h2 class="font-medium mt-5 mb-4 mb-5">{{$game->review->count()}}</h2>
                                 <div class="image-box mt-2 mb-2" style="display:flex">
+                                    @foreach($game->review->sortByDesc('created_at')->take('4') as $review)
                                     <a href="#" class="mr-2" title="" data-original-title="Simmons"><img
-                                            src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                                            class="rounded-circle" width="45" alt="user"></a>
-                                    <a href="#" class="mr-2" title="" data-original-title="Simmons"><img
-                                            src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                                            class="rounded-circle" width="45" alt="user"></a>
-                                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title=""
-                                        data-original-title="Simmons"><img
-                                            src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                                            class="rounded-circle" width="45" alt="user"></a>
-                                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title=""
-                                        data-original-title="Simmons"><img
-                                            src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                                            class="rounded-circle" width="45" alt="user"></a>
-
+                                        src="{{ url('uploads/avatars/' . $review->profile->avatar) }}"
+                                        class="rounded-circle" width="45" alt="user"></a>
+                                    @endforeach
+                                    
+                                    
                                 </div>
                                 <a href="javascript:void(0)" class="btn btn-lg btn-info waves-effect waves-light btn-md mt-5"
                                     x-on:click="tab = 'review'">All Reviews</a>
@@ -666,10 +676,10 @@
     <div class="col-md-8" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 transform scale-90"
         x-transition:enter-end="opacity-100 transform scale-100">
-        <div class="main-box no-header clearfix card-body">
-            <div class="main-box-body clearfix">
+        <div class="card-body">
+            <div class="">
                 <div class="table-responsive">
-                    <table class="table user-list">
+                    <table class="table user-list text-light">
                         <thead>
                             <tr>
                                 <th><span>User</span></th>
@@ -688,7 +698,8 @@
                                 <td>
                                     <div><div class="icon-container">
                                     <img class ="rounded-circle" src="{{ url('uploads/avatars/' . $users->profile->avatar) }}" alt="">
-                                    @if(Carbon\Carbon::parse($users->profile->last_seen->toDateTime()->format('Y-m-d H:i:s'))->diffForHumans() <= "20 minutes ago")
+                                    
+                                    @if(Cache::has('user-is-online-'. $users->profile->id))
                                     <div class='status-circle'>
                                     </div>
                                   </div>
@@ -827,8 +838,8 @@
 
 
         <div class="mt-3">
-            <div class="bg-white rounded shadow-sm p-4 mb-4 restaurant-detailed-ratings-and-reviews">
-                <button href="#" class="btn btn-outline-primary btn-sm float-right" >Top Rated</button>
+            <div class="card card-body rounded shadow-sm p-4 mb-4 restaurant-detailed-ratings-and-reviews">
+                
                 <h5 class="mb-1">Reviews ({{count($game->review)}})</h5>
 
                 @foreach($game->review as $review)
@@ -1032,5 +1043,11 @@
         window.rating1.style.width = Math.round(cw * (stars / 5)) + 'px';
     }
     rating({{$star_rating}});
+</script>
+<script>
+    $('[data-toggle=confirmation]').confirmation({
+rootSelector: '[data-toggle=confirmation]',
+// other options
+});
 </script>
 </div>

@@ -519,13 +519,13 @@
                                     <img src="{{ url('uploads/avatars/' . $userView->avatar) }}" class="rounded-circle"
                                         alt="" />
                                     <?php $last_seen = Carbon\Carbon::parse($userView->last_seen->toDateTime()->format('Y-m-d H:i:s'))->diffForHumans()?>
-                                    @if($last_seen <= "20 minutes ago" ) <div class='status-circle'>
+                                    @if(Cache::has('user-is-online-'. $userView->id)) <div class='status-circle'>
                                 </div>
                             </div>
                             <h4 class="text-center h6 mt-2">
                                 <?= $userView->username ?></h4>
                             <p class="text-center small">Currently Online</p>
-                            @elseif($last_seen > "20 minutes ago") 
+                            @else
                             <div class='status-circle-offline'>
                             </div>
                         </div>
@@ -632,12 +632,13 @@
                         data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
                         data-btn-cancel-icon-class="far fa-times-circle mr-1"
                             href="{{ route('friends.add', ['id' => UserHelp::get_username($currentUser_id), 'username' => $userView->username,'action' => 'remove']) }}"><i class="fas fa-user-times"></i></a>
+                            <p class="text-center mt-2">Friends since {{Carbon\Carbon::parse($check['time'])->format('Y-m-d')}} </p>
                         @endif
                         @elseif(!Auth::user())
                         <a class="btn btn-outline-primary" href="{{ route('login') }}"><i class="fas fa-user-plus"></i></a><?php break; ?>
                         @endif
                         @endforeach
-                        <p class="text-center small mt-2">Friends since </p>
+                        
                         @endif
 
                     </div>

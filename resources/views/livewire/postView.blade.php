@@ -1,4 +1,4 @@
-<div class="" x-data = "{ tab : 'foo', open : false}">
+<div class="" x-data = "{ tab : 'foo', open : false}" wire:ignore   >
     <template x-if = "tab === 'review'">
         <div class="mt-3" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 transform scale-90"
@@ -82,7 +82,7 @@
                         href="{{ route('profile.detail', ['id' => $userView->username]) }}">{{$userView->gameCollection->count()}}
                         <span>Games on Collection</span></a></li>
                 <li><a class="text-decoration-none"
-                    href="{{ route('profile.detail', ['id' => $userView->username]) }}">{{$userView->showFavourite->count()}}<span>Wishlist</span></a></li>
+                    href="{{ route('profile.detail', ['id' => $userView->username]) }}">{{$userView->game->count()}}<span>Wishlist</span></a></li>
                 <li><a class="text-decoration-none" href="#" x-on:click ="tab = 'review'">{{count($reviews)}} <span>Review</span></a></li>
             </ul>
         </div>
@@ -109,7 +109,12 @@
         <button class="btn btn-outline-primary" x-on:click ="open = true">Create new post</button>
     </div>
 </div>
-    <div class="card card-white grid-margin card-body" x-show.transition ="open">
+    <div class="card card-white grid-margin card-body" x-show ="open"  x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 transform scale-90"
+        x-transition:enter-end="opacity-100 transform scale-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 transform scale-100"
+        x-transition:leave-end="opacity-0 transform scale-90">
         
         <form wire:submit.prevent="store">
             
@@ -127,7 +132,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="profile-timeline">
+                    <div class="profile-timeline" >
                         <ul class="">
                             @livewire('post-list',['profile_id' => $userView->id,'currentUser_id' => $currentUser_id])
     

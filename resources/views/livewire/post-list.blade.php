@@ -1,6 +1,6 @@
-<div x-data="{tab : 'post'}">
+<div>
     
-    <template x-if = "tab === 'post'">
+    
     <div>
     @foreach($posts as $post)
     
@@ -24,9 +24,15 @@
                 </p>
                @elseif($post->posted_by != $post->profile_id)
                <p><a href ="{{ route('profile.show',$profile_posted_by->username)}}">{{$profile_posted_by->nama_lengkap}}</a><span> posted a status on 
-                    <a class="text-decoration-none" href ="{{ route('profile.show',UserHelp::get_username($post->profile_id))}}">{{UserHelp::get_fullname($post->profile_id)}}</a> profile</span> @if($profile_posted_by->user_id == $currentUser_id)
-                    <button class="float-right btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i></button>@endif</p>
+                    <a class="text-decoration-none" href ="{{ route('profile.show',UserHelp::get_username($post->profile_id))}}">{{UserHelp::get_fullname($post->profile_id)}}</a> profile</span> @if($profile_posted_by->id == $currentUser_id)
+                        @if($confirm_action == $post->id)
+                        <button class="float-right btn btn-outline-success btn-sm"  wire:click.prevent ="deletePost('{{$post->id}}')"><i class="far fa-check-circle"></i></button>
+                        @else
+                        <button class="float-right btn btn-outline-danger btn-sm"  wire:click.prevent ="confirmDelete('{{$post->id}}')"><i class="far fa-trash-alt"></i></button>
+                        @endif
+                    @endif</p>
                 @endif
+                
                <small>{{($post->getCreatedTime()->diffForHumans())}}
                @if($post->getCreatedTime() != $post->getUpdatedTime())
                    (Last Updated : {{$post->getUpdatedTime()->diffForHumans()}} )@endif
@@ -69,7 +75,7 @@
     </div>
 </div>
 </div>
-</template>
+
 @if (session()->has('message'))
 
                 <script>

@@ -15,7 +15,8 @@ class Profile extends Eloquent
         'tgl_lahir',
         'avatar',
         'favourite_game',
-        'last_seen'
+        'last_seen',
+        'game_wishlist'
     ];
     public function user(){
         return $this->hasOne(User::class,'_id','user_id');
@@ -40,6 +41,9 @@ class Profile extends Eloquent
     }
     public function gameCollection(){
         return $this->hasMany(gameUser::class,'profile_id','_id');
+    }
+    public function gameWishlist(){
+        return $this->belongsToMany(gameCRUD::class,null,'wishlist','game_wishlist');
     }
     /*public function searchableAs(){
         return 'mygame';

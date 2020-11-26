@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Game;
 
 use Livewire\Component;
 use App\Models\gameUser;
+use App\Models\gameCRUD;
+use App\Models\Profile;
 
 class ShowGame extends Component
 {
