@@ -6,9 +6,13 @@ use Livewire\Component;
 use App\Models\gameUser;
 use App\Models\gameCRUD;
 use App\Models\Profile;
+use Livewire\WithPagination;
+use App\Models\Review;
+
 
 class ShowGame extends Component
 {
+ 
     public $game,$dataBar,$selected,$star_rating;
 
     public function showReview(){
@@ -17,6 +21,8 @@ class ShowGame extends Component
 
     public function render()
     {
-        return view('livewire.game.show-game');
+        return view('livewire.game.show-game',[
+            'reviews' => Review::where('game_id',$this->game->id)->paginate(1)
+        ]);
     }
 }

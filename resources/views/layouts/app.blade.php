@@ -33,6 +33,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-confirmation2/dist/bootstrap-confirmation.min.js"></script>
+ 
 
 </head>
 <style>
@@ -202,16 +203,7 @@
 <body>
 
     <!-- Authentication Links -->
-    @guest
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-    </li>
-    @if (Route::has('register'))
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-    </li>
-    @endif
-    @else
+   
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light" style="background-color: #071224;">
             <div class="container">
@@ -233,6 +225,16 @@
                 </form>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        @guest
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        </li>
+                        @if (Route::has('register'))
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="{{ route('register') }}">{{ __('Register') }}</a>
+                        </li>
+                        @endif
+                        @else
                         <li class="nav-item "> <a class="nav-link text-white editGame " href="{{ url('/gameIndex') }}">{{ __('EditGame ') }}</a></li>
                         <li class="nav-item "> <a class="nav-link text-white gamelist" href="{{ route('gamelist.all') }}">{{ __('Gamelist') }}</a></li>
                         <li class="nav-item "> <a class="nav-link text-white activity" href="{{ route('activity',UserHelp::getID(Auth::user()->id)) }}">{{ __('Activity ') }}</a></li>
@@ -265,8 +267,9 @@
     </div>
 
     @stack('javascripts')
-    @livewireScripts
+   
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js"></script>
+    @livewireScripts
 </body>
 @toastr_render
 

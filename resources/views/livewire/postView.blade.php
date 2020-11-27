@@ -1,4 +1,4 @@
-<div class="" x-data = "{ tab : 'foo', open : false}" wire:ignore   >
+<div class="" x-data = "{ tab : 'foo', open : false}">
     <template x-if = "tab === 'review'">
         <div class="mt-3" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 transform scale-90"
@@ -29,7 +29,7 @@
                                     <a href="#"><i class="icofont-ui-rating"></i></a>
                                 </span>
                                 <h6 class="mb-1"><a class="text-decoration-none text-link"
-                                        href="{{ route('game.show', ['id' => $game_review->id]) }}">{{$game_review->gameName}}</a>
+                                        href="{{ route('game.show', ['id' => $game_review->custom_url]) }}">{{$game_review->gameName}}</a>
                                     @if($review->rating == "like")
                                     <span><button type="button" class="btn btn-outline-success btn-sm" disabled><i
                                                 class="far fa-smile-o " aria-hidden="true"></i> Recommending this
@@ -135,7 +135,7 @@
                     <div class="profile-timeline" >
                         <ul class="">
                             @livewire('post-list',['profile_id' => $userView->id,'currentUser_id' => $currentUser_id])
-    
+                            
                         </ul>
                     
                 </div>

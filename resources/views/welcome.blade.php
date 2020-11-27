@@ -12,7 +12,49 @@
     <script src="{{ asset('js/home.js') }}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
     <link href="{{ asset('css/home.css') }}" rel="stylesheet">
+<style>.searchbar{
+    margin-bottom: auto;
+    margin-top: auto;
+    height: 60px;
+    background-color: #353b48;
+    border-radius: 30px;
+    padding: 10px;
+    }
 
+    .search_input{
+    color: white;
+    border: 0;
+    outline: 0;
+    background: none;
+    width: 200px;
+    caret-color:transparent;
+    line-height: 40px;
+    transition: width 0.4s linear;
+    }
+
+    .searchbar:hover > .search_input{
+    padding: 0 10px;
+    
+    caret-color:red;
+    transition: width 0.4s linear;
+    }
+
+    .searchbar:hover > .search_icon{
+    background: white;
+    color: #e74c3c;
+    }
+
+    .search_icon{
+    height: 40px;
+    width: 40px;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color:white;
+    text-decoration:none;
+    }</style>
 </head>
 <body>
     <div class="scroll-up-btn">
@@ -20,13 +62,13 @@
     </div>
     <nav class="navbar">
         <div class="max-width">
-            <div class="search-box">
-                <input type="text" class="search-text" nama="" placeholder="Type to search">
-                <a href="#" class="search-btn">
-                    <i class="fas fa-search"></i>
-                </a>
-            </div>
             <div class="logo"><img src="https://media1.giphy.com/media/40zweBDO3S8h41thbb/giphy.gif" alt="" style="width:95px;height:95px"></div>
+                <form enctype="multipart/form-data" action="{{ route('search') }}" method="GET">
+                    <div class="searchbar mr-auto">
+                        <input type="text" class="search_input" name="search" placeholder="Enter games name">
+                        <a class="search_icon"><i class="fas fa-search"></i></a>
+                    </div>
+         </form>
             <ul class="menu">
                 <li><a href="#home" class="menu-btn">Home</a></li>
                 <li><a href="#teams" class="menu-btn">Games</a></li>

@@ -1,10 +1,10 @@
 @extends('layouts.app')
 @section('content')
 <style>
-body{
-    
-    background:#eee;
-}
+body {
+            background: #071224;
+
+        }
 
 .activities {
     max-height: 1208px;
@@ -12,14 +12,13 @@ body{
     padding-bottom: 50px;
 }
 .decor-default {
-    background-color: #ffffff !important;
+    background-color: #111D35;
 }
  div[class*='col-'] > .col-inside-lg {
     padding: 20px;
 }
 
 .activities .unit {
-    border-bottom: 1px solid #d8d8d8;
     padding: 20px 0 20px 50px;
     min-height: 80px;
     position: relative;
@@ -68,17 +67,17 @@ body{
 }
 </style>
 
-<div class="container bootstrap snippets bootdeys">
+<div class="container bootstrap snippets text-light" style="background-color: #111D35;">
     <div class="col-md-12 col-right">
-        <div class="col-inside-lg decor-default activities" id="activities" style="overflow-y: hidden; outline: none;" tabindex="5003">
+        <div class="col-inside-lg decor-default activities" id="activities" style="overflow-y: hidden; outline: none;" tabindex="5003" >
             <h6>Activites</h6>
             @foreach($merged as $data)
             @if($data->status)
             <div class="unit">
-                <a class="avatar" href="#"><img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="img-fluid" alt="profile"></a>
+                <?php $gameData = UserHelp::getGame($data->game_id); $userData = UserHelp::getProfile($data->profile_id)?>
+                <a class="avatar" href="#"><img src="{{ url('uploads/avatars/' . $userData->avatar) }}" class="img-fluid" alt="profile"></a>
                 <div class="field title">
-                    <?php $gameData = UserHelp::getGame($data->game_id); $userData = UserHelp::getProfile($data->profile_id)?>
-                    <a href="{{ route('profile.show',$userData->username)}}">{{$userData->nama_lengkap}}</a> started playing <a href="{{ route('gameView.show',$gameData->id) }}">{{$gameData->gameName}}</a>
+                    <a class="text-primary" href="{{ route('profile.show',$userData->username)}}">{{$userData->nama_lengkap}}</a> started playing <a class="text-primary" href="{{ route('gameView.show',$gameData->id) }}">{{$gameData->gameName}}</a>
                 </div>
                 <div class="field date">
                 <span class="f-l">{{$data->updated_at->diffForHumans()}}</span>
@@ -91,10 +90,11 @@ body{
             </div>
             @elseif($data->review_content)
             <div class="unit">
-                <a class="avatar" href="#"><img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="img-fluid" alt="profile"></a>
+                <?php $gameData = UserHelp::getGame($data->game_id); $userData = UserHelp::getProfile($data->profile_id)?>
+                <a class="avatar" href="#"><img src="{{ url('uploads/avatars/' . $userData->avatar) }}" class="img-fluid" alt="profile"></a>
                 <div class="field title">
-                    <?php $gameData = UserHelp::getGame($data->game_id); $userData = UserHelp::getProfile($data->profile_id)?>
-                    <a href="{{ route('profile.show',$userData->username)}}">{{$userData->nama_lengkap}}</a> Posted a review on <a href="{{ route('gameView.show',$gameData->id) }}">{{$gameData->gameName}}</a>
+                  
+                    <a class="text-primary" href="{{ route('profile.show',$userData->username)}}">{{$userData->nama_lengkap}}</a> Posted a review on <a class="text-primary" href="{{ route('gameView.show',$gameData->id) }}">{{$gameData->gameName}}</a>
                 </div>
                 <div class="field date">
                     <span class="f-l">{{$data->created_at->diffForHumans()}}</span>
@@ -107,204 +107,9 @@ body{
             </div>
             @endif
             @endforeach
-            <div class="unit">
-                <a class="avatar" href="#"><img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-responsive" alt="profile"></a>
-                <div class="field title">
-                    <a href="#">Katya Angintiew</a> posted a new blog
-                </div>
-                <div class="field date">
-                    <span class="f-l">Today 5:60 pm - 12.06.2016</span>
-                    <span class="f-r">15 min ago</span>
-                </div>
-            </div>
-            <div class="unit">
-                <a class="avatar" href="#"><img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="img-responsive" alt="profile"></a>
-                <div class="field title">
-                    <a href="#">Alexander Herthic</a> posted message on <a href="#">Monica Smith site</a>.
-                </div>
-                <div class="field date">
-                    <span class="f-l">Today 2:10 pm - 12.06.2015</span>
-                    <span class="f-r">2h ago</span>
-                </div>
-                <div class="field">
-                    <p class="color-default decor-success">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. Over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-                </div>
-                <div class="field btn-group-xs f-r">
-                    <button type="button" class="btn btn-lg-xs btn-xs-like">Like</button>
-                    <button type="button" class="btn btn-lg-xs btn-xs-love">Love</button>
-                    <button type="button" class="btn btn-lg-xs btn-xs-msg">Message</button>
-                </div>
-            </div>
-            <div class="unit">
-                <div class="field title">
-                    <a href="#">Katya Angintiew</a> add 1 photo on <a href="#">Monica Smith site</a>.
-                </div>
-                <div class="field date">
-                    <span class="f-l">Today 5:60 pm - 12.06.2016</span>
-                    <span class="f-r">15 min ago</span>
-                </div>
-                <div class="field photo">
-                    <img src="https://via.placeholder.com/266x200/" alt="profile">
-                    <img src="https://via.placeholder.com/266x200/" alt="profile">
-                    <img src="https://via.placeholder.com/266x200/" alt="profile">
-                </div>
-            </div>
-            <div class="unit">
-                <a class="avatar" href="#"><img src="https://bootdey.com/img/Content/avatar/avatar4.png" class="img-responsive" alt="profile"></a>
-                <div class="field title">
-                    <a href="#">Alexander Herthic</a> posted message on <a href="#">Monica Smith site</a>.
-                </div>
-                <div class="field date">
-                    <span class="f-l">Today 2:10 pm - 12.06.2015</span>
-                    <span class="f-r color-success">2h ago</span>
-                </div>
-                <div class="field btn-group-xs f-l">
-                    <button type="button" class="btn btn-lg-xs btn-xs-like">Like</button>
-                    <button type="button" class="btn btn-lg-xs btn-xs-love">Love</button>
-                </div>
-            </div>
-            <div class="unit">
-                <a class="avatar" href="#"><img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-responsive" alt="profile"></a>
-                <div class="field title">
-                    <a href="#">Alexander Herthic</a> posted message on <a href="#">Monica Smith site</a>.
-                </div>
-                <div class="field date">
-                    <span class="f-l">Today 2:10 pm - 12.06.2015</span>
-                    <span class="f-r">2h ago</span>
-                </div>
-                <div class="field">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. Over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-                </div>
-                <div class="field btn-group-xs f-r">
-                    <button type="button" class="btn btn-lg-xs btn-xs-love">Love</button>
-                </div>
-            </div>
-            <div class="unit">
-                <a class="avatar" href="#"><img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="img-responsive" alt="profile"></a>
-                <div class="field title">
-                    <a href="#">Katya Angintiew</a> posted a new blog
-                </div>
-                <div class="field date">
-                    <span class="f-l">Today 5:60 pm - 12.06.2016</span>
-                    <span class="f-r">15 min ago</span>
-                </div>
-            </div>
-            <div class="unit">
-                <a class="avatar" href="#"><img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-responsive" alt="profile"></a>
-                <div class="field title">
-                    <a href="#">Katya Angintiew</a> posted a new blog
-                </div>
-                <div class="field date">
-                    <span class="f-l">Today 5:60 pm - 12.06.2016</span>
-                    <span class="f-r">15 min ago</span>
-                </div>
-            </div>
-            <div class="unit">
-                <a class="avatar" href="#"><img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="img-responsive" alt="profile"></a>
-                <div class="field title">
-                    <a href="#">Alexander Herthic</a> started following <a href="#">Katya Angintiew</a>
-                </div>
-                <div class="field date">
-                    <span class="f-l">Today 6:15 pm - 22.03 2015</span>
-                    <span class="f-r color-success">5 min ago</span>
-                </div>
-                <div class="field btn-group-xs f-l">
-                    <button type="button" class="btn btn-lg-xs btn-xs-like">Like</button>
-                    <button type="button" class="btn btn-lg-xs btn-xs-love">Love</button>
-                </div>
-            </div>
-            <div class="unit">
-                <a class="avatar" href="#"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="img-responsive" alt="profile"></a>
-                <div class="field title">
-                    <a href="#">Katya Angintiew</a> posted a new blog
-                </div>
-                <div class="field date">
-                    <span class="f-l">Today 5:60 pm - 12.06.2016</span>
-                    <span class="f-r">15 min ago</span>
-                </div>
-            </div>
-            <div class="unit">
-                <a class="avatar" href="#"><img src="https://bootdey.com/img/Content/avatar/avatar4.png" class="img-responsive" alt="profile"></a>
-                <div class="field title">
-                    <a href="#">Alexander Herthic</a> posted message on <a href="#">Monica Smith site</a>.
-                </div>
-                <div class="field date">
-                    <span class="f-l">Today 2:10 pm - 12.06.2015</span>
-                    <span class="f-r">2h ago</span>
-                </div>
-                <div class="field">
-                    <p class="color-default decor-success">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. Over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-                </div>
-                <div class="field btn-group-xs f-r">
-                    <button type="button" class="btn btn-lg-xs btn-xs-like">Like</button>
-                    <button type="button" class="btn btn-lg-xs btn-xs-love">Love</button>
-                    <button type="button" class="btn btn-lg-xs btn-xs-msg">Message</button>
-                </div>
-            </div>
-            <div class="unit">
-                <div class="field title">
-                    <a href="#">Katya Angintiew</a> add 1 photo on <a href="#">Monica Smith site</a>.
-                </div>
-                <div class="field date">
-                    <span class="f-l">Today 5:60 pm - 12.06.2016</span>
-                    <span class="f-r">15 min ago</span>
-                </div>
-                <div class="field photo">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-responsive" alt="profile">
-                </div>
-            </div>
-            <div class="unit">
-                <a class="avatar" href="#"><img src="https://bootdey.com/img/Content/avatar/avatar4.png" class="img-responsive" alt="profile"></a>
-                <div class="field title">
-                    <a href="#">Alexander Herthic</a> posted message on <a href="#">Monica Smith site</a>.
-                </div>
-                <div class="field date">
-                    <span class="f-l">Today 2:10 pm - 12.06.2015</span>
-                    <span class="f-r color-success">2h ago</span>
-                </div>
-                <div class="field btn-group-xs f-l">
-                    <button type="button" class="btn btn-lg-xs btn-xs-like">Like</button>
-                    <button type="button" class="btn btn-lg-xs btn-xs-love">Love</button>
-                </div>
-            </div>
-            <div class="unit">
-                <a class="avatar" href="#"><img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-responsive" alt="profile"></a>
-                <div class="field title">
-                    <a href="#">Alexander Herthic</a> posted message on <a href="#">Monica Smith site</a>.
-                </div>
-                <div class="field date">
-                    <span class="f-l">Today 2:10 pm - 12.06.2015</span>
-                    <span class="f-r">2h ago</span>
-                </div>
-                <div class="field">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. Over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-                </div>
-                <div class="field btn-group-xs f-r">
-                    <button type="button" class="btn btn-lg-xs btn-xs-love">Love</button>
-                </div>
-            </div>
-            <div class="unit">
-                <a class="avatar" href="#"><img src="https://bootdey.com/img/Content/avatar/avatar4.png" class="img-responsive" alt="profile"></a>
-                <div class="field title">
-                    <a href="#">Katya Angintiew</a> posted a new blog
-                </div>
-                <div class="field date">
-                    <span class="f-l">Today 5:60 pm - 12.06.2016</span>
-                    <span class="f-r">15 min ago</span>
-                </div>
-            </div>
-            <div class="unit">
-                <a class="avatar" href="#"><img src="https://bootdey.com/img/Content/avatar/avatar5.png" class="img-responsive" alt="profile"></a>
-                <div class="field title">
-                    <a href="#">Katya Angintiew</a> posted a new blog
-                </div>
-                <div class="field date">
-                    <span class="f-l">Today 5:60 pm - 12.06.2016</span>
-                    <span class="f-r">15 min ago</span>
-                </div>
-            </div>
+            
         </div>
+        {{$merged->links()}}
     </div>
     </div>
-    
 @endsection

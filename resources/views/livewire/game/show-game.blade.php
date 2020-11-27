@@ -1,4 +1,4 @@
-<div x-data="{ tab : 'foo'}">
+<div x-data="{ tab : 'foo'}" wire:ignore>
     @if (Auth::user())
     @php
     $currentUser = UserHelp::getID(Auth::user()->id);
@@ -110,7 +110,6 @@
 }
 .list-group .list-group-item{
     background-color: #111D35;
-  border-top: 1px solid #e7ebee;
   border-left-color: #e7ebee;
   border-right-color: #111D35;
 }
@@ -190,7 +189,7 @@
                         data-btn-ok-icon-class="far fa-check-circle mr-1"  
                         data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
                         data-btn-cancel-icon-class="far fa-times-circle mr-1"
-                        href="{{ route('add_wishlist', ['game_id' =>$game->id,'profile_id' => UserHelp::getID(Auth::user()->id)]) }}"><i class="fas fa-heart mr-1"></i>{{count($game->wishlist)}}</a>
+                        href="{{ route('add_wishlist', ['game_id' =>$game->id,'profile_id' => $currentUser]) }}"><i class="fas fa-heart mr-1"></i>{{count($game->wishlist)}}</a>
                        <button class="btn btn-outline-primary btn-sm text-light ml-1"> <i class="fas fa-heart mr-1"></i>{{$game->view_counter}}</button>
                         </div>
                     </div>
@@ -273,7 +272,7 @@
 
                                                         <div class="custom-control custom-radio">
                                                             <input type="radio" class="custom-control-input" id="add2"
-                                                                name="addRadio" value="Currently Playing">
+                                                                name="addRadio" value="Currently Playing" required>
                                                             <label class="custom-control-label" for="add2">Currently
                                                                 Playing</label>
                                                         </div>
@@ -339,7 +338,7 @@
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="reviewRadio"
-                                                    id="inlineRadio1" value="dislike">
+                                                    id="inlineRadio1" value="dislike" required>
                                                 <label class="form-check-label" for="inlineRadio1"><i
                                                         class="far fa-frown-o fa-5x" aria-hidden="true"></i></label>
                                             </div>
@@ -611,7 +610,7 @@
                                     
                                 </div>
                                 <a href="javascript:void(0)" class="btn btn-lg btn-info waves-effect waves-light btn-md mt-5"
-                                    x-on:click="tab = 'review'">All Reviews</a>
+                                    x-on:click="tab = 'review'">Best Reviews</a>
                             </div>
                         </div>
                         <div class="col-sm-12 col-lg-7" style="background-color:#071224;">
@@ -622,11 +621,11 @@
                                             <i class="fa fa-smile-o fa-2x text-muted"></i>
                                             <div class="ml-2">
                                                 <h5 class="mb-0">Positive Reviews</h5>
-                                                <span class="text-muted">25547 Reviews</span>
+                                                <span class="text-muted">{{$game->review->where('rating','like')->count()}} Reviews</span>
                                             </div>
                                         </div>
                                         <div class="progress">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 47%"
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: @if($game->review->has('rating')){{$game->review->where('rating','like')->count()/$game->review->count() * 100}}% @else 0% @endif"
                                                 aria-valuenow="47" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     </li>
@@ -635,11 +634,12 @@
                                             <i class="fa fa-frown-o fa-2x text-muted"></i>
                                             <div class="ml-2">
                                                 <h5 class="mb-0">Negative Reviews</h5>
-                                                <span class="text-muted">5547 Reviews</span>
+                                                <span class="text-muted">{{$game->review->where('rating','dislike')->count()}} Reviews</span>
                                             </div>
                                         </div>
+                                       
                                         <div class="progress">
-                                            <div class="progress-bar bg-orange" role="progressbar" style="width: 33%"
+                                            <div class="progress-bar bg-orange" role="progressbar" style="width: @if($game->review->has('rating')){{$game->review->where('rating','dislike')->count()/$game->review->count() * 100}}% @else 0% @endif"
                                                 aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     </li>
@@ -648,11 +648,11 @@
                                             <i class="fa fa-meh-o fa-2x text-muted"></i>
                                             <div class="ml-2">
                                                 <h5 class="mb-0">Neutral Reviews</h5>
-                                                <span class="text-muted">547 Reviews</span>
+                                                <span class="text-muted">{{$game->review->where('rating','neutral')->count()}} Reviews</span>
                                             </div>
                                         </div>
                                         <div class="progress">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 20%"
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: @if($game->review->has('rating')){{$game->review->where('rating','neutral')->count()/$game->review->count() * 100}}% @else 0% @endif"
                                                 aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     </li>
@@ -760,29 +760,22 @@
         <div class="card">
             <div class="row">
                 <div class="col-sm-12 col-lg-5" style="background-color :#071224">
+                    
                     <div class="card-body" style="height : 100%">
-
                         <h4 class="card-title">Reviews</h4>
                         <h5 class="card-subtitle">Numbers of Review</h5>
-                        <h2 class="font-medium mt-5 mb-4 mb-5">25426</h2>
+                    <h2 class="font-medium mt-5 mb-4 mb-5">{{$game->review->count()}}</h2>
                         <div class="image-box mt-2 mb-2" style="display:flex">
+                            @foreach($game->review->sortByDesc('created_at')->take('4') as $review)
                             <a href="#" class="mr-2" title="" data-original-title="Simmons"><img
-                                    src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle"
-                                    width="45" alt="user"></a>
-                            <a href="#" class="mr-2" title="" data-original-title="Simmons"><img
-                                    src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle"
-                                    width="45" alt="user"></a>
-                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title=""
-                                data-original-title="Simmons"><img
-                                    src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle"
-                                    width="45" alt="user"></a>
-                            <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title=""
-                                data-original-title="Simmons"><img
-                                    src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle"
-                                    width="45" alt="user"></a>
-
+                                src="{{ url('uploads/avatars/' . $review->profile->avatar) }}"
+                                class="rounded-circle" width="45" alt="user"></a>
+                            @endforeach
+                            
+                            
                         </div>
-
+                        <a href="{{ route('all_review', ['game_id' => $game->custom_url]) }}" class="btn btn-lg btn-info waves-effect waves-light btn-md mt-5"
+                            >All Reviews</a>
                     </div>
                 </div>
                 <div class="col-sm-12 col-lg-7" style="background-color:#071224;">
@@ -796,11 +789,11 @@
                                     <i class="fa fa-smile-o fa-2x text-muted"></i>
                                     <div class="ml-2">
                                         <h5 class="mb-0">Positive Reviews</h5>
-                                        <span class="text-muted">25547 Reviews</span>
+                                        <span class="text-muted">{{$game->review->where('rating','like')->count()}} Reviews</span>
                                     </div>
                                 </div>
                                 <div class="progress">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: 47%"
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: @if($game->review->has('rating')){{$game->review->where('rating','like')->count()/$game->review->count() * 100}}% @else 0% @endif"
                                         aria-valuenow="47" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </li>
@@ -809,11 +802,12 @@
                                     <i class="fa fa-frown-o fa-2x text-muted"></i>
                                     <div class="ml-2">
                                         <h5 class="mb-0">Negative Reviews</h5>
-                                        <span class="text-muted">5547 Reviews</span>
+                                        <span class="text-muted">{{$game->review->where('rating','dislike')->count()}} Reviews</span>
                                     </div>
                                 </div>
+                               
                                 <div class="progress">
-                                    <div class="progress-bar bg-orange" role="progressbar" style="width: 33%"
+                                    <div class="progress-bar bg-orange" role="progressbar" style="width: @if($game->review->has('rating')){{$game->review->where('rating','dislike')->count()/$game->review->count() * 100}}% @else 0% @endif"
                                         aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </li>
@@ -822,11 +816,11 @@
                                     <i class="fa fa-meh-o fa-2x text-muted"></i>
                                     <div class="ml-2">
                                         <h5 class="mb-0">Neutral Reviews</h5>
-                                        <span class="text-muted">547 Reviews</span>
+                                        <span class="text-muted">{{$game->review->where('rating','neutral')->count()}} Reviews</span>
                                     </div>
                                 </div>
                                 <div class="progress">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 20%"
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: @if($game->review->has('rating')){{$game->review->where('rating','neutral')->count()/$game->review->count() * 100}}% @else 0% @endif"
                                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </li>
@@ -840,9 +834,9 @@
         <div class="mt-3">
             <div class="card card-body rounded shadow-sm p-4 mb-4 restaurant-detailed-ratings-and-reviews">
                 
-                <h5 class="mb-1">Reviews ({{count($game->review)}})</h5>
+                <h5 class="mb-1">Most Useful Reviews</h5>
 
-                @foreach($game->review as $review)
+                @foreach($game->review->sortByDesc('thumbsup')->take('4') as $review)
                 <?php 
                     $user_review = UserHelp::getProfile($review->profile_id);?>
                 <div class="reviews-members pt-2 pb-4">
@@ -1003,8 +997,9 @@
                             <form enctype="multipart/form-data"
                             action="{{ route('store_rating', ['game_id' =>$game->id ]) }}"
                             method="GET">
+                            @csrf
                                 <fieldset class='rating'>
-                                <input type='radio' id="star5" wire:model ="rating" name="rating" value='5' /><label for='star5'
+                                <input type='radio' id="star5" wire:model ="rating" name="rating" value='5' required /><label for='star5'
                                     title='Rocks!'>5 stars</label>
                                 <input type='radio' id="star4" wire:model ="rating" name="rating" value='4' /><label for='star4'
                                     title='Pretty good'>4 stars</label>
@@ -1030,24 +1025,5 @@
 </template>
 
 </div>
-<script type="text/javascript">
-    $(function () {
-        $('[data-toggle="popover"]').popover({
-            html: true,
-            sanitize: false
-        });
-    })
-    var cw = window.rating1.clientWidth; // save original 100% pixel width
 
-    function rating(stars) {
-        window.rating1.style.width = Math.round(cw * (stars / 5)) + 'px';
-    }
-    rating({{$star_rating}});
-</script>
-<script>
-    $('[data-toggle=confirmation]').confirmation({
-rootSelector: '[data-toggle=confirmation]',
-// other options
-});
-</script>
 </div>

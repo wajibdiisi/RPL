@@ -7,15 +7,19 @@ use App\Models\Review;
 use App\Models\gameUser;
 use App\Models\ProfileManager;
 use App\Helpers\UserHelp;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Request;
+
 
 class activityController extends Controller
 {
+    
     public function index()
     {
        return view('profile.activity');
     }
     public function show($id){
+        Paginator::useBootstrap();
         $data = collect();
         $friendtemp = profileManager::where('profile_id',$id)->pluck('friend_ids')->toArray();
         foreach($friendtemp['0'] as $fl){
@@ -25,7 +29,7 @@ class activityController extends Controller
         }
         $game = gameUser::whereIn('profile_id',$data)->get();
         $review = Review::whereIn('profile_id',$data)->get();
-        $merged = $game->merge($review)->sortByDesc('updated_at');
+        $merged = $game->merge($review)->sortByDesc('updated_at')->paginate(10);
         return view('profile.activity',compact('merged'));
     }
 }

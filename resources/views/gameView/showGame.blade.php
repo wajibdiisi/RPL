@@ -333,6 +333,23 @@
     @livewire('game.show-game',['game' => $game,'dataBar' =>$dataBar,'star_rating' => $star_rating])
 
 </body>
+<script type="text/javascript">
+  $(function () {
+      $('[data-toggle="popover"]').popover({
+          html: true,
+          sanitize: false
+      });
+  })
+  var cw = window.rating1.clientWidth; // save original 100% pixel width
 
+  function rating(stars) {
+      window.rating1.style.width = Math.round(100 * (stars / 5)) + '%';
+  }
+  rating({{$star_rating}});
+  $('[data-toggle=confirmation]').confirmation({
+rootSelector: '[data-toggle=confirmation]',
+// other options
+});
+</script>
 
 @endsection

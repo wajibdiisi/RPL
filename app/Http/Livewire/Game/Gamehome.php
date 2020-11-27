@@ -81,11 +81,28 @@ class Gamehome extends Component
         $this->sort_genre = "review";
     }
     public function sortbyReview_asc(){
-
+        
         $this->gameID = $this->gamedata->sortBy('review')->pluck('_id')->toArray();
-        $this->sort = "Least Review";
+        $this->sort = "Most Reviews";
         $this->type = "ascending";
         $this->sort_genre = "review";
+    }
+
+    public function sortbyView_desc(){
+        $this->gameID = $this->gamedata->sortByDesc('view_counter')->pluck('_id')->toArray();
+        $this->sort = "Most Views";
+        $this->type = "descending";
+        $this->sort_genre = "view_counter";
+    }
+    
+
+
+    public function sortbyView_asc(){
+
+        $this->gameID = $this->gamedata->sortBy('view_counter')->pluck('_id')->toArray();
+        $this->sort = "Least Review";
+        $this->type = "ascending";
+        $this->sort_genre = "view_counter";
     }
 
     public function render()

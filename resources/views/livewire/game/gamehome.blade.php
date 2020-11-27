@@ -65,7 +65,7 @@
                                 @endif
                             
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <button class="dropdown-item" wire:click="reset_genre">Show All</button>
+                                    <button class="dropdown-item" wire:click="search_platform('all')">Show All</button>
                                 @foreach ($platforms as $platform)
                                 <button class="dropdown-item" wire:click="search_platform('{{$platform->id}}')">{{$platform->title}}</button>
                                 @endforeach
@@ -88,6 +88,8 @@
                                     <button class="dropdown-item" wire:click="sortbyName_desc">Name, Z to A</button>
                                     <button class="dropdown-item" wire:click="sortbyReview_desc">Most Reviews</button>
                                     <button class="dropdown-item" wire:click="sortbyReview_asc">Least Reviews</button>
+                                    <button class="dropdown-item" wire:click="sortbyView_desc">Most Views</button>
+                                    <button class="dropdown-item" wire:click="sortbyView_asc">Least Views</button>
                                 </div>
                               </div>
                         </div>
@@ -126,6 +128,7 @@
                         <a href="{{ route('game.show',$game->custom_url) }}"><img
                                 src="{{ url('uploads/gamePicture/' . $game->gamePicture) }}" alt=""
                                 style="height:370px"></a>
+                                <button class="btn btn-outline-primary btn-sm text-primary" style="position:absolute; top : 0; left : 14px; font-weight : bold"> <i class="fas fa-eye mr-1"></i>@if($game->view_counter>0){{$game->view_counter}} @else 0 @endif</button>
                     </div>
                     <div class="game-content">
                         <h4><a href="games-details.html">{{$game->gameName}}</a></h4>
@@ -133,6 +136,7 @@
                         @foreach($game->platform as $platform)
                         <button class="{{$platform->button_class}} btn-sm" disabled><i class="{{$platform->i_class}}"></i> {{$platform->title}}</button>
                         @endforeach
+                        
                     </p>
                     </div>
                 </div>

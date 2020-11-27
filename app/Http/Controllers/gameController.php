@@ -278,4 +278,8 @@ class gameController extends Controller
         $genre = Genre::all();
         return view('gameView.gamehome',compact('data','genre','id'));
     }
+    public function show_review($game_id){
+        $game = gameCRUD::with('review')->where('custom_url','=',$game_id)->first();
+        return view('gameView.all_review',compact('game'));
+    }
 }
