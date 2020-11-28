@@ -11,6 +11,8 @@ use App\Models\Game;
 use App\Models\gameUser;
 use App\Models\gameCRUD;
 use App\Helpers\UserHelp;
+use App\Models\userCollection;
+
 use App\Models\ProfileManager;
 use DataTables;
 use Illuminate\Support\Facades\File;
@@ -88,17 +90,20 @@ class UserProfileController extends Controller
         }
         $unique = Profile::where('username','=',$request->get('username'))->exists();
         if(!$unique && $request->get('username')){
+            $updateCollection = userCollection::where('profile_id',$updateProfile->username)->get();
+            foreach($updateCollection as $update){
+                $update->profile_id = $request->get('username');
+                $update->save();
+            }
             $updateProfile->username = $request->get('username');
             $updateProfile->save();
             $request->session()->forget('username');
             $request->session()->put('username',$request->get('username'));
         }
-        elseif($unique && $request->get('username')){
-            flashy()->push('This message will be flashed.');
+        elseif($unique && $request->get('username')){   
             return redirect()->route('profile.show',$request->session()->get('username'))->with(['error' => 'Username sudah terpakai']);
         }
 
-        flashy()->push('This message wisss.');
     return redirect()->route('profile.show',$request->session()->get('username'))->with(['success' => 'Data berhasil diubah']);
 }
 
@@ -128,5 +133,13 @@ class UserProfileController extends Controller
         $data = Profile::all();
         dd($data);
         
+    }
+    public function show_collection($id){
+        $data = userCollection::where('profile_id',$id)->get()->load('game')->toJson();
+        return $data;
+    }
+    public function single_collection($collection_id){
+        $data = userCollection::with('game')->find($collection_id)->toJson();
+        return $data;
     }
 }

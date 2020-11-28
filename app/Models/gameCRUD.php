@@ -43,5 +43,8 @@ class gameCRUD extends Eloquent
     public function userWishlist(){
         return $this->belongsToMany(gameCRUD::class,null,'game_wishlist','wishlist');
     }
+    public function user_collection(){
+        return $this->belongsToMany(userCollection::class,null,'game_ids','collection');
+    }
     
 }

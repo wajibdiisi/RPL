@@ -204,7 +204,7 @@
 
     <!-- Authentication Links -->
    
-    <div id="app">
+    <div>
         <nav class="navbar navbar-expand-md navbar-light" style="background-color: #071224;">
             <div class="container">
                 <a class="navbar-brand text-white tittle" href="{{ url('/') }}">

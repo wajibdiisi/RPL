@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Models\Genre;
 use App\Models\gameCRUD;
+use App\Models\Profile;
 use App\Http\Controllers\gameController;
 
 /*
@@ -73,4 +74,8 @@ Route::get('profile/ssss/detail/list',[App\Http\Controllers\UserProfileControlle
 Route::get('game/{game_id}/store_rating',[App\Http\Controllers\Game\gameUserController::class,'store_rating'])->middleware('auth')->name('store_rating');
 Route::get('game/{game_id}/review/all',[App\Http\Controllers\gameController::class,'show_review'])->name('all_review');
 Route::get('game/{game_id}/wishlist/{profile_id}/action',[App\Http\Controllers\userProfileController::class,'add_wishlist'])->middleware('auth')->name('add_wishlist');
+//Route::get('profile/{id}/gameCollection/all',[App\Http\Controllers\userProfileController::class,'show_collection'])->name('show_collection');
+Route::get('profile/{id}/gameCollection/{any}', function () {
+    return view('profile.gameCollection');
+})->where('any', '.*')->name('show_collection'); 
 //vue Route::get('/{any}', [App\Http\Controllers\FrontController::class, 'index'])->where('any', '.*');
