@@ -11,8 +11,7 @@ class userCollection extends Eloquent
     protected $fillable = [
        'profile_id',
        'collection_name',
-       'collection_desc',
-       'game_ids'
+       'description'
     ];
 
     public function profile(){

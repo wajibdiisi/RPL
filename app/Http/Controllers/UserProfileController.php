@@ -21,7 +21,7 @@ class UserProfileController extends Controller
 {
     public function show($id){
         
-        $userView = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->with('profilemanager','userpost','comments','showFavourite','gameCollection')->first();
+        $userView = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->with('profilemanager','userpost','comments','showFavourite','gameCollection','collection')->first();
         if(Auth::user()){
             $currentUser = Auth::user()->id;
             $user = Profile::with('profilemanager')->where('user_id','=',$currentUser)->first();
@@ -141,5 +141,33 @@ class UserProfileController extends Controller
     public function single_collection($collection_id){
         $data = userCollection::with('game')->find($collection_id)->toJson();
         return $data;
+    }
+    public function get_currentUser(){
+        if(Auth::user())
+        $data = Profile::where('user_id','=',Auth::user()->id)->first();
+        return $data;
+    }
+
+    public function delete_fromCollection($collection_id,$game_id){
+        $data = userCollection::with('game')->find($collection_id);
+        $data->game()->detach($game_id);
+    }
+
+    public function addgame_toCollection(Request $request,$username,$game_id){
+        $data = userCollection::with('game')->find($request->get('addCollection'));
+        if(!$data->game->contains($game_id))
+        $data->game()->attach($game_id);
+        else{
+            toastr()->info('Game Already Existed on this Collection');
+        }
+        $game_url = UserHelp::getGame_URL($game_id);
+        return redirect()->route('game.show',$game_url);
+    }
+    public function new_collection(Request $request,$id){
+        return userCollection::create([
+            'collection_name' => $request->get('name'),
+            'description' => $request->get('description'),
+            'profile_id' => $id
+        ]);
     }
 }

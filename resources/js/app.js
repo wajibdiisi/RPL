@@ -5,15 +5,22 @@ window.Vue = require('vue');
 // import dependecies tambahan
 import VueRouter from 'vue-router';
 import VueAxios from 'vue-axios';
+import Vuelidate from 'vuelidate';
 import Axios from 'axios';
 
 Vue.use(VueRouter,VueAxios,Axios);
+Vue.use(Vuelidate);
 
 // import file yang dibuat tadi
 import App from './components/App.vue';
 import Read from './components/Read.vue';
 import Home from './components/Home.vue';
-Vue.prototype.$http = Axios
+import Create from './components/Create.vue';
+import { create } from 'lodash';
+Vue.prototype.$http = Axios;
+Vue.prototype.$user = window.User;
+
+
 // membuat router
 const routes = [
     {
@@ -26,9 +33,17 @@ const routes = [
         path : '/profile/:id/gameCollection/list/:collection_id',
         component : Home
     },
+    {
+        name : 'create',
+        path : '/profile/:id/gameCollection/create',
+        component : Create
+    }
     
    
 ]
+new Vue ({
+    validations: {}
+})
 
 const router = new VueRouter({ mode: 'history', routes: routes });
 new Vue(Vue.util.extend({ router }, App)).$mount("#app");

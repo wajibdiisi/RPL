@@ -4,6 +4,7 @@ use App\Models\Profile;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\UserHelp;
 use App\Models\gameCRUD;
+use App\Models\userCollection;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 class UserHelp extends Eloquent {
@@ -30,5 +31,10 @@ class UserHelp extends Eloquent {
     public static function getGame_URL($id){
         $game = gameCRUD::find($id);
         return (isset($game->custom_url)? $game->custom_url : '');
+    }
+
+    public static function getCollection($id){
+        $data = userCollection::with('game')->where('profile_id', $id)->get();
+        return (isset($data)? $data : '');
     }
 }

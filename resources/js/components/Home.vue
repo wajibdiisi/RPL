@@ -29,6 +29,7 @@ body {
 }
 .card .image img {
     width: 100%;
+    height : 100%;
 }
 
 .card-background .filter {
@@ -102,18 +103,18 @@ body {
 </style>
 <template>
 <div class="card">
-   <h3 class="mt-3 text-center text-light"> {{single_collection.profile_id}}'s {{single_collection.collection_name}} </h3>
+   <h3 class="mt-3 text-center text-light"> {{single_collection.profile_id}}'s {{single_collection.collection_name}}  <button v-if ="profile === currentUser" class="btn btn-outline-danger" @click="deleteData(game._id)" ><i class="fas fa-trash"></i></button> </h3>
  <div class="row">
-  
  <template v-for = "game in single_collection.game">
   <div class="col-md-4 offset-md-1 mb-3" :key="game.id">
-       <div @click ="ref_game(game.custom_url)"  class="card card-background">
-            <div class="image" style="background-image: url(https://via.placeholder.com/266x200/87CEEB); background-size: cover; background-position: 50% 50%;">
+       <div class="card card-background">
+            <div  @click ="ref_game(game.custom_url)"   class="image" style="background-image: url(https://via.placeholder.com/266x200/87CEEB); background-size: cover; background-position: 50% 50%;">
             <img class="img-fluid" :src="'/uploads/gamePicture/' + game.gamePicture">
                 <div class="filter"></div>
             </div>
              <div class="content">
                 <h5 class="price">{{game.gameName}}
+                  <button v-if = "profile === currentUser" class="btn btn-outline-danger float-right" @click="deleteData(game._id)" ><i class="fas fa-trash"></i></button>
                  </h5> 
             </div>
         </div>
@@ -130,7 +131,9 @@ export default {
   data() {
     return {
       // variable array yang akan menampung hasil fetch dari api
-      single_collection: []
+      single_collection: [],
+      profile : this.$route.params.id,
+      currentUser : this.$user
     };
   },
   created() {
@@ -147,9 +150,15 @@ export default {
             this.single_collection = response.data;
         });
     },
+    deleteData($id){
+      this.$http.delete("/api/delete_fromCollection/" + this.$route.params.collection_id + "/delete/" + $id).then(response => {
+        this.loadData();
+      });
     
+    }
   }
-};
+}
+
 </script>
 
 <!-- script js 

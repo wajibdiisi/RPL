@@ -324,11 +324,14 @@
 	padding:15px 15px 20px 15px;
 	border-radius:3px;
 }
-
+.toast-message{
+  color : black;
+}
 
     </style>
 </head>
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
+
 <body>
     @livewire('game.show-game',['game' => $game,'dataBar' =>$dataBar,'star_rating' => $star_rating])
 

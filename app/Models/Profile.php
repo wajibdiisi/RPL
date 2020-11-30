@@ -45,6 +45,11 @@ class Profile extends Eloquent
     public function gameWishlist(){
         return $this->belongsToMany(gameCRUD::class,null,'wishlist','game_wishlist');
     }
+
+    public function collection(){
+        return $this->hasMany(userCollection::class,'profile_id','username');
+    }
+
     /*public function searchableAs(){
         return 'mygame';
     }

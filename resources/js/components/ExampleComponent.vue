@@ -6,7 +6,7 @@
                     <div class="card-header">Example Component</div>
 
                     <div class="card-body">
-                        I'm an example component.sssS
+                        <p>{{user.name}}</p>
                     </div>
                 </div>
             </div>
@@ -16,8 +16,16 @@
 
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
+        props :['data'],
+        created(){
+          this.loadData();
+        },
+        methods : {
+            loadData(){
+                console.log('sss');
+            }
         }
+        
     }
+    
 </script>

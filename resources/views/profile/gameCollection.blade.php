@@ -236,8 +236,20 @@
             </div>
         </div>
     </nav>
+    @if(Auth::user())
+    @php $profile_id = UserHelp::get_username(Auth::user()->id)
+    @endphp
+    @else
+        @php $profile_id = 'guest'; @endphp
+    @endif
+
+
+    <script>
+        window.User = {!! json_encode($profile_id) !!}
+    </script>
     <div id="app"></div>
  
     <script src="{{ asset('js/app.js') }}"></script>
+
 </body>
 </html>
