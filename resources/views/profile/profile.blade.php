@@ -554,9 +554,9 @@
                             <form enctype="multipart/form-data" action="{{ route('profile.update', $currentUser_id) }}"
                                 method="POST">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                    <div class="modal-content text-light " style="background-color : #111D35">
+                                        <div class="modal-header" style="border:none">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Change Account Info</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -564,27 +564,59 @@
                                         <div class="modal-body">
                                             <div class="form-group">
                                                 <label for="recipient-name"
-                                                    class="col-form-label text-dark">Username</label>
-                                                <input type="text" class="form-control" name="username">
+                                                    class="col-form-label float-left">Username</label>
+                                                <input type="text" class="form-control" name="username" style="background-color : #111D35 ;border-color :#071224;">
                                             </div>
                                             <div class="form-group">
-                                                <label for="nama_lengkap" class="col-form-label text-dark">Nama
+                                                <label for="nama_lengkap" class="col-form-label float-left ">Nama
                                                     Lengkap</label>
-                                                <input type="text" class="form-control" name="nama_lengkap">
+                                                <input type="text" class="form-control" name="nama_lengkap" style="background-color : #111D35; border-color :#071224;">
                                             </div>
 
 
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
+                                        <div class="modal-footer" style="border:none">
+                                            <button type="button" class="btn btn-outline-secondary"
                                                 data-dismiss="modal">Close</button>
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <input type="submit" class="pull-right btn btn-sm btn-primary">
+                                            <input type="submit" class="pull-right btn btn-outline-primary">
                                         </div>
                                     </div>
                                 </div>
+                            </form>
                         </div>
-                        </form>
+                        <div class="modal fade" id="changeAbout" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <form enctype="multipart/form-data" action="{{ route('profile.updateAbout', $currentUser_id) }}"
+                                method="POST">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content text-light " style="background-color : #111D35">
+                                        <div class="modal-header" style="border:none">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Change Account Info</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="recipient-name"
+                                                    class="col-form-label float-left">About You</label>
+                                            <textarea class="form-control text-light" name="about" style="background-color : #111D35 ;border-color :#071224;" row ="3" >{{$userView->about}}</textarea>
+                                            </div>
+                                          
+
+
+                                        </div>
+                                        <div class="modal-footer" style="border:none">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="submit" class="pull-right btn btn-outline-primary">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                         <form enctype="multipart/form-data" action="{{ route('profile.update', $currentUser_id) }}"
                             method="POST">
                             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
@@ -661,12 +693,11 @@
                     <div class="card-heading clearfix mt-3">
                         <h4 class="card-title">About @if ($userView->id == $currentUser_id)<button
                             class="float-right btn btn-outline-primary btn-sm" type="button"
-                            data-toggle="modal" data-target="#changeprofile"><i
+                            data-toggle="modal" data-target="#changeAbout"><i
                                 class="far fa-edit"></i></button>@endif</h4>
                     </div>
                     <div class="card-body mb-3">
-                        <p class="mb-0">Lorem ipsum dolor sitelt amet, consectetur adipis icing elit, sed do
-                            eiusmod tempor incididunt utitily labore et dolore magna aliqua metavta.</p>
+                    <p class="mb-0">{{$userView->about}}</p>
                     </div>
                     <hr />
                     <div class="card-heading clearfix mt-3">

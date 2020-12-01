@@ -35,6 +35,7 @@ Route::get('/profile', function (){
 Route::get('profile/{id}', [App\Http\Controllers\UserProfileController::class, 'show'])->name('profile.show');
 Route::get('myprofile', [App\Http\Controllers\UserProfileController::class, 'show'])->middleware('verified')->name('myprofile.show');
 Route::post('profile/updateProfile/{id}', [App\Http\Controllers\UserProfileController::class, 'update_avatar'])->middleware('auth')->name('profile.update');
+Route::post('profile/updateProfile/{id}/about', [App\Http\Controllers\UserProfileController::class, 'update_about'])->middleware('auth')->name('profile.updateAbout');
 Route::get('/search',[App\Http\Controllers\SearchController::class,'search'])->middleware('auth')->name('search');
 Route::get('/gameIndex', [App\Http\Controllers\gameController::class, 'index'])->name('gameIndex');
 Route::get('/gameEdit', [App\Http\Controllers\gameController::class, 'edit'])->name('gameEdit');

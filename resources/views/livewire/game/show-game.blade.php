@@ -25,7 +25,7 @@
                 -ms-box-shadow: 1px 1px 2px 0 #CCCCCC;
                 box-shadow: 1px 1px 2px 0 #CCCCCC;
                 margin-bottom: 16px;
-                -webikt-border-radius: 3px;
+                -webkit-border-radius: 3px;
                 -moz-border-radius: 3px;
                 border-radius: 3px;
             }
@@ -131,6 +131,79 @@
                 font-size: 45px;
                 content: "\f005 \f005 \f005 \f005 \f005"
             }
+            .inputGroup {
+                background-color: #111D35;
+	 display: block;
+	 margin: 10px 0;
+	 position: relative;
+}
+ .inputGroup label {
+	 padding: 12px 30px;
+	 width: 100%;
+	 display: block;
+	 text-align: left;
+	 color: #3c454c;
+	 cursor: pointer;
+	 position: relative;
+	 z-index: 2;
+	 transition: color 200ms ease-in;
+	 overflow: hidden;
+}
+ .inputGroup label:before {
+	 width: 10px;
+	 height: 10px;
+	 border-radius: 50%;
+	 content: '';
+	 background-color: #5562eb;
+	 position: absolute;
+	 left: 50%;
+	 top: 50%;
+	 transform: translate(-50%, -50%) scale3d(1, 1, 1);
+	 transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+	 opacity: 0;
+	 z-index: -1;
+}
+ .inputGroup label:after {
+	 width: 32px;
+	 height: 32px;
+	 content: '';
+	 border: 2px solid #d1d7dc;
+	 background-color: #fff;
+	 background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.414 11L4 12.414l5.414 5.414L20.828 6.414 19.414 5l-10 10z' fill='%23fff' fill-rule='nonzero'/%3E%3C/svg%3E ");
+	 background-repeat: no-repeat;
+	 background-position: 2px 3px;
+	 border-radius: 50%;
+	 z-index: 2;
+	 position: absolute;
+	 right: 30px;
+	 top: 50%;
+	 transform: translateY(-50%);
+	 cursor: pointer;
+	 transition: all 200ms ease-in;
+}
+ .inputGroup input:checked ~ label {
+	 color: #fff;
+}
+ .inputGroup input:checked ~ label:before {
+	 transform: translate(-50%, -50%) scale3d(56, 56, 1);
+	 opacity: 1;
+}
+ .inputGroup input:checked ~ label:after {
+	 background-color: #54e0c7;
+	 border-color: #54e0c7;
+}
+ .inputGroup input {
+	 width: 32px;
+	 height: 32px;
+	 order: 1;
+	 z-index: 2;
+	 position: absolute;
+	 right: 30px;
+	 top: 50%;
+	 transform: translateY(-50%);
+	 cursor: pointer;
+	 visibility: hidden;
+}
 
         </style>
         <div class="main-body">
@@ -221,6 +294,18 @@
                         </ul>
                     </div>
 
+                    <div class="card mt-3">
+                        <div class="card-body">
+                        <h3> User Collection (<?php $count =  $game->user_collection->count();
+                        echo $count?>) </h3>
+                        @if($count <= 3)
+                        @foreach($game->user_collection->random($count) as $collection)    
+                        <h6><a href="/profile/{{$collection->profile_id}}/gameCollection/list/{{$collection->id}}"> {{$collection->collection_name}}'s by {{$collection->profile_id}}</a></h6>
+                        @endforeach
+                        @endif
+                        </div>
+                    </div>
+
                 </div>
 
 
@@ -255,62 +340,48 @@
                                     <a href="{{ route('game.addFav', ['game_id' =>$game->id ]) }}"
                                         class="btn btn-primary ml-2">Add Favourite</a>
                                     @endif
-                                    <div class="modal fade text-dark" id="add<?= $game->id ?>" tabindex="-1" role="dialog"
+                                    <div class="modal fade text-light" id="add<?= $game->id ?>" tabindex="-1" role="dialog"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <form enctype="multipart/form-data"
                                             action="{{ route('game.store', ['game_id' =>$game->id ]) }}" method="GET">
                                             @csrf
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content" style=" background-color: #111D35;">
+                                                    <div class="modal-header" style="border:none">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Add Game to Your Gamelist</h5>
                                                         <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <div class="custom-control custom-radio">
-                                                            <input type="radio" class="custom-control-input" id="add1"
-                                                                name="addRadio" value="Want to Play">
-                                                            <label class="custom-control-label" for="add1">Want to
-                                                                Play</label>
-                                                        </div>
-
-
-                                                        <div class="custom-control custom-radio">
-                                                            <input type="radio" class="custom-control-input" id="add2"
-                                                                name="addRadio" value="Currently Playing" required>
-                                                            <label class="custom-control-label" for="add2">Currently
-                                                                Playing</label>
-                                                        </div>
-
-
-                                                        <div class="custom-control custom-radio">
-                                                            <input type="radio" class="custom-control-input" id="add3"
-                                                                name="addRadio" value="Beaten">
-                                                            <label class="custom-control-label"
-                                                                for="add3">Beaten</label>
-                                                        </div>
-
-                                                        <div class="custom-control custom-radio">
-                                                            <input type="radio" class="custom-control-input" id="add4"
-                                                                name="addRadio" value="Completed">
-                                                            <label class="custom-control-label"
-                                                                for="add4">Completed</label>
-                                                        </div>
-
-                                                        <div class="custom-control custom-radio">
-                                                            <input type="radio" class="custom-control-input" id="add5"
-                                                                name="addRadio" value="Dropped">
-                                                            <label class="custom-control-label"
-                                                                for="add5">Dropped</label>
-                                                        </div>
+                                                        <div class="inputGroup">
+                                                            <input id="radio1" name="addRadio" type="radio" value="Want to Play"/>
+                                                            <label for="radio1" class="text-light">Want to Play</label>
+                                                          </div>
+                                                          <div class="inputGroup">
+                                                            <input id="radio2" name="addRadio" type="radio" value="Currently Playing"/>
+                                                            <label for="radio2" class="text-light">Currently Playing</label>
+                                                          </div>
+                                                        
+                                                          <div class="inputGroup">
+                                                            <input id="radio3" name="addRadio" type="radio" value="Beaten" />
+                                                            <label for="radio3" class="text-light">Beaten</label>
+                                                          </div>
+                                                          <div class="inputGroup">
+                                                            <input id="radio4" name="addRadio" type="radio" value="Completed" />
+                                                            <label for="radio4" class="text-light">Completed</label>
+                                                          </div>
+                                                          <div class="inputGroup">
+                                                            <input id="radio5" name="addRadio" type="radio" value="Dropped" />
+                                                            <label for="radio5" class="text-light">Dropped</label>
+                                                          </div>
+                                                        
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
+                                                    <div class="modal-footer" style="border:none">
+                                                        <button type="button" class="btn btn-outline-secondary"
                                                             data-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary">Save
+                                                        <button type="submit" class="btn btn-outline-primary">Save
                                                             changes</button>
                                         </form>
                                     </div>
@@ -324,30 +395,31 @@
                             <form enctype="multipart/form-data"
                                             action="{{ route('addgame_toCollection', ['username' => $username,'game_id' => $game->id ]) }}" method="GET">
                                             @csrf
-                            <div class="modal-dialog" role="document">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
                               <div class="modal-content"  style=" background-color: #111D35;">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                <div class="modal-header" style="border:none">
+                                  <h5 class="modal-title" id="exampleModalLabel">Select Collection</h5>
                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                   </button>
                                 </div>
                                 <div class="modal-body">
-                                <h4> Select Collection</h4>
-                               
+                                    
+                                    @if(UserHelp::getCollection($username)->isNotEmpty())
+                                    <h6> Your Collections</h6>
                                 @foreach (UserHelp::getCollection($username) as $index => $collection)
-                                
-                                <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" id="{!! $index !!}"
-                                name="addCollection" value="{!! $collection->_id !!}">
-                                    <label class="custom-control-label" for="{!! $index !!}">
-                                    {{$collection->collection_name}}</label>
-                                </div>
+                                <div class="inputGroup">
+                                    <input id="{!! $index !!}" name="addCollection" type="radio" value="{!! $collection->_id !!}"/>
+                                    <label for="{!! $index !!}" class="text-light">{{$collection->collection_name}}</label>
+                                  </div>
                                 @endforeach
+                                @else
+                                <h6> You never made a collection before <a class="btn btn-outline-primary btn-sm" href="/profile/{{$username}}/gameCollection/create"> Click here to make one</a> </h6>
+                                @endif
                                 </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                  <button type= "submit" class="btn btn-primary">Save changes</button>
+                                <div class="modal-footer" style="border:none">
+                                  <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                                  <button type= "submit" class="btn btn-outline-primary">Save changes</button>
                                 </div>
                               </div>
                             </div>
@@ -938,18 +1010,7 @@
                             <div class="reviews-members-body">
                                 <p>{{$review->review_content}}</p>
                             </div>
-                            <div class="reviews-members-footer row">
-                                <div class="col-md-1">
-                                    <a class="total-like btn btn-outline-primary"
-                                        href="{{ route('like.review',['id' =>$review->id,'user_id' =>$currentUser]) }}"><i
-                                            class="icofont-thumbs-up"></i> <i class="fas fa-thumbs-up"></i></a>
-                                </div>
-                                <div class="col-md-1">
-                                    <a class="total-like btn btn-outline-primary" href="#"><i
-                                            class="icofont-thumbs-down"></i>
-                                        <i class="fas fa-thumbs-down"></i></a>
-                                </div>
-                            </div>
+                            
                             @if($review->thumbsup)
                             {{count($review->thumbsup)}} Users found this review useful
                             @endif
@@ -1074,7 +1135,7 @@
                                     <input type='radio' id="star1" wire:model="rating" name="rating" value='1' /><label
                                         for='star1' title='Sucks big time'>1 star</label>
                                 </fieldset>
-                                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                                <button type="submit" class="btn btn-outline-primary btn-sm">Submit</button>
                             </form>
                         </div>
                     </div>

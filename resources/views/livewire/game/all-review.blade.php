@@ -47,7 +47,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="progress">
-                                                    <div class="progress-bar bg-success" role="progressbar" style="width: @if($game->review->has('rating')){{$game->review->where('rating','like')->count()/$game->review->count() * 100}}% @else 0% @endif"
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: @if($game->review->where('rating','like')->count() != 0){{$game->review->where('rating','like')->count()/$game->review->count() * 100}}% @else 0% @endif"
                                                         aria-valuenow="47" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </li>
@@ -61,7 +61,7 @@
                                                 </div>
                                                
                                                 <div class="progress">
-                                                    <div class="progress-bar bg-orange" role="progressbar" style="width: @if($game->review->has('rating')){{$game->review->where('rating','dislike')->count()/$game->review->count() * 100}}% @else 0% @endif"
+                                                    <div class="progress-bar bg-orange" role="progressbar" style="width: @if($game->review->where('rating','dislike')->count() != 0){{$game->review->where('rating','dislike')->count()/$game->review->count() * 100}}% @else 0% @endif"
                                                         aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </li>
@@ -74,7 +74,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="progress">
-                                                    <div class="progress-bar bg-info" role="progressbar" style="width: @if($game->review->has('rating')){{$game->review->where('rating','neutral')->count()/$game->review->count() * 100}}% @else 0% @endif"
+                                                    <div class="progress-bar bg-info" role="progressbar" style="width: @if($game->review->where('rating','neutral')->count() != 0){{$game->review->where('rating','neutral')->count()/$game->review->count() * 100}}% @else 0% @endif"
                                                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </li>
@@ -145,17 +145,20 @@
                                             <div class="reviews-members-footer row">
                                                 <div class="mr-1 ml-3">
                                                     <a class="total-like btn btn-outline-primary"
-                                                        href="{{ route('like.review',['id' =>$review->id,'user_id' =>$currentUser]) }}"><i
+                                                wire:click ="addLike('{{$review->id}}','{{$currentUser}}')"><i
                                                             class="icofont-thumbs-up"></i> <i class="fas fa-thumbs-up"></i></a>
                                                 </div>
                                                 <div class="">
-                                                    <a class="total-like btn btn-outline-primary" href="#"><i
+                                                    <a class="total-like btn btn-outline-primary" wire:click ="removeLike('{{$review->id}}','{{$currentUser}}')"><i
                                                             class="icofont-thumbs-down"></i>
                                                         <i class="fas fa-thumbs-down"></i></a>
                                                     </div>
                                                 </div>
-                                                @if($review->thumbsup)
-                                                    {{count($review->thumbsup)}} Users found this review useful
+                                                @if($review->thumbsup  != null )
+                                                    {{count($review->thumbsup)}} Users found this review is useful,
+                                                @endif
+                                                @if($review->thumbsdown != null)
+                                                    {{count($review->thumbsdown)}} Users found this review is not useful
                                                 @endif
                                         </div>
                                     </div>

@@ -11,6 +11,8 @@ use App\Models\Game;
 use App\Models\gameUser;
 use App\Models\gameCRUD;
 use App\Helpers\UserHelp;
+use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\userCollection;
 
 use App\Models\ProfileManager;
@@ -101,11 +103,26 @@ class UserProfileController extends Controller
             $request->session()->put('username',$request->get('username'));
         }
         elseif($unique && $request->get('username')){   
-            return redirect()->route('profile.show',$request->session()->get('username'))->with(['error' => 'Username sudah terpakai']);
+            toastr()->error('Username sudah terpakai');
+            return redirect()->route('profile.show',$request->session()->get('username'));
         }
 
     return redirect()->route('profile.show',$request->session()->get('username'))->with(['success' => 'Data berhasil diubah']);
 }
+
+    public function update_about(Request $request,$id){
+        $validator = Validator::make($request->all(),[
+            'about' =>'required|min:5|max:100',
+        ]);
+        if($validator->fails()){
+            toastr()->error('About must have at least 5 letters and 100 Letters at most ');
+            return redirect()->back();
+        }
+
+        $profile = Profile::where('_id',$id)->orWhere('username',$id)->first();
+        $profile->update(['about'  => $request->get('about')]);
+        return redirect()->route('profile.show',$id);
+    }
 
 
     public function detail(Request $request,$id){
@@ -129,11 +146,6 @@ class UserProfileController extends Controller
         return view('profile.profile_detail',compact('user'));
     }
 
-    public function dataTable(){
-        $data = Profile::all();
-        dd($data);
-        
-    }
     public function show_collection($id){
         $data = userCollection::where('profile_id',$id)->get()->load('game')->toJson();
         return $data;
@@ -152,13 +164,16 @@ class UserProfileController extends Controller
         $data = userCollection::with('game')->find($collection_id);
         $data->game()->detach($game_id);
     }
+    
 
     public function addgame_toCollection(Request $request,$username,$game_id){
         $data = userCollection::with('game')->find($request->get('addCollection'));
-        if(!$data->game->contains($game_id))
+        if(!$data->game->contains($game_id)){
         $data->game()->attach($game_id);
+        Alert::success('Success', "Game Added Successfully to $data->collection_name ");
+        }
         else{
-            toastr()->info('Game Already Existed on this Collection');
+            Alert::warning("Operation Failed", "Game already existed in $data->collection_name");
         }
         $game_url = UserHelp::getGame_URL($game_id);
         return redirect()->route('game.show',$game_url);
@@ -169,5 +184,10 @@ class UserProfileController extends Controller
             'description' => $request->get('description'),
             'profile_id' => $id
         ]);
+    }
+    public function delete_collection($id,$collection_id){
+        $data = userCollection::with('game')->where('_id',$collection_id)->where('profile_id',$id)->first();
+            $data->game()->detach();
+            $data->delete();
     }
 }

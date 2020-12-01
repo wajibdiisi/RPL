@@ -163,6 +163,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Yoeunes\Toastr\ToastrServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
+        RealRashid\SweetAlert\SweetAlertServiceProvider::class,
     
     
 
@@ -235,6 +236,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'UserHelp' => App\Helpers\UserHelp::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
 
     ],
 

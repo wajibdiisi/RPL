@@ -1,3 +1,4 @@
+<script src="https://unpkg.com/vue-swal"></script>
 <style scoped>
 .card {
   background-color: #131f39;
@@ -15,7 +16,7 @@
         <div class="row justify-content-center text-light">
             <div class="col-md-12 card">
                
-                    <div class="card-header">Create New Collection  <button type="button" class="close" aria-label="Close" x-on:click="tab = 'foo'">
+                    <div class="card-header">Create New Collection  <button type="button" class="close" aria-label="Close" @click="$router.go(-1)">
             <span aria-hidden="true">&times;</span>
         </button></div>
                 <div class="card-body">
@@ -61,14 +62,27 @@ import { required, minLength, maxLength, between } from 'vuelidate/lib/validator
             },
             description: {
                 required,
-                maxLength :maxLength(100),
+                maxLength :maxLength(300),
             },
         },
         methods : {
             addData(){
                 this.$v.$touch(); 
 			if(this.$v.$error) return 
-			alert('Form submitted') 
+            
+            
+                this.$swal ({
+                    icon : "success",
+                    title : "Collection Created",
+                    button: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "",
+                        closeModal: true,
+                    }
+                });
+            
                 let uri = `/api/profile/${this.$route.params.id}`;
                 this.$http.post("/api/profile/" + this.$route.params.id + "/new_collection",{
                     name : this.name,

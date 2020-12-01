@@ -6,10 +6,12 @@ window.Vue = require('vue');
 import VueRouter from 'vue-router';
 import VueAxios from 'vue-axios';
 import Vuelidate from 'vuelidate';
+import VueSwal from 'vue-sweetalert2';
 import Axios from 'axios';
 
 Vue.use(VueRouter,VueAxios,Axios);
 Vue.use(Vuelidate);
+Vue.use(VueSwal);
 
 // import file yang dibuat tadi
 import App from './components/App.vue';

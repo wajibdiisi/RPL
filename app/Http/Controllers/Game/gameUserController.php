@@ -10,6 +10,7 @@ use App\Models\Review;
 use App\Models\Profile;
 use App\Helpers\UserHelp;
 use App\Models\gameCRUD;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class gameUserController extends Controller
 {
@@ -149,7 +150,7 @@ class gameUserController extends Controller
     public function like_review($id,$user_id){
         $review = Review::find($id);
         $review->push('thumbsup',$user_id,true);
-        return redirect()->route('game.show',UserHelp::getGame_URL($review->game_id));
+        return redirect()->route('all_review',UserHelp::getGame_URL($review->game_id));
     }
 
     /**

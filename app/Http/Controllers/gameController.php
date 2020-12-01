@@ -108,7 +108,7 @@ class gameController extends Controller
     public function show($id)
     {
         
-        $game = gameCRUD::with(['genre','review','gameUser'])->get()->find($id);
+        $game = gameCRUD::with(['genre','review','gameUser','user_collection'])->get()->find($id);
 
         $key = 'game' . $game->id;
        

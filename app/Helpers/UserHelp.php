@@ -35,6 +35,6 @@ class UserHelp extends Eloquent {
 
     public static function getCollection($id){
         $data = userCollection::with('game')->where('profile_id', $id)->get();
-        return (isset($data)? $data : '');
+        return (isset($data) ? $data : null );
     }
 }

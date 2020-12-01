@@ -16,7 +16,8 @@ class Profile extends Eloquent
         'avatar',
         'favourite_game',
         'last_seen',
-        'game_wishlist'
+        'game_wishlist',
+        'about'
     ];
     public function user(){
         return $this->hasOne(User::class,'_id','user_id');

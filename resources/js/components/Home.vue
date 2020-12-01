@@ -100,6 +100,7 @@ body {
 .card-background img {
   max-height : 100%
 }
+
 </style>
 <template>
 <div class="card">
@@ -151,9 +152,31 @@ export default {
         });
     },
     deleteData($id){
-      this.$http.delete("/api/delete_fromCollection/" + this.$route.params.collection_id + "/delete/" + $id).then(response => {
+      
+      this.$swal({
+            background: '#111D35',
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            closeOnCancel: true
+            }).then((result) => {
+                //send request to server 
+                if (result.value) {
+                      
+     this.$http.delete("/api/delete_fromCollection/" + this.$route.params.collection_id + "/delete/" + $id).then(response => {
         this.loadData();
-      });
+                    });
+                    this.$swal(
+                    'Deleted!',
+                    'Your post has been deleted!',
+                    'success'
+                    )
+                }
+            })
     
     }
   }

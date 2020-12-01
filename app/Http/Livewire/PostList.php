@@ -39,12 +39,26 @@ class PostList extends Component
     }
     
     public function addLike($post_id,$currentUser_id){
+        if(!auth()->user()){
+            $notification = array(
+                'message' => 'You Must Login First',
+                'alert-type' => 'danger'
+            );
+           return redirect()->route('home');
+        };
         $postData = userPost::find($post_id);
         $postData->push('like',$currentUser_id,true);
         session()->flash('message', 'Like Added Successfully');
         $this->emit('likeStored');
     }
     public function removeLike($post_id,$currentUser_id){
+        if(!auth()->user()){
+            $notification = array(
+                'message' => 'You Must Login First',
+                'alert-type' => 'danger'
+            );
+           return redirect()->route('home');
+        };
         $post = userPost::find($post_id);
         session()->flash('danger', 'Like Deleted Successfully');
         $post->pull('like',$currentUser_id);

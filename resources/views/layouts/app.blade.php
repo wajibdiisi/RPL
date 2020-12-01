@@ -267,7 +267,7 @@
     </div>
 
     @stack('javascripts')
-   
+    @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js"></script>
     @livewireScripts
 </body>

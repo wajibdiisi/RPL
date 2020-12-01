@@ -22,3 +22,4 @@ Route::get('profile/{id}',[App\Http\Controllers\userProfileController::class,'sh
 Route::get('get_collection/{collection_id}',[App\Http\Controllers\userProfileController::class,'single_collection']);
 Route::post('profile/{id}/new_collection', [App\Http\Controllers\userProfileController::class,'new_collection']);
 Route::delete('delete_fromCollection/{collection_id}/delete/{game_id}',[App\Http\Controllers\userProfileController::class,'delete_fromCollection']);
+Route::delete('profile/{id}/delete_collection/{collection_id}',[App\Http\Controllers\userProfileController::class,'delete_collection']);
