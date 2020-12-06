@@ -103,12 +103,14 @@ class gameUserController extends Controller
     public function addFavourite($game_id){
         $profile = Profile::with('game_favourite')->where('user_id','=',Auth::user()->id)->first();
         $profile->game_favourite()->attach($game_id);
-        return redirect()->route('gameView.show',$game_id);
+        $game_url = UserHelp::getGame_URL($game_id);
+        return redirect()->route('game.show',$game_url);
     }
     public function removeFavourite($game_id){
         $profile = Profile::with('game_favourite')->where('user_id','=',Auth::user()->id)->first();
         $profile->game_favourite()->detach($game_id);
-        return redirect()->route('gameView.show',$game_id);
+        $game_url = UserHelp::getGame_URL($game_id);
+        return redirect()->route('game.show',$game_url);
         
     }
     /**

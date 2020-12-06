@@ -104,7 +104,7 @@ body {
 </style>
 <template>
 <div class="card">
-   <h3 class="mt-3 text-center text-light"> {{single_collection.profile_id}}'s {{single_collection.collection_name}}  <button v-if ="profile === currentUser" class="btn btn-outline-danger" @click="deleteData(game._id)" ><i class="fas fa-trash"></i></button> </h3>
+   <h3 class="mt-3 text-center text-light"> {{single_collection.profile_id}}'s {{single_collection.collection_name}}  <button v-if ="profile === currentUser" class="btn btn-outline-danger" @click="deleteCollection(single_collection._id)" ><i class="fas fa-trash"></i></button> </h3>
  <div class="row">
  <template v-for = "game in single_collection.game">
   <div class="col-md-4 offset-md-1 mb-3" :key="game.id">
@@ -151,6 +151,35 @@ export default {
             this.single_collection = response.data;
         });
     },
+    deleteCollection($id){
+      this.$swal({
+            background: '#111D35',
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            closeOnCancel: true
+            }).then((result) => {
+                //send request to server 
+                if (result.value) {
+                      let uri = "/api/profile/" + this.$route.params.id + "/delete_collection/" + $id;
+      this.$http.delete(uri).then((response) =>{
+        this.$router.push("/profile/" + this.$route.params.id + "/gameCollection/all");
+                    });
+                    this.$swal({
+                    background: '#111D35',
+                    title : 'Deleted!',
+                    text : 'Your Collection has been deleted!',
+                    icon : 'success',
+                    }
+                    )
+                }
+            })
+     
+  },
     deleteData($id){
       
       this.$swal({
@@ -172,7 +201,7 @@ export default {
                     });
                     this.$swal(
                     'Deleted!',
-                    'Your post has been deleted!',
+                    'This game has been deleted from Collection!',
                     'success'
                     )
                 }

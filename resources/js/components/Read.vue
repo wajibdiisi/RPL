@@ -66,7 +66,8 @@ img:hover {
                     <div>
                         <div v-for="(collect,index) in collection" :key="index">
                         
-                        <h3><router-link :to="{ name : 'home' , params: {collection_id : collect._id } }">{{collect.collection_name}} ({{collect.game.length}})</router-link> <button v-if ="profile === currentUser" class="btn btn-outline-danger" @click="delete_collection(collect._id)" ><i class="fas fa-trash"></i></button></h3>
+                        <h3><router-link :to="{ name : 'home' , params: {collection_id : collect._id } }">{{collect.collection_name}} ({{collect.game.length}})</router-link> <button v-if ="profile === currentUser" class="btn btn-sm btn-outline-danger" 
+                        @click="delete_collection(collect._id)" ><i class="fas fa-trash"></i></button></h3>
                             <h6> {{collect.description}}</h6>
                             <div class="col-md-12 d-flex flex-nowrap">
                                 <div v-for="(game,index_game) in collect.game" :key="index_game">
@@ -138,10 +139,12 @@ export default {
       this.$http.delete(uri).then((response) =>{
         this.loadData();
                     });
-                    this.$swal(
-                    'Deleted!',
-                    'Your post has been deleted!',
-                    'success'
+                    this.$swal({
+                    background: '#111D35',
+                    title : 'Deleted!',
+                    text : 'Your post has been deleted!',
+                    icon : 'success',
+                    }
                     )
                 }
             })

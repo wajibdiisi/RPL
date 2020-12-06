@@ -23,33 +23,13 @@ class gameController extends Controller
     public function index()
     {
       
-        
-        /*$genres = DB::collection('genre')->get();
-        $games = Genre::with('game_genre')->get();
-        $genres = collect();
-        $test = collect();
-        $new = collect();
-        foreach($model as $m){
-            $test->push($m->id);
-        }
-        foreach($games as $game){
-            foreach($test as $mod){
-                if($game->id == $game->game_genre->pluck('genre_id')->get('0') && $mod == $game->game_genre->pluck('game_id')->get('0'))
-                $genres->push(DB::collection('game_genre')->where('game_id',$mod)->where('genre_id',$game->game_genre->pluck('genre_id')->get('0'))->get());
-            }
-        }
-        $reference = collect($genres)->map(function ($item){
-                return (object)$item;
-        });
-        var_dump($genres->flatten());
-            //$genres = DB::collection('game_genre')->where('game_id',$model)->where('genre_id',$genreView->genre_id)->get();
-        //$genres = gameGenre::where('game_id',$model['_id'])->where('genre_id',$genreView->genre_id)->get();
- */
-        /*
-        $games = gameCRUD::with(['game_genre','game_genre.genre'])->get();
-        */
         $games = gameCRUD::with(['genre'])->get();
         return view('gameView.index',compact('games'))->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    public function welcome(){
+        $games = gameCRUD::orderBy('view_counter','desc')->get()->take('6');
+        return view('welcome',compact('games'));
     }
 
     /**

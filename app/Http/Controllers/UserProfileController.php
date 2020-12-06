@@ -124,6 +124,12 @@ class UserProfileController extends Controller
         return redirect()->route('profile.show',$id);
     }
 
+    public function profile_gameDelete($id,$game_id){
+        $data = gameUser::where('profile_id',$id)->where('game_id',$game_id)->first();
+        $data->delete();
+        return redirect()->route('profile.detail',$id);
+    }
+
 
     public function detail(Request $request,$id){
         $user = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->first();
@@ -131,8 +137,8 @@ class UserProfileController extends Controller
             $data = gameUser::where('profile_id',$id)->with('gameData')->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+                ->addColumn('action', function($data){
+                    $actionBtn = '<a href="'. route('profile.game_delete', ['id' => $data->profile_id, 'game_id' => $data->game_id]) .'" class="delete btn btn-danger btn-sm">Delete</a>';
                     return $actionBtn;
                 })->addColumn('title', function($data){
                     return '<a class ="text-decoration-none" href="' . route('game.show', $data->gameData->custom_url) .'">'.$data->gameData->gameName.'</a>';      

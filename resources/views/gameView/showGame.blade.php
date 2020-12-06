@@ -1,12 +1,14 @@
 @extends('layouts.app')
+@section('title')
+{{$game->gameName}}
+
+@endsection
+
 @section('content')
 
 
 <head>
     <meta charset="utf-8">
-    <!--  This file has been downloaded from bootdey.com    @bootdey on twitter -->
-    <!--  All snippets are MIT license http://bootdey.com/license -->
-    <title>profile with data and skills - Bootdey.com</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
@@ -354,5 +356,6 @@ rootSelector: '[data-toggle=confirmation]',
 // other options
 });
 </script>
+
 
 @endsection

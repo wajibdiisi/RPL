@@ -59,7 +59,7 @@
                                     {{$platforms_id->title}}
                                 </button>
                                 @else
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                    Platform
                                 </button>
                                 @endif
@@ -75,10 +75,12 @@
                         </div>
                         <div class="toolbar-shorter">
                             <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 @if($sort)
+                                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{$sort}}
                                 @else
+                                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           
                                     Sort
                                 @endif
                                 </button>
@@ -95,10 +97,11 @@
                         </div>
                         <div class="toolbar-shorter">
                             <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                @if($key_genre)
+                               @if($key_genre)
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{$key_genre}}
                                 @else
+                                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Genre
                                 @endif
                                 </button>
@@ -131,7 +134,7 @@
                                 <button class="btn btn-outline-primary btn-sm text-primary" style="position:absolute; top : 0; left : 14px; font-weight : bold"> <i class="fas fa-eye mr-1"></i>@if($game->view_counter>0){{$game->view_counter}} @else 0 @endif</button>
                     </div>
                     <div class="game-content">
-                        <h4><a href="games-details.html">{{$game->gameName}}</a></h4>
+                        <h4><a href="{{ route('game.show',$game->custom_url) }}">{{$game->gameName}}</a></h4>
                         <p>
                         @foreach($game->platform as $platform)
                         <button class="{{$platform->button_class}} btn-sm" disabled><i class="{{$platform->i_class}}"></i> {{$platform->title}}</button>

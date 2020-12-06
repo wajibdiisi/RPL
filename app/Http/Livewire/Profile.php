@@ -17,7 +17,8 @@ class Profile extends Component
     public $currentUser_id;
     public $reviews;
     public $userView;
-    
+    public $game_post;
+
     public function resetData(){
         $this->content = '';
     }
@@ -40,9 +41,11 @@ class Profile extends Component
             'posted_by' => $this->posted_by,
             'like' => array(),
             'post_content' =>$this->content,
+            'game_mentioned' => $this->game_post,
             'comments' =>array()
         ]);
         session()->flash('message', 'Post Created Successfully');
+        $this->reset(['content', 'game_post']);
         $this->emit('postStored');
     }
 

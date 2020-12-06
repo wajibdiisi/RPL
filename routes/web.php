@@ -71,6 +71,7 @@ Route::get('/gamelist/all',function(gameController $game){
 })->name('gamelist.all'); 
 Route::get('review/{id}/{user_id}',[App\Http\Controllers\Game\gameUserController::class,'like_review'])->middleware('auth')->name('like.review');
 Route::get('profile/{id}/detail',[App\Http\Controllers\UserProfileController::class, 'detail'])->name('profile.detail');
+Route::get('profile/{id}/detail/delete/{game_id}',[App\Http\Controllers\UserProfileController::class, 'profile_gameDelete'])->name('profile.game_delete');
 Route::get('addgame_toCollection/{username}/{game_id}',[App\Http\Controllers\UserProfileController::class, 'addgame_toCollection'])->middleware('auth')->name('addgame_toCollection');
 Route::get('profile/ssss/detail/list',[App\Http\Controllers\UserProfileController::class, 'dataTable'])->name('dataTable');
 Route::get('game/{game_id}/store_rating',[App\Http\Controllers\Game\gameUserController::class,'store_rating'])->middleware('auth')->name('store_rating');
@@ -80,4 +81,8 @@ Route::get('game/{game_id}/wishlist/{profile_id}/action',[App\Http\Controllers\u
 Route::get('profile/{id}/gameCollection/{any}', function () {
     return view('profile.gameCollection');
 })->where('any', '.*')->name('show_collection'); 
+Route::get('/', function () {
+    return redirect('homepage');
+});
+Route::get('homepage', [App\Http\Controllers\gameController::class,'welcome']);
 //vue Route::get('/{any}', [App\Http\Controllers\FrontController::class, 'index'])->where('any', '.*');

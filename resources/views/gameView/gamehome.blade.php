@@ -1,5 +1,7 @@
 @extends('layouts.app_game')
-
+@section('title')
+Game Dashboard
+@endsection
 @section('content')
 <!doctype html>
 <html class="no-js" lang="zxx">

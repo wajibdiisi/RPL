@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { required, minLength, maxLength, between } from 'vuelidate/lib/validators'
+    import { required, minLength, maxLength, between } from 'vuelidate/lib/validators'
     export default {
         data(){
             return{
@@ -72,6 +72,7 @@ import { required, minLength, maxLength, between } from 'vuelidate/lib/validator
             
             
                 this.$swal ({
+                    background: '#111D35',
                     icon : "success",
                     title : "Collection Created",
                     button: {

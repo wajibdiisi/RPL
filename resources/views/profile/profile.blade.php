@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('title')
+{{$userView->username}}'s Profile
+@endsection
 
 @section('content')
 <html lang="en">
@@ -150,7 +153,6 @@
         .post-options {
             overflow: hidden;
             margin-top: 15px;
-            margin-left: 15px;
         }
 
         .post-options .backup {
@@ -507,7 +509,7 @@
                         <div class="card card-white grid-margin">
                             <div class="card-heading clearfix">
                                 
-                                <h4 class="card-title">{{ $userView->nama_lengkap }}'s Profile @if ($userView->id == $currentUser_id)<button
+                                <h4 class="card-title">{{ $userView->username }}'s Profile @if ($userView->id == $currentUser_id)<button
                                         class="float-right btn btn-outline-primary btn-sm" type="button"
                                         data-toggle="modal" data-target="#changeprofile"><i
                                             class="far fa-edit"></i></button>@endif</h4>
@@ -523,7 +525,7 @@
                                 </div>
                             </div>
                             <h4 class="text-center h6 mt-2">
-                                <?= $userView->username ?></h4>
+                                <?= $userView->nama_lengkap ?></h4>
                             <p class="text-center small">Currently Online</p>
                             @else
                             <div class='status-circle-offline'>
@@ -675,21 +677,7 @@
 
                     </div>
                     <hr />
-                    <div class="card-heading clearfix mt-3">
-                        <h4 class="card-title">Highest Achievement</h4>
-                    </div>
-                    <div class="card-body mb-3">
-
-                        <a href="#" class="label label-success mb-2">HTML</a>
-                        <a href="#" class="label label-success mb-2">CSS</a>
-                        <a href="#" class="label label-success mb-2">Sass</a>
-                        <a href="#" class="label label-success mb-2">Bootstrap</a>
-                        <a href="#" class="label label-success mb-2">Javascript</a>
-                        <a href="#" class="label label-success mb-2">Photoshop</a>
-                        <a href="#" class="label label-success">UI</a>
-                        <a href="#" class="label label-success">UX</a>
-                    </div>
-                    <hr />
+                
                     <div class="card-heading clearfix mt-3">
                         <h4 class="card-title">About @if ($userView->id == $currentUser_id)<button
                             class="float-right btn btn-outline-primary btn-sm" type="button"
@@ -754,8 +742,7 @@
             <!-- Row -->
         </div>
         <!-- end page main wrapper -->
-        <button class="btn btn-default" data-toggle="confirmation">Confirmation</button>
-        
+       
     </div>
     </div>
     <script>

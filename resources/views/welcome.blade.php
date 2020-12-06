@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Portfolio Website</title>
+    <title>Welcome to Mygamelist</title>
+    <link rel="shortcut icon" href="{{ asset('logo.ico') }}">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.11/typed.min.js"></script>
@@ -54,7 +55,9 @@
     border-radius: 50%;
     color:white;
     text-decoration:none;
-    }</style>
+    }
+    a { color: white; } 
+    </style>
 </head>
 <body>
     <div class="scroll-up-btn">
@@ -63,16 +66,10 @@
     <nav class="navbar">
         <div class="max-width">
             <div class="logo"><img src="https://media1.giphy.com/media/40zweBDO3S8h41thbb/giphy.gif" alt="" style="width:95px;height:95px"></div>
-                <form enctype="multipart/form-data" action="{{ route('search') }}" method="GET">
-                    <div class="searchbar mr-auto">
-                        <input type="text" class="search_input" name="search" placeholder="Enter games name">
-                        <a class="search_icon"><i class="fas fa-search"></i></a>
-                    </div>
-         </form>
+                
             <ul class="menu">
                 <li><a href="#home" class="menu-btn">Home</a></li>
-                <li><a href="#teams" class="menu-btn">Games</a></li>
-                <li><a href="" class="menu-btn">Forum</a></li>
+                <li><a href="{{ route('gamelist.all') }}" class="menu-btn">Games</a></li>   
                 <li><a href="#services" class="menu-btn">Bantuan</a></li>
                 <li><a href="" class="menu-btn">About</a></li>
                 
@@ -145,50 +142,22 @@
     <!-- teams section start -->
     <section class="teams" id="teams">
         <div class="max-width">
-            <h2 class="title">Tranding games</h2>
+            <h2 class="title">Trending games</h2>
             <div class="carousel owl-carousel">
+                <?php $i = 0 ?>
+                @foreach($games as $game)
+                <?php $i++ ?>
                 <div class="card">
+                    <a href="{{ route('game.show',$game->custom_url) }}">
                     <div class="box">
-                        <img src="https://cdn.mobilesyrup.com/wp-content/uploads/2020/11/marvels-spiderman-miles-morales-header-scaled.jpg" alt="">
-                        <div class="text">Spidermen Miles Morales</div>
-                        <p>#1</p>
+                        <img src="{{ url('uploads/gamePicture/' . $game->gamePicture) }}">
+                    <div class="text">{{$game->gameName}}</div>
+                    <p>#{{$i}}    <i
+                        class="fas fa-eye mr-1"></i> {{$game->view_counter}}</p>
                     </div>
+                </a>
                 </div>
-                <div class="card">
-                    <div class="box">
-                        <img src="https://www.theindianwire.com/wp-content/uploads/2020/08/league-of-legends.jpg" alt="">
-                        <div class="text">League Of Legend</div>
-                        <p>#2</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="box">
-                        <img src="https://uploadstatic-sea.mihoyo.com/contentweb/20190801/2019080115201040824.jpg" alt="">
-                        <div class="text">GenShin Impact</div>
-                        <p>#3</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="box">
-                        <img src="https://coverfiles.alphacoders.com/107/107297.jpg" alt="">
-                        <div class="text">CyberPunk</div>
-                        <p>#4</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="box">
-                        <img src="https://i.pinimg.com/originals/38/28/b1/3828b1fd61610e2a492da97ac9e0e02b.jpg" alt="">
-                        <div class="text">Assassin's Creed Valhalla</div>
-                        <p>#5</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="box">
-                        <img src="https://i.ytimg.com/vi/mUwI6e-em3o/maxresdefault.jpg" alt="">
-                        <div class="text">SackBoy</div>
-                        <p>#6</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>

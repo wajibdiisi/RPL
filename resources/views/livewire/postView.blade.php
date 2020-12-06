@@ -71,7 +71,7 @@
                         href="{{ route('profile.detail', ['id' => $userView->username]) }}">{{$userView->gameCollection->count()}}
                         <span>Games on Collection</span></a></li>
                 <li><a class="text-decoration-none"
-                    href="{{ route('show_collection', ['id' => $userView->username,'any' => 'all']) }}">{{$userView->collection->count()}}<span>Collection</span></a></li>
+                    href="{{ route('show_collection', ['id' => $userView->username,'any' => 'all']) }}">{{$userView->collection->count()}}<span>Custom Collection</span></a></li>
                 <li><a class="text-decoration-none" href="#" x-on:click ="tab = 'review'">{{count($reviews)}} <span>Review</span></a></li>
             </ul>
         </div>
@@ -104,17 +104,24 @@
         x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="opacity-100 transform scale-100"
         x-transition:leave-end="opacity-0 transform scale-90">
-        
+       
         <form wire:submit.prevent="store">
             
                             <div class="post">
                                 <input type="hidden" wire:model="postedProfile_id" value="{{$postedProfile_id}}">
             <input type="hidden" wire:model="posted_by" value="{{$posted_by}}">
-                            <textarea class="form-control" wire:model ="content" placeholder="Post" rows="4" name="content"></textarea>
+                            <textarea class="form-control text-light" style="background-color: #111D35;border-color :  #111D35" wire:model ="content" placeholder="Post" rows="4" name="content"></textarea>
                             <div class="post-options">
-                                <a href="#"><i class="fa fa-camera"></i></a>
-                                <a href="#"><i class="fas fa-video"></i></a>
-                                <a href="#"><i class="fa fa-music"></i></a>
+                               <div class="col-md-8 col-sm-12">
+                                <select wire:model ="game_post" class="custom-select position-absolute float-left text-light" style="background-color: #111D35;border-color :  #111D35;left : 0;bottom : 20">
+                                    <?php $data  = UserHelp::getallGames(); ?>
+                                    <option selected>Select game to be mentioned (optional)</option>
+                                    @foreach($data as $game)
+                                    
+                                <option value="{{$game->_id}}">{{$game->gameName}}</option>
+                                    @endforeach
+                                    </select>   
+                            </div>
                                 <button class="btn btn-outline-primary float-right" x-on:click ="open = false"><i class="fas fa-clipboard mr-1"></i>Post</button>
                                 <a class="text-danger btn btn-outline-danger float-right mr-2" x-on:click ="open = false"><i class="far fa-times-circle mr-1"></i>Close</a>
                             </form>

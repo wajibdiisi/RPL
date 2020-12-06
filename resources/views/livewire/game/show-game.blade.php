@@ -1,4 +1,4 @@
-<div x-data="{ tab : 'foo'}" wire:ignore>
+<div x-data="{ tab : 'foo'}">
     
     @if (Auth::user())
     @php
@@ -265,9 +265,27 @@
                                 data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
                                 data-btn-cancel-icon-class="far fa-times-circle mr-1"
                                 href="{{ route('add_wishlist', ['game_id' =>$game->id,'profile_id' => $currentUser]) }}"><i
-                                    class="fas fa-heart mr-1"></i>{{count($game->wishlist)}}</a>
-                            <button class="btn btn-outline-primary btn-sm text-light ml-1"> <i
-                                    class="fas fa-heart mr-1"></i>{{$game->view_counter}}</button>
+                                    class="fas fa-heart mr-1"></i>{{count($game->userfav)}}</a>
+                                    @if (Auth::user() && in_array($currentUser,$game->userfav))
+                                    <a class="btn btn-outline-primary btn-sm ml-1" data-toggle="confirmation"
+                                    data-title="Are you sure?" data-btn-ok-label="Confirm"
+                                    data-btn-ok-class="btn-success mr-1" data-btn-ok-icon-class="far fa-check-circle mr-1"
+                                    data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
+                                    data-btn-cancel-icon-class="far fa-times-circle mr-1"
+                                    href="{{ route('game.removeFav', ['game_id' =>$game->id ]) }}">Remove from Favourite</a>
+                                    @elseif(Auth::user() && !in_array($currentUser,$game->userfav))
+                                    <a class="btn btn-outline-primary btn-sm ml-1" data-toggle="confirmation"
+                                    data-title="Are you sure? you can only add 4 games to your favourites list" data-btn-ok-label="Confirm"
+                                    data-btn-ok-class="btn-success mr-1" data-btn-ok-icon-class="far fa-check-circle mr-1"
+                                    data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
+                                    data-btn-cancel-icon-class="far fa-times-circle mr-1"
+                                    href="{{ route('game.addFav', ['game_id' =>$game->id ]) }}">Add to Favourite</a>
+                                  
+                                    @elseif(!Auth::user())
+                                    <a href="{{ route('game.addFav', ['game_id' =>$game->id ]) }}"
+                                        class="btn btn-outline-danger btn-sm ml-2">Add Favourite</a>
+                                    @endif
+                                
                         </div>
                     </div>
 
@@ -313,33 +331,24 @@
                     <div class="col-md-8" x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 transform scale-90"
                         x-transition:enter-end="opacity-100 transform scale-100">
-
+                        
                         <div class="card mb-3">
                             <div class="card-body">
                                 <div class="row">
-                                    <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
-                                        data-target="#add<?= $game->id ?>">Add game</button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm ml-2" data-toggle="modal"
+                                        data-target="#add<?= $game->id ?>">Add Game to your Collection</button>
                                     @auth
-                                    <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
-                                        data-target="#addto_collection<?= $game->id ?>">Add to Collection</button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm ml-2" data-toggle="modal"
+                                        data-target="#addto_collection<?= $game->id ?>">Add to your Custom Collection</button>
                                     @endauth
-                                    <button type="button" class="btn btn-primary ml-2" data-container="body"
+                                    <button type="button" class="btn btn-outline-primary btn-sm ml-2" data-container="body"
                                         data-toggle="popover" data-placement="bottom" data-content=""
                                         x-on:click="tab = 'rate'">
-                                        Rate this game
+                                        Rate This Game
                                     </button>
-                                    <button type="button" class="btn btn-primary ml-2" data-toggle="modal"
-                                        data-target="#review<?= $game->id ?>">Review this game</button>
-                                    @if (Auth::user() && in_array($currentUser,$game->userfav))
-                                    <a href="{{ route('game.removeFav', ['game_id' =>$game->id ]) }}"
-                                        class="btn btn-primary ml-2">Remove Favourite</a>
-                                    @elseif(Auth::user() && !in_array($currentUser,$game->userfav))
-                                    <a href="{{ route('game.addFav', ['game_id' =>$game->id ]) }}"
-                                        class="btn btn-primary ml-2">Add Favourite</a>
-                                    @elseif(!Auth::user())
-                                    <a href="{{ route('game.addFav', ['game_id' =>$game->id ]) }}"
-                                        class="btn btn-primary ml-2">Add Favourite</a>
-                                    @endif
+                                    <button type="button" class="btn btn-outline-primary btn-sm ml-2" data-toggle="modal"
+                                        data-target="#review<?= $game->id ?>">Make a Review</button>
+                                    
                                     <div class="modal fade text-light" id="add<?= $game->id ?>" tabindex="-1" role="dialog"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <form enctype="multipart/form-data"
@@ -523,24 +532,8 @@
                             <span>Multiplayer</span></button>
                     </div>
                 </div>
-                <hr>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <h6 class="mb-0">Mobile</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                        (320) 380-4539
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <h6 class="mb-0">Address</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                        Bay Area, San Francisco, CA
-                    </div>
-                </div>
+              
+              
             </div>
         </div>
         <div class="card mb-3 overflow-auto">

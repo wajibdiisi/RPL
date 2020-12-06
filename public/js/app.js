@@ -2004,6 +2004,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$v.$touch();
       if (this.$v.$error) return;
       this.$swal({
+        background: '#111D35',
         icon: "success",
         title: "Collection Created",
         button: {
@@ -2190,7 +2191,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.single_collection = response.data;
       });
     },
-    deleteData: function deleteData($id) {
+    deleteCollection: function deleteCollection($id) {
       var _this2 = this;
 
       this.$swal({
@@ -2206,11 +2207,42 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         //send request to server 
         if (result.value) {
-          _this2.$http["delete"]("/api/delete_fromCollection/" + _this2.$route.params.collection_id + "/delete/" + $id).then(function (response) {
-            _this2.loadData();
+          var uri = "/api/profile/" + _this2.$route.params.id + "/delete_collection/" + $id;
+
+          _this2.$http["delete"](uri).then(function (response) {
+            _this2.$router.push("/profile/" + _this2.$route.params.id + "/gameCollection/all");
           });
 
-          _this2.$swal('Deleted!', 'Your post has been deleted!', 'success');
+          _this2.$swal({
+            background: '#111D35',
+            title: 'Deleted!',
+            text: 'Your Collection has been deleted!',
+            icon: 'success'
+          });
+        }
+      });
+    },
+    deleteData: function deleteData($id) {
+      var _this3 = this;
+
+      this.$swal({
+        background: '#111D35',
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        closeOnCancel: true
+      }).then(function (result) {
+        //send request to server 
+        if (result.value) {
+          _this3.$http["delete"]("/api/delete_fromCollection/" + _this3.$route.params.collection_id + "/delete/" + $id).then(function (response) {
+            _this3.loadData();
+          });
+
+          _this3.$swal('Deleted!', 'This game has been deleted from Collection!', 'success');
         }
       });
     }
@@ -2371,7 +2403,12 @@ __webpack_require__.r(__webpack_exports__);
             _this.loadData();
           });
 
-          _this.$swal('Deleted!', 'Your post has been deleted!', 'success');
+          _this.$swal({
+            background: '#111D35',
+            title: 'Deleted!',
+            text: 'Your post has been deleted!',
+            icon: 'success'
+          });
         }
       });
     },
@@ -45827,7 +45864,7 @@ var render = function() {
               staticClass: "btn btn-outline-danger",
               on: {
                 click: function($event) {
-                  return _vm.deleteData(_vm.game._id)
+                  return _vm.deleteCollection(_vm.single_collection._id)
                 }
               }
             },
@@ -46002,7 +46039,7 @@ var render = function() {
                         ? _c(
                             "button",
                             {
-                              staticClass: "btn btn-outline-danger",
+                              staticClass: "btn btn-sm btn-outline-danger",
                               on: {
                                 click: function($event) {
                                   return _vm.delete_collection(collect._id)
