@@ -106,23 +106,6 @@
         border-left: 8px solid green;
     }
 
-    .tittle::before,
-    .tittle::after {
-        content: '';
-        position: relative;
-        box-sizing: border-box;
-        width: 100%;
-        height: 100%;
-        transition: .4s linear;
-    }
-
-    .tittle:hover {
-        transform: scale(.9);
-    }
-
-    .tittle:hover::before {
-        border-left: 8px solid green;
-    }
 .color{
     color: blue;
 }
