@@ -57,6 +57,60 @@
     text-decoration:none;
     }
     a { color: white; } 
+    .services,
+        .teams {
+            color: #fff;
+            background: #071224;
+        }
+
+        footer {
+            background: #071224;
+            color: #fff;
+        }
+
+        .navbar.sticky {
+            background: #071224;
+        }
+
+        .services .serv-content .card {
+            background: #131f39;
+        }
+
+        .services .serv-content .card i {
+            color: blue;
+        }
+
+        .scroll-up-btn {
+            border: 2px solid blue;
+        }
+
+        .home .home-content a {
+            border: 2px solid blue;
+        }
+
+        .teams .carousel .card img {
+            border: 2px solid blue;
+        }
+
+        .teams .carousel .card:hover {
+            background: #131f39;
+        }
+
+        .teams .carousel .card:hover img {
+            border-color: blue;
+        }
+
+        .services .serv-content .card:hover {
+            background: #131f39;
+        }
+
+        .owl-dot {
+            border: 2px solid blue !important;
+        }
+
+        footer span a {
+            color: blue;
+        }
     </style>
 </head>
 <body>
@@ -65,7 +119,7 @@
     </div>
     <nav class="navbar">
         <div class="max-width">
-            <div class="logo"><img src="https://media1.giphy.com/media/40zweBDO3S8h41thbb/giphy.gif" alt="" style="width:95px;height:95px"></div>
+            <img src="https://i.giphy.com/media/rq6379B2woH5btSzJn/giphy.webp" alt="" style="width: 170px;">
                 
             <ul class="menu">
                 <li><a href="#home" class="menu-btn">Home</a></li>

@@ -11,5 +11,11 @@
         color : white;
     }
 </style>
-@livewire('game.all-review', ['game' => $game,'currentUser' => UserHelp::getID(Auth::user()->id)])
+<?php if(Auth::user()){
+    $currentUser = UserHelp::getID(Auth::user()->id);
+}
+else{
+ $currentUser = 'guest';
+}?>
+@livewire('game.all-review', ['game' => $game,'currentUser' => $currentUser])
 @endsection

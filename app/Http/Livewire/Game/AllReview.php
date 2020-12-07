@@ -23,12 +23,26 @@ class AllReview extends Component
         return redirect()->route('game.show',$id);
     }
     public function addLike($id,$profile_id){
+        if($profile_id == "guest"){
+            $notification = array(
+                'message' => 'You Must Login First',
+                'alert-type' => 'danger'
+            );
+           return redirect()->route('home');
+        };
         $review = Review::find($id);
         $review->pull('thumbsdown',$profile_id);
         $review->push('thumbsup',$profile_id,true);
         $this->emit('store_like');
     }
     public function removeLike($id,$profile_id){
+        if($profile_id == "guest"){
+            $notification = array(
+                'message' => 'You Must Login First',
+                'alert-type' => 'danger'
+            );
+           return redirect()->route('home');
+        };
         $review = Review::find($id);
         $review->pull('thumbsup',$profile_id);
         $review->push('thumbsdown',$profile_id,true);
