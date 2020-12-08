@@ -37,5 +37,8 @@ class HomeController extends Controller
             $request->session()->put('username',$user->username);
             return redirect()->route('profile.show',$user->username);
         endif;
-}}
+}
+    
+
+}
 

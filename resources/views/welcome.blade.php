@@ -124,7 +124,7 @@
             <ul class="menu">
                 <li><a href="#home" class="menu-btn">Home</a></li>
                 <li><a href="{{ route('gamelist.all') }}" class="menu-btn">Games</a></li>   
-                <li><a href="#services" class="menu-btn">Bantuan</a></li>
+                <li><a href="{{ route('bantuan') }}">Bantuan</a></li>
                 <li><a href="" class="menu-btn">About</a></li>
                 
                      @guest

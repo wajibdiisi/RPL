@@ -84,5 +84,8 @@ Route::get('profile/{id}/gameCollection/{any}', function () {
 Route::get('/', function () {
     return redirect('homepage');
 });
-Route::get('homepage', [App\Http\Controllers\gameController::class,'welcome']);
+Route::get('homepage', [App\Http\Controllers\gameController::class,'welcome'])->name('homepage');
+Route::get('/bantuan',[App\Http\Controllers\FrontController::class,'bantuan'])->name('bantuan');
+Route::get('/bantuan/about_us',[App\Http\Controllers\FrontController::class,'about_us'])->name('about_us');
+Route::get('/bantuan/report',[App\Http\Controllers\FrontController::class,'report'])->name('report');
 //vue Route::get('/{any}', [App\Http\Controllers\FrontController::class, 'index'])->where('any', '.*');
