@@ -28,7 +28,7 @@ class activityController extends Controller
             }    
         }
         $data->push($id);
-        $game = gameUser::whereIn('profile_id',$data)->get();
+        $game = gameUser::whereIn('profile_id',$data)->where('status','!=',null)->get();
         $review = Review::whereIn('profile_id',$data)->get();
         $merged = $game->merge($review)->sortByDesc('updated_at')->paginate(10);
         return view('profile.activity',compact('merged'));

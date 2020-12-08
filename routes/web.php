@@ -94,4 +94,5 @@ Route::get('/bantuan',[App\Http\Controllers\FrontController::class,'bantuan'])->
 Route::get('/bantuan/about_us',[App\Http\Controllers\FrontController::class,'about_us'])->name('about_us');
 Route::get('/bantuan/report',[App\Http\Controllers\FrontController::class,'report'])->name('report');
 Route::post('profile/{id}/change_password',[App\Http\Controllers\HomeController::class,'changePassword'])->middleware('auth')->name('changepassword');
+Route::post('profile/addContact/{id}', [App\Http\Controllers\UserProfileController::class, 'add_contact'])->middleware('auth')->name('profile.addContact');
 //vue Route::get('/{any}', [App\Http\Controllers\FrontController::class, 'index'])->where('any', '.*');

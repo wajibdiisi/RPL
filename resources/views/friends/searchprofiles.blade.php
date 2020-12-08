@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('title')
+Search : {{$key}}
+@endsection
 @section('content')
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
 <div class="container bootstrap snippets bootdey">
@@ -43,19 +45,36 @@ body {
     color:white;    
 }
     </style>
-  <div class="header">
-    <h3 class="text-muted prj-name">
-        <span class="fa fa-users fa-2x principal-title"></span>
-        Search
-    </h3>
-  </div>
+ 
+
+ @if(sizeof($result) == 0 && sizeof($resultGame) == 0)
+ <div class="jumbotron list-content">
+  <ul class="list-group">
+    <li href="#" class="list-group-item title">
+      Search Result (0)
+    </li>
+    <li href="#" class="list-group-item text-left">
+      <h6 class="display-4 text-light">You Found Nothing</h6>
+      <div class="break"></div>
+    </li>
+    </ul>
+</div>
+
+
+ @endif
 
   
   @if(sizeof($result) > 0 )
+  <div class="header">
+    <h3 class="text-muted prj-name">
+        <span class="fa fa-users principal-title"></span>
+        Search
+    </h3>
+  </div>
   <div class="jumbotron list-content">
     <ul class="list-group">
       <li href="#" class="list-group-item title">
-        User Search
+        User Search ({{$result->count()}})
       </li>
       @foreach($result as $query)
       <li href="#" class="list-group-item text-left">
@@ -65,7 +84,7 @@ body {
         <label class="ml-3 name h2">
             <a  class="text-light" href ="{{ route('profile.show',['id'=>$query->username]) }}">{{$query->nama_lengkap}}</a><br>
         <button class="btn btn-outline-primary btn-sm" disabled>{{count($query->gameCollection)}} Games on list</button>
-        <button class="btn btn-outline-success btn-sm" disabled>{{count($query->profilemanager->friend_ids) - 1}} Friends</button>
+        <button class="btn btn-outline-success btn-sm" disabled>{{count($query->profilemanager->acceptedFriend())}} Friends</button>
         </label>
       </div>
         <div class="break"></div>
@@ -75,10 +94,16 @@ body {
   </div>
   @endif
   @if(sizeof($resultGame)> 0)
+  <div class="header">
+    <h3 class="text-muted prj-name">
+        <span class="fas fa-gamepad principal-title"></span>
+        Search
+    </h3>
+  </div>
   <div class="jumbotron list-content">
     <ul class="list-group">
       <li href="#" class="list-group-item title">
-        Game search
+        Game search ({{$resultGame->count()}})
       </li>
       @foreach($resultGame as $query)
       <div href="#" class="list-group-item col-md-12">

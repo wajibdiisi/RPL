@@ -23,7 +23,7 @@ class UserProfileController extends Controller
 {
     public function show($id){
         
-        $userView = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->with('profilemanager','userpost','comments','showFavourite','gameCollection','collection')->first();
+        $userView = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->with('review','profilemanager','userpost','comments','showFavourite','gameCollection','collection')->first();
         if(Auth::user()){
             $currentUser = Auth::user()->id;
             $user = Profile::with('profilemanager')->where('user_id','=',$currentUser)->first();
@@ -99,12 +99,16 @@ class UserProfileController extends Controller
             }
             $updateProfile->username = $request->get('username');
             $updateProfile->save();
+            
         }
-        elseif($unique && $request->get('username')){   
-            toastr()->error('Username sudah terpakai');
+        elseif($unique && $request->get('username')){
+            Alert::error('Operation Failed','Username sudah terpakai');
             return redirect()->route('profile.show',$id);
         }
-
+        if($request->get('nama_lengkap')){
+        $updateProfile->nama_lengkap = $request->get('nama_lengkap');
+        $updateProfile->save();
+    }
     return redirect()->route('profile.show',$id)->with(['success' => 'Data berhasil diubah']);
 }
 
@@ -132,7 +136,7 @@ class UserProfileController extends Controller
     public function detail(Request $request,$id){
         $user = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->first();
         if($request->ajax()){
-            $data = gameUser::where('profile_id',$id)->with('gameData')->get();
+            $data = gameUser::where('profile_id',$id)->where('status','!=',null)->with('gameData')->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
@@ -193,5 +197,19 @@ class UserProfileController extends Controller
         $data = userCollection::with('game')->where('_id',$collection_id)->where('profile_id',$id)->first();
             $data->game()->detach();
             $data->delete();
+    }
+    public function add_contact($id,Request $request){
+        $data = Profile::where('_id',$id)->orWhere('user_id',$id)->orWhere('username',$id)->first();
+        $push_data = [
+            'contact_type' => $request->get('contact_type'),
+            'contact_name' => $request->get('contact_name'),
+        ];
+        foreach($data->contact_list as $contact){
+        
+        if($contact['contact_type'] == $request->get('contact_type'))
+        $data->pull('contact_list',['contact_type' =>$request->get('contact_type')]);
+        $data->push('contact_list',$push_data,true);
+        }
+        return redirect()->route('profile.show',$id);
     }
 }

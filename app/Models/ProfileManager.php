@@ -19,6 +19,9 @@ class ProfileManager extends Eloquent
     public function embedsRequest(){
         return $this->embedsMany(profileManager::class,'friend_ids');
     }
+    public function acceptedFriend(){
+        return $this->embedsMany(profileManager::class,'friend_ids')->where('status','approved');
+    }
     public function embedsPost(){
         return $this->embedsMany(profileManager::class,'post_ids');
     }

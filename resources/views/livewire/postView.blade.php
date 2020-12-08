@@ -68,7 +68,7 @@
         <div class="containDetails">
             <ul class="details">
                 <li><a class="text-decoration-none"
-                        href="{{ route('profile.detail', ['id' => $userView->username]) }}">{{$userView->gameCollection->count()}}
+                        href="{{ route('profile.detail', ['id' => $userView->username]) }}">{{$userView->gameCollection->where('status','!=',null)->count()}}
                         <span>Games on Collection</span></a></li>
                 <li><a class="text-decoration-none"
                     href="{{ route('show_collection', ['id' => $userView->username,'any' => 'all']) }}">{{$userView->collection->count()}}<span>Custom Collection</span></a></li>

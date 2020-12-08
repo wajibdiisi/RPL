@@ -17,8 +17,12 @@ class Profile extends Eloquent
         'favourite_game',
         'last_seen',
         'game_wishlist',
-        'about'
+        'about',
+        'contact_list'
     ];
+    public function review(){
+        return $this->hasMany(Review::class,'profile_id','_id');
+    }
     public function user(){
         return $this->hasOne(User::class,'_id','user_id');
     }
@@ -50,7 +54,9 @@ class Profile extends Eloquent
     public function collection(){
         return $this->hasMany(userCollection::class,'profile_id','username');
     }
-
+    public function contactList(){
+        return $this->belongsToMany(Profile::class,null,'user_list','contact_list');
+    }
     /*public function searchableAs(){
         return 'mygame';
     }

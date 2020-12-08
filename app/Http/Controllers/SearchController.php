@@ -20,6 +20,7 @@ class SearchController extends Controller
     ))->get();
         $resultGame = gameCRUD::whereRaw(array('$text' => array('$search' => $request->get('search'))                            
         ))->get();
-        return view('friends/searchprofiles',compact('result','resultGame'));
+        $key = $request->get('search');
+        return view('friends/searchprofiles',compact('result','resultGame','key'));
     }
 }

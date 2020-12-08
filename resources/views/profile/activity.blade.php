@@ -97,7 +97,8 @@ body {
                 <?php $gameData = UserHelp::getGame($data->game_id); $userData = UserHelp::getProfile($data->profile_id)?>
                 <a class="avatar" href="#"><img src="{{ url('uploads/avatars/' . $userData->avatar) }}" class="img-fluid" alt="profile"></a>
                 <div class="field title">
-                    <a class="text-primary" href="{{ route('profile.show',$userData->username)}}">{{$userData->nama_lengkap}}</a> started playing <a class="text-primary" href="{{ route('gameView.show',$gameData->id) }}">{{$gameData->gameName}}</a>
+                    <a class="text-primary" href="{{ route('profile.show',$userData->username)}}">{{$userData->nama_lengkap}}</a> added <a class="text-primary" href="{{ route('gameView.show',$gameData->id) }}">{{$gameData->gameName}}</a>
+                    to their collection (Current Status : {{$data->status}})
                 </div>
                 <div class="field date">
                 @if($data->updated_at != $data->created_at)
@@ -116,8 +117,11 @@ body {
                     <a class="text-primary" href="{{ route('profile.show',$userData->username)}}">{{$userData->nama_lengkap}}</a> Posted a review on <a class="text-primary" href="{{ route('gameView.show',$gameData->id) }}">{{$gameData->gameName}}</a>
                 </div>
                 <div class="field date">
-                    <span class="f-l">{{$data->created_at->diffForHumans()}}</span>
-                   
+                    @if($data->updated_at != $data->created_at)
+                <span class="f-l">{{$data->created_at->diffForHumans()}} <small> (Updated {{$data->updated_at->diffForHumans()}})</small></span> 
+                @else    
+                <span class="f-l">{{$data->created_at->diffForHumans()}}</span>
+                @endif
                 </div>
 
             </div>

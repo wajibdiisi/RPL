@@ -102,7 +102,7 @@ class gameUserController extends Controller
 
     public function addFavourite($game_id){
         $profile = Profile::with('game_favourite')->where('user_id','=',Auth::user()->id)->first();
-        if(count($profile->favourite_game)> 4) {
+        if(count($profile->favourite_game) > 3) {
             Alert::error("Operation Failed", "You can only add up to 4 games to your favourite list, please delete one before performing this action");
             $game_url = UserHelp::getGame_URL($game_id);
             return redirect()->route('game.show',$game_url);

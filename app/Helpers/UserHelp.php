@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use App\Helpers\UserHelp;
 use App\Models\gameCRUD;
 use App\Models\userCollection;
+use App\Models\Contact;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 class UserHelp extends Eloquent {
@@ -43,6 +44,10 @@ class UserHelp extends Eloquent {
     }
     public static function getallGames(){
         $data = gameCRUD::all('_id','gameName');
+        return $data;
+    }
+    public static function get_contact(){
+        $data = Contact::all();
         return $data;
     }
 }

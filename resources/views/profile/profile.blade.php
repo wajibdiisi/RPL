@@ -183,7 +183,7 @@
         }
 
         .online.off {
-            background: #ec5e69;
+            background-color: grey;
         }
 
         #cd-timeline::before {
@@ -434,7 +434,7 @@
             display: inline-block;
             margin: 0px;
             padding: 0px;
-            font-size: 30px;
+            font-size: 20px;
             font-weight: bold;
             text-align: center;
             padding-left: 48px;
@@ -522,7 +522,8 @@
                                     <img src="{{ url('uploads/avatars/' . $userView->avatar) }}" class="rounded-circle"
                                         alt="" />
                                     <?php $last_seen = Carbon\Carbon::parse($userView->last_seen->toDateTime()->format('Y-m-d H:i:s'))->diffForHumans()?>
-                                    @if(Cache::has('user-is-online-'. $userView->id)) <div class='status-circle'>
+                                    @if(Cache::has('user-is-online-'. $userView->id)) 
+                                    <div class='status-circle'>
                                     </div>
                                 </div>
                                 <h4 class="text-center h6 mt-2">
@@ -744,11 +745,54 @@
                         </div>
                         <hr />
                         <div class="card-heading clearfix mt-3">
-                            <h4 class="card-title">Achievement</h4>
+                            <h4 class="card-title">Badges</h4>
                         </div>
                         <div class="card-body mb-3 row">
-                            <button class="btn btn-outline-primary btn-sm">Rookie Gamer</button>
-
+                            <?php $count_game = $userView->gameCollection->where('status','!=',null)->count();
+                                  $count_review = $userView->review->count();
+                                  $count_friend = $friendList->count();
+                                  $count_completed = $userView->gameCollection->where('status','Completed')->count();
+                            ?>
+                            @if($count_game == 0)
+                            <button class="mr-2 mb-2 btn btn-outline-secondary btn-sm"><i class="fas fa-chess-pawn"></i> Rookie Gamer</button>
+                            @elseif($count_game >= 1 && $count_game <= 4)
+                            <button class="mr-2 mb-2 btn btn-outline-success btn-sm"><i class="fas fa-chess-knight"></i> Gamer</button>
+                            @elseif($count_game >= 5 && $count_game <= 9)
+                            <button class="mr-2 mb-2 btn btn-outline-primary btn-sm"><i class="fas fa-chess-bishop"></i> Gamer Maniac</button>
+                            @elseif($count_game >= 10 && $count_game <= 17)
+                            <button class="mr-2 mb-2 btn btn-outline-danger btn-sm"><i class="fas fa-chess-queen"></i> Gamer Deity</button>
+                            @elseif($count_game >= 18 )
+                            <button class="mr-2 mb-2 btn btn-outline-warning btn-sm"><i class="fas fa-chess-king"></i> God of Gamer</button>
+                            @endif
+                            @if($count_review > 0 && $count_review < 5)
+                            <button class="mb-2 btn btn-outline-success btn-sm"><i class="fas fa-chess-knight"></i> Rookie Reviewer</button>
+                            @elseif($count_review > 5 && $count_review < 10)
+                            <button class="mb-2 btn btn-outline-primary btn-sm"><i class="fas fa-chess-bishop"></i> Experienced Reviewer</button>
+                            @elseif($count_review > 10 && $count_review < 18)             
+                            <button class="mb-2 btn btn-outline-danger btn-sm"><i class="fas fa-chess-queen"></i> Consultant of Game </button>
+                            @elseif($count_review > 18 )
+                            <button class="mb-2 btn btn-outline-warning btn-sm"><i class="fas fa-chess-king"></i> Walking Encyclopedia </button>
+                            @endif
+                            @if($count_friend == 0)
+                            <button class="mr-2 btn btn-outline-secondary btn-sm"><i class="fas fa-chess-pawn"></i> Anti-Social</button>
+                            @elseif($count_friend > 0 && $count_friend < 5)
+                            <button class="mr-2 btn btn-outline-success btn-sm"><i class="fas fa-chess-knight"></i> Socialist</button>
+                            @elseif($count_friend > 5 && $count_friend < 10)
+                            <button class="mr-2 btn btn-outline-primary btn-sm"><i class="fas fa-chess-bishop"></i> Friendly Gamer</button>
+                            @elseif($count_friend > 10 && $count_friend < 18)
+                            <button class="mr-2 btn btn-outline-danger btn-sm"><i class="fas fa-chess-queen"></i> Neighborhood Gamer</button>
+                            @elseif($count_friend > 18)
+                            <button class="mr-2 btn btn-outline-warning btn-sm"><i class="fas fa-chess-king"></i> Friends with the World</button>
+                            @endif
+                            @if($count_completed > 0 && $count_completed < 5)
+                            <button class="btn btn-outline-success btn-sm"><i class="fas fa-chess-knight"></i>Git Gud</button>
+                            @elseif($count_completed > 5 && $count_completed < 10)
+                            <button class="btn btn-outline-primary btn-sm"><i class="fas fa-chess-bioshop"></i >Gamer Amongs Man</button>
+                            @elseif($count_completed > 10 && $count_completed < 18)
+                            <button class="btn btn-outline-danger btn-sm"><i class="fas fa-chess-queen"></i> The legend Has Born</button>
+                            @elseif($count_completed > 18 )
+                            <button class="btn btn-outline-warning btn-sm"><i class="fas fa-chess-king"></i> The Game It Self</button>
+                            @endif
                         </div>
                         <hr />
                         <div class="card-heading clearfix mt-3">
@@ -763,29 +807,91 @@
                         <div class="card-heading clearfix mt-3">
                             <h4 class="card-title">Contact Information @if ($userView->id == $currentUser_id)<button
                                     class="float-right btn btn-outline-primary btn-sm" type="button" data-toggle="modal"
-                                    data-target="#changeprofile"><i class="far fa-edit"></i></button>@endif</h4>
+                                    data-target="#changeContact"><i class="far fa-edit"></i></button>@endif</h4>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-borderless mb-0 text-muted">
                                     <tbody>
+                                        @if($userView->contact_list)
+                                        @foreach($userView->contact_list as $contact_list)
                                         <tr>
-                                            <th scope="row">N/A : </th>
-                                            <td>N/A</td>
-                                        </tr>
-
+                                        <th scope="row">
+                                        {{$contact_list['contact_type']}} : 
+                                        <td>{{$contact_list['contact_name']}}</td>
+                                    </tr>
+                                </th>
+                                    @endforeach 
+                                 
+                                    @else
+                                    <tr>
+                                        <th scope="row">
+                                        N/A : 
+                                        <td>N/A</td>
+                                    </tr>
+                                </th>
+                                @endif
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="modal fade" id="changeContact" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <form enctype="multipart/form-data"
+                                    action="{{ route('profile.addContact', $userView->username) }}" method="POST">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content text-light " style="background-color : #111D35">
+                                            <div class="modal-header" style="border:none">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Add Contact Information
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="recipient-name"
+                                                        class="col-form-label float-left">Contact Type</label>
+                                                        
+                                                        <select name="contact_type" class="custom-select float-left text-light" style="background-color: #111D35;border-color :  #111D35;left : 0;bottom : 20">
+                                                            <option selected>Select Contact</option>
+                                                            @foreach(UserHelp::get_contact() as $contact)                                                   
+                                                        <option value="{{$contact->contact_name}}">{{$contact->contact_name}}</option>
+                                                            @endforeach
+                                                            </select>  
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="nama_lengkap" class="col-form-label float-left ">Contact Name</label>
+                                                    <input type="text" class="form-control" name="contact_name"
+                                                        style="background-color : #111D35; border-color :#071224;">
+                                                </div>
+
+
+                                            </div>
+                                            <div class="modal-footer" style="border:none">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type="submit" class="pull-right btn btn-outline-primary">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                     <div class="card card-white grid-margin mt-3">
                         <h3> Friendlist ({{ $friendList->count() }})</h3>
                         <div class="card-body">
                             <div class="team">
                                 @foreach ($friendList as $fl)
                                 <div class="team-member">
+                                    @if(Cache::has('user-is-online-'. $fl->profile_id)) 
                                     <div class="online on"></div>
+                                    @else
+                                    <div class="online off"></div>
+                                    @endif
                                     <a href="{{ route('profile.show', ['id' => $fl->username]) }}">
                                         <img class="img-fluid" src="{{ url('uploads/avatars/' . $fl->avatar) }}"
                                             alt="" /></a>

@@ -50,6 +50,15 @@ class gameController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'gameName' => 'required',
+            'rating' => 'required',
+            'genre' => 'required',
+            'developer' => 'required',
+            'releaseDate' => 'required',
+            'summary' => 'required',
+            'custom_url' =>'required|unique:game.custom_url',
+        ]);
         $model = new gameCRUD;
         $model->gameName = $request->get('gameName');
         $model->rating = $request->get('rating');
@@ -74,7 +83,6 @@ class gameController extends Controller
             'Graphics' => 'Graphics',
             'DirectX' => 'DirectX',
             'Storage' => 'Storage',];
-        $model->wishlist = array();
         $model->save();
         return redirect()->route('gameView.index')->with('success','Game updated successfully');
     }

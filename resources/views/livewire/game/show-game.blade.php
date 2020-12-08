@@ -804,8 +804,8 @@
                             <tr>
                                 <th><span>User</span></th>
                                 <th><span>Updated</span></th>
+                                <th><span class="text-light">Created</span></th>
                                 <th class="text-center"><span>Status</span></th>
-                                <th><span class="text-light">Progression</span></th>
                                 <th><button type="button" class="close" aria-label="Close" x-on:click="tab = 'foo'">
                                         <span aria-hidden="true">&times;</span>
                                     </button></th>
@@ -834,37 +834,18 @@
                                     </div>
                 </div>
                 <a href="{{ route('profile.show', ['id' => $users->profile->username]) }}"
-                    class="user-link">{{$users->profile->nama_lengkap}}</a>
+                    class="user-link">{{$users->profile->username}}</a>
                 <span class="user-subhead">Offline</span>
             </div>
             @endif
             </td>
             <td>{{$users->updated_at->diffForHumans()}}</td>
+            
+            <td>
+                <a>{{$users->created_at->diffForHumans()}}</a>
+            </td>
             <td class="text-center">
                 <span class="label label-default">{{$users->status}}</span>
-            </td>
-            <td>
-                <a href="#">marlon@brando.com</a>
-            </td>
-            <td style="width: 20%;">
-                <a href="#" class="table-link text-warning">
-                    <span class="fa-stack">
-                        <i class="fa fa-square fa-stack-2x"></i>
-                        <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-                    </span>
-                </a>
-                <a href="#" class="table-link text-info">
-                    <span class="fa-stack">
-                        <i class="fa fa-square fa-stack-2x"></i>
-                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                    </span>
-                </a>
-                <a href="#" class="table-link danger">
-                    <span class="fa-stack">
-                        <i class="fa fa-square fa-stack-2x"></i>
-                        <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                    </span>
-                </a>
             </td>
             </tr>
             @endforeach
