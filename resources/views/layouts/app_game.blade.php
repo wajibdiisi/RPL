@@ -6,7 +6,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="shortcut icon" href="{{ asset('tes.ico') }}">
+    <link rel="shortcut icon" href="{{ asset('logo.ico') }}">
     
     <title>@yield('title')</title>
 
@@ -109,6 +109,7 @@
 .color{
     color: blue;
 }
+
 </style>
 <body>
     <div id="app">
@@ -135,10 +136,12 @@
                             <a class="nav-link text-light" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
                         @endif
-                        @else
+                        @else 
+                        @if(Auth::user()->role_id == '1')
                         <li class="nav-item "> <a class="nav-link text-white editGame " href="{{ url('/gameIndex') }}">{{ __('EditGame ') }}</a></li>
-                        <li class="nav-item "> <a class="nav-link text-white gamelist" href="{{ route('gamelist.all') }}">{{ __('Gamelist') }}</a></li>
-                        <li class="nav-item "> <a class="nav-link text-white activity" href="{{ route('activity',UserHelp::getID(Auth::user()->id)) }}">{{ __('Activity ') }}</a></li>
+                        @endif
+                        <li class="nav-item "> <a class="nav-link text-white gamelist" href="{{ route('gamelist.all') }}">{{ __('Games') }}</a></li>
+                        <li class="nav-item "> <a class="nav-link text-white activity" href="{{ route('activity',UserHelp::get_username(Auth::user()->id)) }}">{{ __('Activity ') }}</a></li>
                         <li class="nav-item mt-1"> <a class="navbar-brand text-white profil" href="{{ route('myprofile') }}">{{ Auth::user()->name }}</a></li>
                         <li class="nav-item mt-1 ml-3">
                             <a class="navbar-brand text-light" href="{{ route('logout') }}"
@@ -174,6 +177,7 @@
         }
     });
     </script>
+    @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
      @livewireScripts
      <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js"></script>
 </body>

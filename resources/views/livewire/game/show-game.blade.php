@@ -283,7 +283,7 @@
                                   
                                     @elseif(!Auth::user())
                                     <a href="{{ route('game.addFav', ['game_id' =>$game->id ]) }}"
-                                        class="btn btn-outline-danger btn-sm ml-2">Add Favourite</a>
+                                        class="btn btn-outline-primary btn-sm ml-2">Add Favourite</a>
                                     @endif
                                 
                         </div>
@@ -307,7 +307,7 @@
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                 <h6 class="mb-0 text-light"><i class="fas fa-building mr-2"></i>Publisher</h6>
-                                <span class="text-secondary">bootdey</span>
+                                <span class="text-secondary"></span>
                             </li>
                         </ul>
                     </div>
@@ -548,7 +548,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            @foreach($game->gameUser->sortByDesc('updated_at')->take('3') as $user)
+                            @foreach($game->gameUser->where('status','!=',null)->sortByDesc('updated_at')->take('3') as $user)
                             <div class="col-sm-6 col-lg-4 m-15px-tb">
                                 <div class="media box-shadow-only-hover hover-top p-15px">
                                     <a class="overlay-link" href="#"></a>
@@ -670,30 +670,30 @@
                 <div class="card h-100">
                     <div class="card-body">
                         <h6 class="d-flex align-items-center mb-3"><i
-                                class="material-icons text-info mr-2">assignment</i>Project Status</h6>
-                        <small>Web Design</small>
+                                class="material-icons text-info mr-2">User</i>Ratings</h6>
+                        <small><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> </small>
                         <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
+                            <div class="progress-bar bg-primary" role="progressbar"  style="width: {{$dataRating['five_star']}}%"
                                 aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <small>Website Markup</small>
+                        <small><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></small>
                         <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 72%"
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{$dataRating['four_star']}}%"
                                 aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <small>One Page</small>
+                        <small><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></small>
                         <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 89%"
+                            <div class="progress-bar bg-primary" role="progressbar"  style="width: {{$dataRating['three_star']}}%"
                                 aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <small>Mobile Template</small>
+                        <small><i class="fas fa-star"></i><i class="fas fa-star"></i></small>
                         <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 55%"
+                            <div class="progress-bar bg-primary" role="progressbar"  style="width: {{$dataRating['two_star']}}%"
                                 aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <small>Backend API</small>
+                        <small><i class="fas fa-star"></i></small>
                         <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 66%"
+                            <div class="progress-bar bg-primary" role="progressbar"  style="width: {{$dataRating['one_star']}}%"
                                 aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
@@ -719,7 +719,7 @@
 
                                 </div>
                                 <a href="javascript:void(0)"
-                                    class="btn btn-lg btn-info waves-effect waves-light btn-md mt-5"
+                                    class="btn btn-lg btn-outline-primary waves-effect waves-light btn-md mt-5"
                                     x-on:click="tab = 'review'">Best Reviews</a>
                             </div>
                         </div>
@@ -899,7 +899,7 @@
 
                         </div>
                         <a href="{{ route('all_review', ['game_id' => $game->custom_url]) }}"
-                            class="btn btn-lg btn-info waves-effect waves-light btn-md mt-5">All Reviews</a>
+                            class="btn btn-lg btn-outline-primary waves-effect waves-light btn-md mt-5">All Reviews</a>
                     </div>
                 </div>
                 <div class="col-sm-12 col-lg-7" style="background-color:#071224;">
@@ -1028,8 +1028,8 @@
             <div class="col-md-3">
                 <div class="rating-block btn btn-outline-primary">
                     <h4>Average Rating</h4>
-                    <h2 class="bold padding-bottom-7">4.3 <small>/ 5</small></h2>
-                    <h6 class="">4344 Users</h6>
+                <h2 class="bold padding-bottom-7">{{$star_rating}}<small>/ 5</small></h2>
+                <h6 class="">{{$dataRating['total_user']}} Users</h6>
                 </div>
             </div>
             <div class="col-md-9">
@@ -1037,25 +1037,25 @@
                     <div class="graph-star-rating-body">
                         <div class="rating-list">
                             <div class="rating-list-left">
-                                5 Star
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                             <div class="rating-list-center">
                                 <div class="progress">
-                                    <div style="width: 56%" aria-valuemax="5" aria-valuemin="0" aria-valuenow="5"
+                                    <div style="width: {{$dataRating['five_star']}}%" aria-valuemax="5" aria-valuemin="0" aria-valuenow="5"
                                         role="progressbar" class="progress-bar bg-primary">
                                         <span class="sr-only">80% Complete (danger)</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="rating-list-right">56%</div>
+                            <div class="rating-list-right">{{$dataRating['five_star']}}%</div>
                         </div>
                         <div class="rating-list">
                             <div class="rating-list-left">
-                                4 Star
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                             <div class="rating-list-center">
                                 <div class="progress">
-                                    <div style="width: 23%" aria-valuemax="5" aria-valuemin="0" aria-valuenow="5"
+                                    <div style="width: {{$dataRating['four_star']}}%" aria-valuemax="5" aria-valuemin="0" aria-valuenow="5"
                                         role="progressbar" class="progress-bar bg-primary">
                                         <span class="sr-only">80% Complete (danger)</span>
                                     </div>
@@ -1065,11 +1065,11 @@
                         </div>
                         <div class="rating-list">
                             <div class="rating-list-left text-light">
-                                3 Star
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                             <div class="rating-list-center">
                                 <div class="progress">
-                                    <div style="width: 11%" aria-valuemax="5" aria-valuemin="0" aria-valuenow="5"
+                                    <div style="width: {{$dataRating['three_star']}}%" aria-valuemax="5" aria-valuemin="0" aria-valuenow="5"
                                         role="progressbar" class="progress-bar bg-primary">
                                         <span class="sr-only">80% Complete (danger)</span>
                                     </div>
@@ -1079,11 +1079,11 @@
                         </div>
                         <div class="rating-list">
                             <div class="rating-list-left text-light">
-                                2 Star
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                             <div class="rating-list-center">
                                 <div class="progress">
-                                    <div style="width: 2%" aria-valuemax="5" aria-valuemin="0" aria-valuenow="5"
+                                    <div style="width: {{$dataRating['two_star']}}%" aria-valuemax="5" aria-valuemin="0" aria-valuenow="5"
                                         role="progressbar" class="progress-bar bg-primary">
                                         <span class="sr-only">80% Complete (danger)</span>
                                     </div>
@@ -1093,11 +1093,11 @@
                         </div>
                         <div class="rating-list">
                             <div class="rating-list-left text-light">
-                                1 Star
+                                <i class="fas fa-star"></i>
                             </div>
                             <div class="rating-list-center">
                                 <div class="progress">
-                                    <div style="width: 2%" aria-valuemax="5" aria-valuemin="0" aria-valuenow="5"
+                                    <div style="width: {{$dataRating['one_star']}}%" aria-valuemax="5" aria-valuemin="0" aria-valuenow="5"
                                         role="progressbar" class="progress-bar bg-primary">
                                         <span class="sr-only">80% Complete (danger)</span>
                                     </div>
@@ -1112,7 +1112,7 @@
                         <div class="col-sm-4">
                             <h6 class="mb-0">Rate This Game</h6>
                         </div>
-                        <div class="col-sm-8 text-secondary">
+                        <div class="col-md-7 offset-md-1 text-secondary">
                             <form enctype="multipart/form-data"
                                 action="{{ route('store_rating', ['game_id' =>$game->id ]) }}" method="GET">
                                 @csrf
@@ -1128,7 +1128,7 @@
                                     <input type='radio' id="star1" wire:model="rating" name="rating" value='1' /><label
                                         for='star1' title='Sucks big time'>1 star</label>
                                 </fieldset>
-                                <button type="submit" class="btn btn-outline-primary btn-sm">Submit</button>
+                                <button type="submit" class="btn btn-outline-primary btn-sm float-right">Submit</button>
                             </form>
                         </div>
                     </div>

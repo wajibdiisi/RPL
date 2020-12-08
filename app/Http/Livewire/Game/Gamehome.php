@@ -15,8 +15,7 @@ class Gamehome extends Component
     public $data,$game_search,$genre,$key_genre,$sort,$genre_title,$selectedGenre,$genre_jumbotron,$sort_genre,$type;
     public $gamedata,$gameID,$platforms,$platforms_id;
 
-    protected $paginationTheme = 'bootstrap';
-
+   
 
     public function mount($selectedGenre){
         if($selectedGenre != 'all' && $selectedGenre != null){
@@ -104,6 +103,11 @@ class Gamehome extends Component
         $this->type = "ascending";
         $this->sort_genre = "view_counter";
     }
+    public function paginationView()
+    {
+        return 'vendor.livewire.bootstrap';
+    }
+
 
     public function render()
     {

@@ -1,5 +1,9 @@
 <div>
-    <style></style>
+    <style>.pagination {justify-content: center;}
+       
+            
+        
+        </style>
 <div class="page-banner-area" style="background-image: url(
     @if ($genre_jumbotron){{$genre_jumbotron->genre_background}} 
     @else https://www.itl.cat/pngfile/big/7-73802_4k-gaming-wallpapers-1080p-bozhuwallpaper-2017-games.jpg @endif);
@@ -17,10 +21,10 @@
                     <h1>
                         Games
                     </h1>
-                    <p class="mt-5 text-light h4">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                        Ut enim ad minim veniam, quisLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                        Ut enim ad minim veniam, quisLorem ipsum dolor sit amet, consectetur 
-                        adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis</p>  
+                    <p class="mt-5 text-light h4"><i>A video game is an electronic game that involves interaction with a user interface or input device – such as a joystick, controller, 
+                        keyboard, or motion sensing device – to generate visual feedback for a player. This feedback is shown on a video display device, such as a TV set, monitor, touchscreen or 
+                        virtual reality headset. Video games are often augmented with audio feedback delivered through speakers or headphones, 
+                        and sometimes with other types of feedback, including haptic technology.</i></p>  
                     @endif
               
               
@@ -151,18 +155,19 @@
             <!--Single Game End-->
 
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="blog-pagination text-center mt-3">
-                <ul class="pagination justify-content-center">
-                   
-                    {{$games->links()}}
-                  
-                  </ul>
+        <div class="row">
+            <div class="col-12">
+                <div class="blog-pagination text-center mt-3">
+                    <ul class="pagination justify-content-center">
+                       
+                        {{$games->links()}}
+                      
+                      </ul>
+                </div>
             </div>
         </div>
     </div>
+    
 </div>
 </div>
 <!--Games Area End-->

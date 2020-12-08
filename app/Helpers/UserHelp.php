@@ -16,6 +16,10 @@ class UserHelp extends Eloquent {
         $user = Profile::where('username',$id)->orWhere('_id',$id)->orWhere('user_id',$id)->first();
         return (isset($user->nama_lengkap) ? $user->nama_lengkap : '');
     }
+    public static function get_avatar($id) {
+        $user = Profile::where('username',$id)->orWhere('_id',$id)->orWhere('user_id',$id)->first();
+        return (isset($user->avatar) ? $user->avatar : '');
+    }
     public static function getProfile($id) {
         $user = Profile::where('username',$id)->orWhere('_id',$id)->orWhere('user_id',$id)->first();
         return (isset($user) ? $user : '');

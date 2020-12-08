@@ -1,43 +1,52 @@
 @extends('layouts.app')
+@section('title')
+Friend Request
+
+@endsection
+
 
 @section('content')
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <div class="container bootstrap snippets bootdey">
         <style>
-            .list-content {
-                min-height: 300px;
-            }
+           .list-content{
+      background-color: #111D35;
+ min-height:300px;
+}
+body {
+            background: #071224;
 
-            .list-content .list-group .title {
-                background: #5bc0de;
-                border: 2px solid #DDDDDD;
-                font-weight: bold;
-                color: #FFFFFF;
-            }
+        }
 
-            .list-group-item img {
-                height: 80px;
-                width: 80px;
-            }
+.list-content .list-group .title{
+  background-color: #111D35;
+  
+  font-weight:bold;
+  color:#FFFFFF;
+}
+.list-group-item {
+  background : #131f39
+}
+.list-group-item img {
+    height:80px; 
+    width:80px;
+}
 
-            .jumbotron .btn {
-                padding: 5px 5px !important;
-                font-size: 12px !important;
-            }
-
-            .prj-name {
-                color: #5bc0de;
-            }
-
-            .break {
-                width: 100%;
-                margin: 20px;
-            }
-
-            .name {
-                color: #5bc0de;
-            }
+.jumbotron .btn {
+    padding: 5px 5px !important;
+    font-size: 12px !important;
+}
+.prj-name {
+    color:#5bc0de;    
+}
+.break{
+    width:100%;
+    margin:20px;
+}
+.name {
+    color:white;    
+}
 
         </style>
         <div class="header">
@@ -51,35 +60,35 @@
         <div class="jumbotron list-content">
             <ul class="list-group">
                 <li href="#" class="list-group-item title">
-                    Your friend zone
+                    Remaining Request ({{$friendReq->count()}})
                 </li>
                 @foreach ($friendReq as $fr)
                     <li href="#" class="list-group-item text-left">
-                        <img class="img-thumbnail" src="https://bootdey.com/img/Content/User_for_snippets.png">
-                        <label class="name">
-                            {{ $fr->nama_lengkap }}<br>
-                        </label>
-                        <label class="pull-right">
+                        <div class="col-md-6 row">
+                        <img src="{{ url('uploads/avatars/' . $fr->avatar) }}" class="img-fluid rounded-circle"
+                        alt=""/>
+                        <label class="ml-3 name h4">
+                             <a href="{{ route('profile.show', ['id' => $fr->username]) }}">{{ $fr->username }} </a>
+                            <br>
                             @foreach ($reqArray as $request)
-                                {{ \Carbon\Carbon::parse($request['timeAdded'])->diffForHumans() }}
+                               <small class="text-muted" style="font-size : 13px"> {{ \Carbon\Carbon::parse($request['timeAdded'])->diffForHumans() }} </small>
                                 <?php break; ?>
                             @endforeach
-                            <a class="btn btn-success btn-xs glyphicon glyphicon-ok"
-                                href="{{ route('friends.accept', ['id' => session()->get('username'), 'username' => $fr->username]) }}"
+                            <br>
+                            <a class="btn btn-outline-success btn-sn glyphicon glyphicon-ok"
+                                href="{{ route('friends.accept', ['id' => $user->user_id , 'username' => $fr->username]) }}"
                                 title="View">Accept</a>
-                            <a class="btn btn-danger  btn-xs glyphicon glyphicon-trash" href="#" title="Delete">Decline</a>
-                            <a class="btn btn-info  btn-xs glyphicon glyphicon glyphicon-comment" href="#"
-                                title="Send message"></a>
+                            <a class="btn btn-outline-danger  btn-sn glyphicon glyphicon-trash" href="#" title="Delete">Decline</a>
+                        </label>
+                        
+                    </div>
+                        <label class="pull-right">
+                            
                         </label>
                         <div class="break"></div>
                     </li>
                 @endforeach
-                <li href="#" class="list-group-item text-left">
-                    <a class="btn btn-block btn-primary">
-                        <i class="glyphicon glyphicon-refresh"></i>
-                        Load more...
-                    </a>
-                </li>
+               
             </ul>
         </div>
     </div>

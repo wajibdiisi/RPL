@@ -105,8 +105,8 @@
                     <div class="mb-5 mt-5">
                         <div class="account-block rounded-right">
                             <div class="account-testimonial">
-                                <h5 class="text-white-80 text-center">This beautiful theme yours!</h5>
-                                <h5 class="lead text-white-80 text-center">"Best investment i made for a long time. Can only recommend it for other users."</h5>
+                                <h5 class="text-white-80 text-center"><i>"We do not stop playing because we grow old. We grow old because we stop playing."</i></h5>
+                                <h5 class="lead text-white-80 text-center"><i>-George Bernard Shaw</i></h5>
                             </div>
                         </div>
                     </div>

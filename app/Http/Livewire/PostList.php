@@ -14,12 +14,15 @@ class PostList extends Component
     public $postData,$user,$profile_id,$currentUser_id,$post_id,$comment_content,$openPost_id,$reviews;
     public $confirm_action;
     public $updateMode = false;
-    protected $paginationTheme = 'bootstrap';
     protected $listeners = [
         'postStored','likeStored'
     ];
 
-   
+    public function paginationView()
+    {
+        return 'vendor.livewire.bootstrap';
+    }
+
     public function mount($profile_id,$currentUser_id){
         $this->profile_id = $profile_id;
         $this->user = Profile::find($currentUser_id);

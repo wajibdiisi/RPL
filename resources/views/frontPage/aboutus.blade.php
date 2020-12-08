@@ -188,6 +188,11 @@ a {
 .jumbotron {
              background-color: transparent;
             }
+            .about img{
+                width: 120px;
+                height: 120px;
+                margin: 10px;
+            }
        </style>
         <title>Bantuan</title>
       </head>

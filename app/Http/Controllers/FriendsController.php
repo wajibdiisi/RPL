@@ -81,7 +81,7 @@ class FriendsController extends Controller
         }
     }
     public function accept($id,$username){
-        $user = ProfileManager::where('user_id','=',Auth::user()->id)->first();
+        $user = ProfileManager::where('user_id','=',$id)->first();
         $selectedUser = Profile::where('username','=',$username)->first();
         foreach($user->friend_ids as $req){
             if($req['id'] == $selectedUser->id){

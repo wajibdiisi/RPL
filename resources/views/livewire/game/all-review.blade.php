@@ -28,8 +28,6 @@
                                             
                                             
                                         </div>
-                                        <a href="javascript:void(0)" class="btn btn-lg btn-info waves-effect waves-light btn-md mt-5"
-                                            x-on:click="tab = 'review'">Best Reviews</a>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-lg-7" >

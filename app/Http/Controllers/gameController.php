@@ -98,7 +98,7 @@ class gameController extends Controller
             $game->increment('view_counter',1);
             \Session::put($key,1);   
         }
-        $totalUser = count($game->gameUser);
+        $totalUser = count($game->gameUser->where('status','!=',null));
         if($totalUser > 0){
         $wtp = $game->gameUser->where('status','Want to Play')->count() / $totalUser * 100;
         $cp = $game->gameUser->where('status','Currently Playing')->count() /$totalUser * 100;
@@ -123,8 +123,28 @@ class gameController extends Controller
             'totalUser' => ''
         );
     }
+        $totalUserRating = count($game->gameUser->where('rating', '!=' , null));
+        if($totalUserRating > 0 ){
+            $dataRating = array(
+                'five_star' => $game->gameUser->where('rating','5')->count() / $totalUserRating * 100,
+                'four_star' => $game->gameUser->where('rating','4')->count() / $totalUserRating * 100,
+                'three_star' => $game->gameUser->where('rating','3')->count() / $totalUserRating * 100,
+                'two_star' => $game->gameUser->where('rating','2')->count() / $totalUserRating * 100,
+                'one_star' => $game->gameUser->where('rating','1')->count() / $totalUserRating * 100,
+                'total_user' => $totalUserRating    
+            );
+        }else{
+            $dataRating = array(
+                'five_star' => '',
+                'four_star' => '',
+                'three_star' => '',
+                'two_star' => '',
+                'one_star' => '',
+                'total_user' => '0'
+            );
+        }
         $star_rating = $game->gameUser->avg('rating');
-        return view('gameView.showGame',compact('game','dataBar','star_rating'));
+        return view('gameView.showGame',compact('game','dataBar','star_rating','dataRating'));
     }
 
     /**

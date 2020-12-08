@@ -67,7 +67,7 @@ class UserProfileController extends Controller
 
     public function showRequest($id){
     
-        $user = ProfileManager::with('embedsRequest')->where('user_id','=',Auth::user()->id)->first();
+        $user = ProfileManager::with('embedsRequest')->where('user_id','=',$id)->first();
         $reqArray=array();
         foreach($user->embedsRequest as $req){
             if($req->status == 'Need Action'){
@@ -99,15 +99,13 @@ class UserProfileController extends Controller
             }
             $updateProfile->username = $request->get('username');
             $updateProfile->save();
-            $request->session()->forget('username');
-            $request->session()->put('username',$request->get('username'));
         }
         elseif($unique && $request->get('username')){   
             toastr()->error('Username sudah terpakai');
-            return redirect()->route('profile.show',$request->session()->get('username'));
+            return redirect()->route('profile.show',$id);
         }
 
-    return redirect()->route('profile.show',$request->session()->get('username'))->with(['success' => 'Data berhasil diubah']);
+    return redirect()->route('profile.show',$id)->with(['success' => 'Data berhasil diubah']);
 }
 
     public function update_about(Request $request,$id){

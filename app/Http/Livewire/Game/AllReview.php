@@ -10,7 +10,6 @@ class AllReview extends Component
 {
     use WithPagination;
     public $game,$currentUser,$key_sort,$all_review;
-    protected $paginationTheme = 'bootstrap';
     protected $listeners = [
         'store_like'
     ];
@@ -18,6 +17,11 @@ class AllReview extends Component
     public function store_like(){
 
     }
+    public function paginationView()
+    {
+        return 'vendor.livewire.bootstrap';
+    }
+
 
     public function back($id){
         return redirect()->route('game.show',$id);

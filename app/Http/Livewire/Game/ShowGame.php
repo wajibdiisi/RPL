@@ -13,7 +13,7 @@ use App\Models\Review;
 class ShowGame extends Component
 {
  
-    public $game,$dataBar,$selected,$star_rating;
+    public $game,$dataBar,$selected,$star_rating,$dataRating;
 
     public function showReview(){
        $this->selected = true;

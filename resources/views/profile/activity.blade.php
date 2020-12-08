@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('title')
+Activities
+@endsection
 @section('content')
 <style>
 body {
@@ -65,6 +68,23 @@ body {
     width:50px  !important;
     height:50px !important;
 }
+.pagination {justify-content: center;}
+.pagination > li > a,
+.pagination > li > span {
+    background-color: rgba(0,0,0,0) !important;
+    border : none !important;
+}
+
+.pagination > .active > a,
+.pagination > .active > a:focus,
+.pagination > .active > a:hover,
+.pagination > .active > span,
+.pagination > .active > span:focus,
+.pagination > .active > span:hover {
+    background-color: rgba(0,0,0,0) !important;
+  
+}
+
 </style>
 
 <div class="container bootstrap snippets text-light" style="background-color: #111D35;">
@@ -80,12 +100,11 @@ body {
                     <a class="text-primary" href="{{ route('profile.show',$userData->username)}}">{{$userData->nama_lengkap}}</a> started playing <a class="text-primary" href="{{ route('gameView.show',$gameData->id) }}">{{$gameData->gameName}}</a>
                 </div>
                 <div class="field date">
-                <span class="f-l">{{$data->updated_at->diffForHumans()}}</span>
-                    
-                </div>
-                <div class="field btn-group-xs f-l">
-                    <button type="button" class="btn btn-lg-xs btn-xs-like">Like</button>
-                    <button type="button" class="btn btn-lg-xs btn-xs-love">Love</button>
+                @if($data->updated_at != $data->created_at)
+                <span class="f-l">{{$data->created_at->diffForHumans()}} <small> (Updated {{$data->updated_at->diffForHumans()}})</small></span> 
+                @else    
+                <span class="f-l">{{$data->created_at->diffForHumans()}}</span>
+                @endif
                 </div>
             </div>
             @elseif($data->review_content)
@@ -100,16 +119,13 @@ body {
                     <span class="f-l">{{$data->created_at->diffForHumans()}}</span>
                    
                 </div>
-                <div class="field btn-group-xs f-l">
-                    <button type="button" class="btn btn-lg-xs btn-xs-like">Like</button>
-                    <button type="button" class="btn btn-lg-xs btn-xs-love">Love</button>
-                </div>
+
             </div>
             @endif
             @endforeach
+            {{$merged->links()}}
             
         </div>
-        {{$merged->links()}}
     </div>
     </div>
 @endsection

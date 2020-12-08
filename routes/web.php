@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use App\Models\Genre;
 use App\Models\gameCRUD;
 use App\Models\Profile;
+
+use App\Http\Controllers\User\activityController;           
 use App\Http\Controllers\gameController;
 
 /*
@@ -30,16 +32,16 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/profile', function (){
-    return redirect()->route('profile.show',session()->get('username'));
+    return redirect()->route('profile.show',Auth::user()->id);
 })->name('myprofile');
 Route::get('profile/{id}', [App\Http\Controllers\UserProfileController::class, 'show'])->name('profile.show');
 Route::get('myprofile', [App\Http\Controllers\UserProfileController::class, 'show'])->middleware('verified')->name('myprofile.show');
 Route::post('profile/updateProfile/{id}', [App\Http\Controllers\UserProfileController::class, 'update_avatar'])->middleware('auth')->name('profile.update');
 Route::post('profile/updateProfile/{id}/about', [App\Http\Controllers\UserProfileController::class, 'update_about'])->middleware('auth')->name('profile.updateAbout');
-Route::get('/search',[App\Http\Controllers\SearchController::class,'search'])->middleware('auth')->name('search');
-Route::get('/gameIndex', [App\Http\Controllers\gameController::class, 'index'])->name('gameIndex');
-Route::get('/gameEdit', [App\Http\Controllers\gameController::class, 'edit'])->name('gameEdit');
-Route::post('/gameUpdate/{id}', [App\Http\Controllers\gameController::class, 'update'])->name('game.Update');
+Route::get('/search',[App\Http\Controllers\SearchController::class,'search'])->name('search');
+Route::get('/gameIndex', [App\Http\Controllers\gameController::class, 'index'])->middleware('admin')->name('gameIndex');
+Route::get('/gameEdit', [App\Http\Controllers\gameController::class, 'edit'])->middleware('admin')->name('gameEdit');
+Route::post('/gameUpdate/{id}', [App\Http\Controllers\gameController::class, 'update'])->middleware('admin')->name('game.Update');
 //Route::get('/profile/{id}',[App\Http\Controllers\FriendsController::class, 'show'])->name('profile.show');
 Route::get('{id}/pending',[App\Http\Controllers\UserProfileController::class, 'showRequest'])->middleware('auth')->name('friends.pending');
 Route::get('{id}/pending/accept/{username}',[App\Http\Controllers\FriendsController::class, 'accept'])->middleware('auth')->name('friends.accept');
@@ -60,7 +62,7 @@ Route::get('/profile/{id}/post', App\Http\Livewire\Profile::class)->middleware('
 Route::get('/profile/{id}/post/{posted_by}', App\Http\Livewire\Profile::class); 
 Route::get('/game/{game_id}/addFav', [App\Http\Controllers\Game\gameUserController::class,'addFavourite'])->middleware('auth')->name('game.addFav'); 
 Route::get('/game/{game_id}/removeFav', [App\Http\Controllers\Game\gameUserController::class,'removeFavourite'])->middleware('auth')->name('game.removeFav'); 
-Route::get('/activities/{id}', [App\Http\Controllers\User\activityController::class,'show'])->middleware('auth')->name('activity'); 
+
 Route::get('/gamelist/genre/{id:title}',function(gameController $game,Genre $id){
     return $game->gameList($id);
 })->name('gameList'); 
@@ -69,6 +71,9 @@ Route::get('/gamepage/{id:custom_url}',function (gameController $game, gameCRUD 
 Route::get('/gamelist/all',function(gameController $game){
     return $game->gameList('all');
 })->name('gamelist.all'); 
+Route::get('/activities/{id:username}', function (activityController $activity, Profile $id ){
+    return $activity->show($id->id);
+})->middleware('auth')->name('activity');
 Route::get('review/{id}/{user_id}',[App\Http\Controllers\Game\gameUserController::class,'like_review'])->middleware('auth')->name('like.review');
 Route::get('profile/{id}/detail',[App\Http\Controllers\UserProfileController::class, 'detail'])->name('profile.detail');
 Route::get('profile/{id}/detail/delete/{game_id}',[App\Http\Controllers\UserProfileController::class, 'profile_gameDelete'])->name('profile.game_delete');
@@ -88,4 +93,5 @@ Route::get('homepage', [App\Http\Controllers\gameController::class,'welcome'])->
 Route::get('/bantuan',[App\Http\Controllers\FrontController::class,'bantuan'])->name('bantuan');
 Route::get('/bantuan/about_us',[App\Http\Controllers\FrontController::class,'about_us'])->name('about_us');
 Route::get('/bantuan/report',[App\Http\Controllers\FrontController::class,'report'])->name('report');
+Route::post('profile/{id}/change_password',[App\Http\Controllers\HomeController::class,'changePassword'])->middleware('auth')->name('changepassword');
 //vue Route::get('/{any}', [App\Http\Controllers\FrontController::class, 'index'])->where('any', '.*');

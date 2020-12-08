@@ -181,6 +181,7 @@
         color:white;
         text-decoration:none;
         }
+        
 </style>
 
 <body>
@@ -201,7 +202,7 @@
                     <div class="d-md-flex justify-content-md-between align-items-center" style="">   
                         <form enctype="multipart/form-data" action="{{ route('search') }}" method="GET">
                             <div class="searchbar mr-auto" >
-                                <input type="text" class="search_input" name="search" placeholder="Enter games name">
+                                <input type="text" class="search_input" name="search" placeholder="Enter Keyword">
                                 <a class="search_icon" ><i class="fas fa-search"></i></a>
                             </div>
                         </form>
@@ -218,9 +219,11 @@
                         </li>
                         @endif
                         @else
+                        @if(Auth::user()->role_id == '1')
                         <li class="nav-item "> <a class="nav-link text-white editGame " href="{{ url('/gameIndex') }}">{{ __('EditGame ') }}</a></li>
-                        <li class="nav-item "> <a class="nav-link text-white gamelist" href="{{ route('gamelist.all') }}">{{ __('Gamelist') }}</a></li>
-                        <li class="nav-item "> <a class="nav-link text-white activity" href="{{ route('activity',UserHelp::getID(Auth::user()->id)) }}">{{ __('Activity ') }}</a></li>
+                        @endif
+                        <li class="nav-item "> <a class="nav-link text-white gamelist" href="{{ route('gamelist.all') }}">{{ __('Games') }}</a></li>
+                        <li class="nav-item "> <a class="nav-link text-white activity" href="{{ route('activity',UserHelp::get_username(Auth::user()->id)) }}">{{ __('Activity ') }}</a></li>
                         <li class="nav-item mt-1"> <a class="navbar-brand text-white profil" href="{{ route('myprofile') }}">{{ Auth::user()->name }}</a></li>
                         <li class="nav-item mt-1 ml-3">
                             <a class="navbar-brand text-light" href="{{ route('logout') }}"

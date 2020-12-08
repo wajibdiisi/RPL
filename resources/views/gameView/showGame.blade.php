@@ -100,7 +100,8 @@
     color:#ddd;
 }
 .rating:not(:checked) > label:before {
-    content:'★ ';
+  font-family: FontAwesome;
+                content: "\f005"
 }
 .rating > input:checked ~ label {
     color: #f70;
@@ -335,7 +336,7 @@
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
 
 <body>
-    @livewire('game.show-game',['game' => $game,'dataBar' =>$dataBar,'star_rating' => $star_rating])
+    @livewire('game.show-game',['game' => $game,'dataBar' =>$dataBar,'dataRating' => $dataRating,'star_rating' => $star_rating])
 
 </body>
 <script type="text/javascript">

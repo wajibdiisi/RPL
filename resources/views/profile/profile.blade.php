@@ -13,11 +13,9 @@
     <title>profile with contact information - Bootdey.com</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-    
-      rel="stylesheet">
-  
-    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
 
     <style type="text/css">
         body {
@@ -132,7 +130,7 @@
         }
 
         .timeline-comment .timeline-comment-header p {
-           
+
             float: left;
             margin: 0;
             font-weight: 500;
@@ -441,7 +439,7 @@
             text-align: center;
             padding-left: 48px;
         }
-    
+
 
         .details {
             padding: 0px;
@@ -456,33 +454,36 @@
             content: "\a";
         }
 
-        .jumbotron img{
-            width : 150px;
-            max-width : 150px;
-            max-height : 80%;
+        .jumbotron img {
+            width: 150px;
+            max-width: 150px;
+            max-height: 80%;
         }
+
         @media screen and (min-width: 1000px) {
             .jumbotron {
                 height: 350px;
                 overflow: hidden;
             }
         }
-        .notification {
-            position : relative;
-        }
-        .notification .badge {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  padding: 5px 10px;
-  border-radius: 50%;
-  background: red;
-  color: white;
-}
-    .text-link {
-        color : #007BFF
-    }
 
+        .notification {
+            position: relative;
+        }
+
+        .notification .badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            padding: 5px 10px;
+            border-radius: 50%;
+            background: red;
+            color: white;
+        }
+
+        .text-link {
+            color: #007BFF
+        }
     </style>
 </head>
 
@@ -508,10 +509,10 @@
                     <div class="col-lg-5 col-xl-4">
                         <div class="card card-white grid-margin">
                             <div class="card-heading clearfix">
-                                
-                                <h4 class="card-title">{{ $userView->username }}'s Profile @if ($userView->id == $currentUser_id)<button
-                                        class="float-right btn btn-outline-primary btn-sm" type="button"
-                                        data-toggle="modal" data-target="#changeprofile"><i
+
+                                <h4 class="card-title">{{ $userView->username }}'s Profile @if ($userView->id ==
+                                    $currentUser_id)<button class="float-right btn btn-outline-primary btn-sm"
+                                        type="button" data-toggle="modal" data-target="#changeprofile"><i
                                             class="far fa-edit"></i></button>@endif</h4>
                             </div>
 
@@ -522,234 +523,299 @@
                                         alt="" />
                                     <?php $last_seen = Carbon\Carbon::parse($userView->last_seen->toDateTime()->format('Y-m-d H:i:s'))->diffForHumans()?>
                                     @if(Cache::has('user-is-online-'. $userView->id)) <div class='status-circle'>
+                                    </div>
+                                </div>
+                                <h4 class="text-center h6 mt-2">
+                                    <?= $userView->nama_lengkap ?></h4>
+                                <p class="text-center small">Currently Online</p>
+                                @else
+                                <div class='status-circle-offline'>
                                 </div>
                             </div>
                             <h4 class="text-center h6 mt-2">
-                                <?= $userView->nama_lengkap ?></h4>
-                            <p class="text-center small">Currently Online</p>
-                            @else
-                            <div class='status-circle-offline'>
-                            </div>
-                        </div>
-                        <h4 class="text-center h6 mt-2">
-                            <?= $userView->username ?></h4>
-                        <p class="text-center small">Last Online {{$last_seen}}</p>
-                        @endif
+                                <?= $userView->username ?></h4>
+                            <p class="text-center small">Last Online {{$last_seen}}</p>
+                            @endif
 
-                        @if ($userView->id == $currentUser_id)
-                        <button class="btn btn-outline-primary" type="button" data-toggle="modal"
-                            data-target="#exampleModalCenter">
-                            <i class="fa fa-fw fa-camera"></i>
-                            
-                        </button>
-                        @if($needAction == true)
-                        <a class="btn btn-outline-primary notification "
-                            href="{{ route('friends.pending', ['id' => session()->get('username')]) }}"> <i
-                                class="fas fa-user-plus"></i> <span class="badge"><i class="fas fa-exclamation"></i></span></a>
-                                @else 
-                                <a class="btn btn-outline-primary "
-                                href="{{ route('friends.pending', ['id' => session()->get('username')]) }}"> <i
+                            @if ($userView->id == $currentUser_id)
+                            <button class="btn btn-outline-primary" type="button" data-toggle="modal"
+                                data-target="#changePhoto">
+                                <i class="fa fa-fw fa-camera"></i>
+                            </button>
+                            <button class="btn btn-outline-primary" type="button" data-toggle="modal"
+                                data-target="#changePassword">
+                                <i class="fas fa-key"></i>
+                            </button>
+
+                            @if($needAction == true)
+                            <a class="btn btn-outline-primary notification "
+                                href="{{ route('friends.pending', ['id' => $userView->user_id]) }}"> <i
+                                    class="fas fa-user-plus"></i> <span class="badge"><i
+                                        class="fas fa-exclamation"></i></span></a>
+                            @else
+                            <a class="btn btn-outline-primary "
+                                href="{{ route('friends.pending', ['id' => $userView->user_id]) }}"> <i
                                     class="fas fa-user-plus"></i> <span class="badge"></span></a>
-                                @endif
-                        <div class="modal fade" id="changeprofile" tabindex="-1" role="dialog"
-                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            @endif
+                            <div class="modal fade" id="changePassword" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <form enctype="multipart/form-data"
+                                    action="{{ route('changepassword', $currentUser_id) }}" method="POST">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content text-light " style="background-color : #111D35">
+                                            <div class="modal-header" style="border:none">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Change Password
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="current_password"
+                                                        class="col-form-label float-left">Current Password</label>
+                                                    <input type="password" class="form-control" name="current_password"
+                                                        style="background-color : #111D35 ;border-color :#071224;">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new_password" class="col-form-label float-left ">New
+                                                        Password</label>
+                                                    <input type="password" class="form-control" name="new_password"
+                                                        style="background-color : #111D35; border-color :#071224;">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new_confirm_password" class="col-form-label float-left ">Re-enter New Password</label>
+                                                    <input type="password" class="form-control" name="new_confirm_password"
+                                                        style="background-color : #111D35; border-color :#071224;">
+                                                </div>
+
+
+                                            </div>
+                                            <div class="modal-footer" style="border:none">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type="submit" class="pull-right btn btn-outline-primary">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="modal fade" id="changeprofile" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <form enctype="multipart/form-data"
+                                    action="{{ route('profile.update', $currentUser_id) }}" method="POST">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content text-light " style="background-color : #111D35">
+                                            <div class="modal-header" style="border:none">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Change Account Info
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="recipient-name"
+                                                        class="col-form-label float-left">Username</label>
+                                                    <input type="text" class="form-control" name="username"
+                                                        style="background-color : #111D35 ;border-color :#071224;">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="nama_lengkap" class="col-form-label float-left ">Nama
+                                                        Lengkap</label>
+                                                    <input type="text" class="form-control" name="nama_lengkap"
+                                                        style="background-color : #111D35; border-color :#071224;">
+                                                </div>
+
+
+                                            </div>
+                                            <div class="modal-footer" style="border:none">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type="submit" class="pull-right btn btn-outline-primary">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal fade" id="changeAbout" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <form enctype="multipart/form-data"
+                                    action="{{ route('profile.updateAbout', $currentUser_id) }}" method="POST">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content text-light " style="background-color : #111D35">
+                                            <div class="modal-header" style="border:none">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Change Account Info
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="col-form-label float-left">About
+                                                        You</label>
+                                                    <textarea class="form-control text-light" name="about"
+                                                        style="background-color : #111D35 ;border-color :#071224;"
+                                                        row="3">{{$userView->about}}</textarea>
+                                                </div>
+
+
+
+                                            </div>
+                                            <div class="modal-footer" style="border:none">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type="submit" class="pull-right btn btn-outline-primary">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                             <form enctype="multipart/form-data" action="{{ route('profile.update', $currentUser_id) }}"
                                 method="POST">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content text-light " style="background-color : #111D35">
-                                        <div class="modal-header" style="border:none">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Change Account Info</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <label for="recipient-name"
-                                                    class="col-form-label float-left">Username</label>
-                                                <input type="text" class="form-control" name="username" style="background-color : #111D35 ;border-color :#071224;">
+                                <div class="modal fade" id="changePhoto" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content text-light " style="background-color : #111D35">
+                                            <div class="modal-header" style="border:none">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Change Photo</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="nama_lengkap" class="col-form-label float-left ">Nama
-                                                    Lengkap</label>
-                                                <input type="text" class="form-control" name="nama_lengkap" style="background-color : #111D35; border-color :#071224;">
+                                            <div class="modal-body">
+                                                <input type="file" name="avatar">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
                                             </div>
-
-
-                                        </div>
-                                        <div class="modal-footer" style="border:none">
-                                            <button type="button" class="btn btn-outline-secondary"
-                                                data-dismiss="modal">Close</button>
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <input type="submit" class="pull-right btn btn-outline-primary">
+                                            <div class="modal-footer" style="border:none">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-outline-primary">Save
+                                                    changes</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </form>
-                        </div>
-                        <div class="modal fade" id="changeAbout" tabindex="-1" role="dialog"
-                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <form enctype="multipart/form-data" action="{{ route('profile.updateAbout', $currentUser_id) }}"
-                                method="POST">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content text-light " style="background-color : #111D35">
-                                        <div class="modal-header" style="border:none">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Change Account Info</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <label for="recipient-name"
-                                                    class="col-form-label float-left">About You</label>
-                                            <textarea class="form-control text-light" name="about" style="background-color : #111D35 ;border-color :#071224;" row ="3" >{{$userView->about}}</textarea>
-                                            </div>
-                                          
 
+                            @else
 
-                                        </div>
-                                        <div class="modal-footer" style="border:none">
-                                            <button type="button" class="btn btn-outline-secondary"
-                                                data-dismiss="modal">Close</button>
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <input type="submit" class="pull-right btn btn-outline-primary">
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                            @foreach ($userView->profilemanager->friend_ids as $check)
+                            @if($currentUser_id != "guest")
+                            @if ($check['id'] != $currentUser_id && !$friendCheck)
+                            <a class="btn btn-outline-primary"
+                                href="{{ route('friends.add', ['id' => UserHelp::get_username($currentUser_id), 'username' => $userView->username,'action' => 'add']) }}"><i
+                                    class="fas fa-user-plus"></i></a><?php break; ?>
+                            @elseif($check['id'] == session()->get('profile_id') && $friendCheck && $check['status']
+                            =='Need Action')
+                            <a class="btn btn-outline-primary"
+                                href="{{ route('friends.add', ['id' => UserHelp::get_username($currentUser_id), 'username' => $userView->username,'action' => 'add']) }}"><i
+                                    class="far fa-hourglass"></i></a>
+                            @elseif($check['id'] == session()->get('profile_id') && $friendCheck && $check['status']
+                            =='approved')
+                            <a class="btn btn-outline-primary" href=""><i class="fas fa-user-friends"></i></a>
+                            <a class="btn btn-outline-danger" data-toggle="confirmation" data-title="Are you sure?"
+                                data-btn-ok-label="Confirm" data-btn-ok-class="btn-success mr-1"
+                                data-btn-ok-icon-class="far fa-check-circle mr-1" data-btn-cancel-label="Cancel"
+                                data-btn-cancel-class="btn-danger" data-btn-cancel-icon-class="far fa-times-circle mr-1"
+                                href="{{ route('friends.add', ['id' => UserHelp::get_username($currentUser_id), 'username' => $userView->username,'action' => 'remove']) }}"><i
+                                    class="fas fa-user-times"></i></a>
+                            <p class="text-center mt-2">Friends since
+                                {{Carbon\Carbon::parse($check['time'])->format('Y-m-d')}} </p>
+                            @endif
+                            @elseif(!Auth::user())
+                            <a class="btn btn-outline-primary" href="{{ route('login') }}"><i
+                                    class="fas fa-user-plus"></i></a><?php break; ?>
+                            @endif
+                            @endforeach
+
+                            @endif
+
                         </div>
-                        <form enctype="multipart/form-data" action="{{ route('profile.update', $currentUser_id) }}"
-                            method="POST">
-                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <input type="file" name="avatar">
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <input type="submit" class="pull-right btn btn-sm btn-primary">
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
-                                        </div>
-                                    </div>
-                                </div>
+                        <hr />
+                        <div class="card-heading clearfix mt-3">
+                            <h4 class="card-title">Achievement</h4>
+                        </div>
+                        <div class="card-body mb-3 row">
+                            <button class="btn btn-outline-primary btn-sm">Rookie Gamer</button>
+
+                        </div>
+                        <hr />
+                        <div class="card-heading clearfix mt-3">
+                            <h4 class="card-title">About @if ($userView->id == $currentUser_id)<button
+                                    class="float-right btn btn-outline-primary btn-sm" type="button" data-toggle="modal"
+                                    data-target="#changeAbout"><i class="far fa-edit"></i></button>@endif</h4>
+                        </div>
+                        <div class="card-body mb-3">
+                            <p class="mb-0">{{$userView->about}}</p>
+                        </div>
+                        <hr />
+                        <div class="card-heading clearfix mt-3">
+                            <h4 class="card-title">Contact Information @if ($userView->id == $currentUser_id)<button
+                                    class="float-right btn btn-outline-primary btn-sm" type="button" data-toggle="modal"
+                                    data-target="#changeprofile"><i class="far fa-edit"></i></button>@endif</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-borderless mb-0 text-muted">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">N/A : </th>
+                                            <td>N/A</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
                             </div>
-                        </form>
-                        
-                        @else
-                        
-                        @foreach ($userView->profilemanager->friend_ids as $check)
-                        @if($currentUser_id != "guest")
-                        @if ($check['id'] != $currentUser_id && !$friendCheck)
-                        <a class="btn btn-outline-primary"
-                            href="{{ route('friends.add', ['id' => UserHelp::get_username($currentUser_id), 'username' => $userView->username,'action' => 'add']) }}"><i class="fas fa-user-plus"></i></a><?php break; ?>
-                        @elseif($check['id'] == session()->get('profile_id') && $friendCheck && $check['status']
-                        =='Need Action')
-                        <a class="btn btn-outline-primary"
-                            href="{{ route('friends.add', ['id' => UserHelp::get_username($currentUser_id), 'username' => $userView->username,'action' => 'add']) }}"><i class="far fa-hourglass"></i></a>
-                        @elseif($check['id'] == session()->get('profile_id') && $friendCheck && $check['status']
-                        =='approved')
-                        <a class="btn btn-outline-primary"
-                            href=""><i class="fas fa-user-friends"></i></a>
-                        <a class="btn btn-outline-danger" data-toggle="confirmation" data-title="Are you sure?" data-btn-ok-label="Confirm" data-btn-ok-class="btn-success mr-1"
-                        data-btn-ok-icon-class="far fa-check-circle mr-1"  
-                        data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"
-                        data-btn-cancel-icon-class="far fa-times-circle mr-1"
-                            href="{{ route('friends.add', ['id' => UserHelp::get_username($currentUser_id), 'username' => $userView->username,'action' => 'remove']) }}"><i class="fas fa-user-times"></i></a>
-                            <p class="text-center mt-2">Friends since {{Carbon\Carbon::parse($check['time'])->format('Y-m-d')}} </p>
-                        @endif
-                        @elseif(!Auth::user())
-                        <a class="btn btn-outline-primary" href="{{ route('login') }}"><i class="fas fa-user-plus"></i></a><?php break; ?>
-                        @endif
-                        @endforeach
-                        
-                        @endif
-
-                    </div>
-                    <hr />
-                
-                    <div class="card-heading clearfix mt-3">
-                        <h4 class="card-title">About @if ($userView->id == $currentUser_id)<button
-                            class="float-right btn btn-outline-primary btn-sm" type="button"
-                            data-toggle="modal" data-target="#changeAbout"><i
-                                class="far fa-edit"></i></button>@endif</h4>
-                    </div>
-                    <div class="card-body mb-3">
-                    <p class="mb-0">{{$userView->about}}</p>
-                    </div>
-                    <hr />
-                    <div class="card-heading clearfix mt-3">
-                        <h4 class="card-title">Contact Information @if ($userView->id == $currentUser_id)<button
-                            class="float-right btn btn-outline-primary btn-sm" type="button"
-                            data-toggle="modal" data-target="#changeprofile"><i
-                                class="far fa-edit"></i></button>@endif</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-borderless mb-0 text-muted">
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">Steam : </th>
-                                        <td>addyour@emailhere</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Discord : </th>
-                                        <td>asdsad #222222</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">PSN : </th>
-                                        <td>Habib habib</td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
-                </div>
-                <div class="card card-white grid-margin mt-3">
-                    <h3> Friendlist ({{ $friendList->count() }})</h3>
-                   <div class="card-body">
-                    <div class="team">
-                        @foreach ($friendList as $fl)
-                            <div class="team-member">
-                            <div class="online on"></div>
-                            <a href="{{ route('profile.show', ['id' => $fl->username]) }}">
-                                <img class="img-fluid" src="{{ url('uploads/avatars/' . $fl->avatar) }}"
-                                    alt="" /></a>
+                    <div class="card card-white grid-margin mt-3">
+                        <h3> Friendlist ({{ $friendList->count() }})</h3>
+                        <div class="card-body">
+                            <div class="team">
+                                @foreach ($friendList as $fl)
+                                <div class="team-member">
+                                    <div class="online on"></div>
+                                    <a href="{{ route('profile.show', ['id' => $fl->username]) }}">
+                                        <img class="img-fluid" src="{{ url('uploads/avatars/' . $fl->avatar) }}"
+                                            alt="" /></a>
                                 </div>
                                 @endforeach
                             </div>
 
-                </div>
-                 
-                </div>
-            </div>
+                        </div>
 
-            <div class="col-lg-8 col-xl-8">
+                    </div>
+                </div>
 
-                @livewire('profile',['postedProfile_id' => $userView->id, 'posted_by' => $currentUser_id,'currentUser_id' => $currentUser_id,'userView' => $userView])
+                <div class="col-lg-8 col-xl-8">
+
+                    @livewire('profile',['postedProfile_id' => $userView->id, 'posted_by' =>
+                    $currentUser_id,'currentUser_id' => $currentUser_id,'userView' => $userView])
+                </div>
+
+                <!-- Row -->
             </div>
-          
-            <!-- Row -->
+            <!-- end page main wrapper -->
+
         </div>
-        <!-- end page main wrapper -->
-       
     </div>
-    </div>
+    @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
     <script>
         $('[data-toggle=confirmation]').confirmation({
-  rootSelector: '[data-toggle=confirmation]',
-  // other options
-});
+            rootSelector: '[data-toggle=confirmation]',
+            // other options
+        });
     </script>
 </body>
 

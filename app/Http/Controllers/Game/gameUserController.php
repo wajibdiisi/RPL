@@ -70,7 +70,7 @@ class gameUserController extends Controller
         gameUser::updateOrCreate([
             'game_id' => $game_id,'profile_id' => $profile_id
         ],['status' => $request->get('addRadio')]);
-        
+        Alert::success('Success', "Game Added to your collection");
         return redirect()->route('gameView.show',$game_id);
     }
 
@@ -102,8 +102,14 @@ class gameUserController extends Controller
 
     public function addFavourite($game_id){
         $profile = Profile::with('game_favourite')->where('user_id','=',Auth::user()->id)->first();
+        if(count($profile->favourite_game)> 4) {
+            Alert::error("Operation Failed", "You can only add up to 4 games to your favourite list, please delete one before performing this action");
+            $game_url = UserHelp::getGame_URL($game_id);
+            return redirect()->route('game.show',$game_url);
+        }
         $profile->game_favourite()->attach($game_id);
         $game_url = UserHelp::getGame_URL($game_id);
+        Alert::success('Success', "Game Added Successfully to your Favourites ");
         return redirect()->route('game.show',$game_url);
     }
     public function removeFavourite($game_id){

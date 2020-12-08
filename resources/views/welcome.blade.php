@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Mygamelist</title>
     <link rel="shortcut icon" href="{{ asset('logo.ico') }}">
+    
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.11/typed.min.js"></script>
@@ -125,7 +126,6 @@
                 <li><a href="#home" class="menu-btn">Home</a></li>
                 <li><a href="{{ route('gamelist.all') }}" class="menu-btn">Games</a></li>   
                 <li><a href="{{ route('bantuan') }}">Bantuan</a></li>
-                <li><a href="" class="menu-btn">About</a></li>
                 
                      @guest
                             <li class="nav-item">
@@ -157,7 +157,9 @@
                 <div class="text-3">Don't worry, we've got you covered.</div>
                 <div class="text-4">Discover new games, keep track of the ones </div>
                 <div class="text-5">you want to play, and connect with friends. </div>
+                @if(!Auth::user())
                 <a href="{{ route('register') }}">Register</a>
+                @endif
             </div>
         </div>
     </section>
@@ -222,5 +224,6 @@
     </footer>
 
     <script src="script.js"></script>
+    @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
 </body>
 </html>
