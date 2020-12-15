@@ -44,7 +44,7 @@ Route::get('/gameEdit', [App\Http\Controllers\gameController::class, 'edit'])->m
 Route::post('/gameUpdate/{id}', [App\Http\Controllers\gameController::class, 'update'])->middleware('admin')->name('game.Update');
 //Route::get('/profile/{id}',[App\Http\Controllers\FriendsController::class, 'show'])->name('profile.show');
 Route::get('{id}/pending',[App\Http\Controllers\UserProfileController::class, 'showRequest'])->middleware('auth')->name('friends.pending');
-Route::get('{id}/pending/accept/{username}',[App\Http\Controllers\FriendsController::class, 'accept'])->middleware('auth')->name('friends.accept');
+Route::get('{id}/pending/accept/{username}/{action}',[App\Http\Controllers\FriendsController::class, 'accept'])->middleware('auth')->name('friends.accept');
 Route::get('{id}/friends/{username}/{action}',[App\Http\Controllers\FriendsController::class, 'store'])->middleware('auth')->name('friends.add');
 Route::resource('gameView',App\Http\Controllers\gameController::class);
 Route::resource('game',App\Http\Controllers\Game\gameUserController::class);

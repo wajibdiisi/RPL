@@ -76,9 +76,9 @@ body {
                             @endforeach
                             <br>
                             <a class="btn btn-outline-success btn-sn glyphicon glyphicon-ok"
-                                href="{{ route('friends.accept', ['id' => $user->user_id , 'username' => $fr->username]) }}"
+                                href="{{ route('friends.accept', ['id' => $user->user_id , 'username' => $fr->username,'action' => 'approve']) }}"
                                 title="View">Accept</a>
-                            <a class="btn btn-outline-danger  btn-sn glyphicon glyphicon-trash" href="#" title="Delete">Decline</a>
+                            <a class="btn btn-outline-danger  btn-sn glyphicon glyphicon-trash" href="{{ route('friends.accept', ['id' => $user->user_id , 'username' => $fr->username,'action' => 'decline']) }}" title="Delete">Decline</a>
                         </label>
                         
                     </div>

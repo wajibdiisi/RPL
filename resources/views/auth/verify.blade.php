@@ -1,13 +1,21 @@
 @extends('layouts.app')
-
+@section('title')
+Verify Your Email
+@endsection
 @section('content')
+<style>
+    body {
+            background: #071224;
+
+        }
+</style>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Verify Your Email Address') }}</div>
+            <div class="card" style="border:none">
+                <div class="card-header text-light h4" style="background-color: #111D35; ">{{ __('Verify Your Email Address') }}</div>
 
-                <div class="card-body">
+                <div class="card-body text-light" style="background-color : #131f39">
                     @if (session('resent'))
                         <div class="alert alert-success" role="alert">
                             {{ __('A fresh verification link has been sent to your email address.') }}

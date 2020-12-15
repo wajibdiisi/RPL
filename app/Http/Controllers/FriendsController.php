@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Models\Profile;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use App\Models\ProfileManager;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class FriendsController extends Controller
 {
@@ -80,15 +81,19 @@ class FriendsController extends Controller
             return redirect()->route('profile.show',$id);
         }
     }
-    public function accept($id,$username){
-        $user = ProfileManager::where('user_id','=',$id)->first();
+    public function accept($id,$username,$action){
+        $user = ProfileManager::where('user_id','=',$id)->orWhere('profile_id',$id)->first();
         $selectedUser = Profile::where('username','=',$username)->first();
         foreach($user->friend_ids as $req){
             if($req['id'] == $selectedUser->id){
                 $receiver = array();
                 array_push($receiver,['id' => $req['id'],'status' => 'approved','time' => Carbon::now()->toDateTimeString()]);
+                if($action == 'approve'){
                 ProfileManager::where('user_id','=',$user->user_id)->pull('friend_ids',['id' =>$receiver[0]['id']]);
                 ProfileManager::where('user_id','=',$user->user_id)->push('friend_ids',$receiver);
+                }else{
+                    ProfileManager::where('user_id','=',$user->user_id)->pull('friend_ids',['id' =>$receiver[0]['id']]);
+                }
             }
         }
         $test = ProfileManager::where('profile_id','=',$selectedUser->id)->where('friend_ids.id',$user->profile_id)->first();
@@ -96,12 +101,19 @@ class FriendsController extends Controller
             if($update['id'] == $user->profile_id){
                 $sender = array();
                 array_push($sender,['id' => $user->profile_id,'status' => 'approved','time' => Carbon::now()->toDateTimeString()]);
+                if($action == 'approve'){
                 ProfileManager::where('user_id','=',$user->user_id)->pull('friend_ids',['id' => $sender[0]['id']]);
                 ProfileManager::where('profile_id','=',$selectedUser->id)->push('friend_ids',$sender);
-                
+                toastr()->error('Friend Added to your Friendlist');
+            }
+                else{
+                    ProfileManager::where('profile_id','=',$selectedUser->id)->pull('friend_ids',['id' => $sender[0]['id']]);
+                    toastr()->error('Friend Request Declined');
+                }
             break;
             }
         }
+        return redirect()->route('friends.pending',$user->profile_id);
         
     }
 

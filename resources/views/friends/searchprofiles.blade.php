@@ -82,7 +82,7 @@ body {
         <img src="{{ url('uploads/avatars/' . $query->avatar) }}" class="img-fluid rounded-circle"
                                         alt="" />
         <label class="ml-3 name h2">
-            <a  class="text-light" href ="{{ route('profile.show',['id'=>$query->username]) }}">{{$query->nama_lengkap}}</a><br>
+            <a  class="text-light" href ="{{ route('profile.show',['id'=>$query->username]) }}">{{$query->username}}<small> ({{$query->nama_lengkap}})</small></a><br>
         <button class="btn btn-outline-primary btn-sm" disabled>{{count($query->gameCollection)}} Games on list</button>
         <button class="btn btn-outline-success btn-sm" disabled>{{count($query->profilemanager->acceptedFriend())}} Friends</button>
         </label>

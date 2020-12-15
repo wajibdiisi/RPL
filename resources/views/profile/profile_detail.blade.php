@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('title')
+{{$user->username}}'s Games
+@endsection
 @section('content')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js" integrity="sha512-WNLxfP/8cVYL9sj8Jnp6et0BkubLP31jhTG9vhL/F5uEZmg5wEzKoXp1kJslzPQWwPT1eyMiSxlKCgzHLOTOTQ==" crossorigin="anonymous"></script>
 
@@ -23,10 +26,16 @@
 .dataTables_info,.dataTables_filter,.dataTables_length{
     color : white;
 }
+.dataTables_filter input{
+    border : none;
+    color : white;
+    background-color : #071224;
+}
 .list-group .list-group-item {
     background-color: #111D35;
     color : white
 }
+
 
    
     </style>
@@ -38,7 +47,7 @@
     <div class="container bootstrap snippets bootdey">
         <div class="row">
             <div class="col-sm-10">
-            <h1 class="text-light">{{$user->username}}'s Profile</h1></div>
+            <h1 class="text-light"><a href="{{ route('profile.show', ['id' => $user->username]) }}">{{$user->username}}'s Profile</a></h1></div>
             <div class="col-sm-2">
                 <a href="{{ route('profile.show', ['id' => $user->username]) }}" class="float-right"> <img title="profile image" class="img-circle img-fluid rounded-circle" src="{{ url('uploads/avatars/' . $user->avatar) }}"></a>
             </div>
@@ -59,10 +68,17 @@
     
                 <ul class="list-group mt-3" >
                     <li class="list-group-item text-muted" >Activity <i class="fa fa-dashboard fa-1x"></i></li>
-                    <li class="list-group-item text-right"><span class="pull-left"><strong>Reviews</strong></span> 0</li>
-                    <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 0</li>
-                    <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 0</li>
-                    <li class="list-group-item text-right"><span class="pull-left"><strong>Games</strong></span> 0</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Reviews</strong></span> {{$user->review->count()}}</li>
+                <?php $count = 0 ?>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> @foreach($user->userpost as $post) 
+                        <?php 
+                        if( count($post->like) > 0 ) 
+                        {$count += count($post->like);}
+                        ?>
+                        @endforeach
+                    {{$count}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> {{$user->userpost->count()}}</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Games</strong></span> {{$user->gameCollection->where('status','!=',null)->count()}}</li>
                 </ul>
     
                

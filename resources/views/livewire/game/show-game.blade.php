@@ -305,10 +305,6 @@
                                 <h6 class="mb-0 text-light"><i class="fas fa-globe mr-2"></i>Release Date</h6>
                                 <span class="text-secondary">{{ $game->releaseDate }}</span>
                             </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <h6 class="mb-0 text-light"><i class="fas fa-building mr-2"></i>Publisher</h6>
-                                <span class="text-secondary"></span>
-                            </li>
                         </ul>
                     </div>
 
@@ -607,29 +603,7 @@
                 </div>
             </div>
         </div>
-        <div class="card mb-3">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <h6 class="mb-0">Screenshot</h6>
-                    </div>
-                    <div class="mt-2 col-md-12 row">
-                        <div class="col-md-4">
-                            <img alt="Generic placeholder image" src="http://bootdey.com/img/Content/avatar/avatar1.png"
-                                class="img-fluid">
-                        </div>
-                        <div class="col-md-4">
-                            <img alt="Generic placeholder image" src="http://bootdey.com/img/Content/avatar/avatar1.png"
-                                class="img-fluid">
-                        </div>
-                        <div class="col-md-4">
-                            <img alt="Generic placeholder image" src="http://bootdey.com/img/Content/avatar/avatar1.png"
-                                class="img-fluid">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+       
         <div class="row gutters-sm">
             <div class="col-sm-6 mb-3">
                 <div class="card h-100">
@@ -755,7 +729,7 @@
                                         </div>
 
                                         <div class="progress">
-                                            <div class="progress-bar bg-orange" role="progressbar"
+                                            <div class="progress-bar bg-danger" role="progressbar"
                                                 style="width: @if($game->review->where('rating','dislike')->count() != 0){{$game->review->where('rating','dislike')->count()/$game->review->count() * 100}}% @else 0% @endif"
                                                 aria-valuenow="47" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
@@ -915,7 +889,7 @@
                                 </div>
 
                                 <div class="progress">
-                                    <div class="progress-bar bg-orange" role="progressbar"
+                                    <div class="progress-bar bg-danger" role="progressbar"
                                         style="width: @if($game->review->where('rating','dislike')->count() != 0){{$game->review->where('rating','dislike')->count()/$game->review->count() * 100}}% @else 0% @endif"
                                         aria-valuenow="47" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>

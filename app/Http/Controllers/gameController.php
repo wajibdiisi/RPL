@@ -51,13 +51,13 @@ class gameController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'gameName' => 'required',
+            'gameName' => 'required|unique:game',
             'rating' => 'required',
             'genre' => 'required',
             'developer' => 'required',
             'releaseDate' => 'required',
             'summary' => 'required',
-            'custom_url' =>'required|unique:game.custom_url',
+            'custom_url' =>'required|unique:game',
         ]);
         $model = new gameCRUD;
         $model->gameName = $request->get('gameName');

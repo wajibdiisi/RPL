@@ -13,7 +13,11 @@
                                             <form wire:submit.prevent="store">
                                                
                                                 <input type="hidden" wire:model="post_id" value="{{$post->id}}">
+                                                @if(Auth::user())
                                                 <input type="hidden" wire:model="currentUser_id" value="{{$user->id}}">
+                                                @else
+                                                <input type="hidden" wire:model="currentUser_id" value="guest">
+                                                @endif
                                             <textarea class="form-control" style="background : #131f39;border : none" wire:model ="comment_content" placeholder="Reply" name="comment_content"></textarea>
                                                                             <button type="submit" class ="mt-2 btn btn-outline-primary">Submit</button>
                                             </form>

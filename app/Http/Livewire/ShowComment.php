@@ -21,6 +21,13 @@ class ShowComment extends Component
     }
 
     public function store(){
+        if(!auth()->user()){
+            $notification = array(
+                'message' => 'You Must Login First',
+                'alert-type' => 'danger'
+            );
+           return redirect()->route('home');
+        };
         $comment = array('_id'  => new \MongoDB\BSON\ObjectID,
         'profile_id' => $this->user->id,
         'comment_content' => $this->comment_content,

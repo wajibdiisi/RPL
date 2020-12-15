@@ -113,20 +113,20 @@
 </style>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-sm fixed-top navbar-light text-white" style="font-size : 20px">
+        <nav class="navbar navbar-expand-sm fixed-top navbar-light text-white" style="font-size : 18px">
             <div class="container">
-                
+                <a class="navbar-brand text-white tittle" href="{{ url('/') }}" style="width : 110px">
+                    <img class="img-fluid" src="https://i.giphy.com/media/rq6379B2woH5btSzJn/giphy.webp" alt="" style="width:300px">
+                 </a>
+                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                     <span class="navbar-toggler-icon"></span>
+                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <a class="navbar-brand text-white tittle" href="{{ url('/') }}" style="width : 110px">
-                        <img class="img-fluid" src="https://i.giphy.com/media/rq6379B2woH5btSzJn/giphy.webp" alt="" style="width:300px">
-                     </a>
-                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                         <span class="navbar-toggler-icon"></span>
-                     </button>
+                    
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto" style="margin-top : 30px">
+                    <ul class="navbar-nav ml-auto" style="margin-top : 30px;font-size : 20px">
                         @guest
                         <li class="nav-item">
                             <a class="nav-link text-light" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -140,11 +140,11 @@
                         @if(Auth::user()->role_id == '1')
                         <li class="nav-item "> <a class="nav-link text-white editGame " href="{{ url('/gameIndex') }}">{{ __('EditGame ') }}</a></li>
                         @endif
+                        <?php $username =  UserHelp::get_username(Auth::user()->id) ?>
                         <li class="nav-item "> <a class="nav-link text-white gamelist" href="{{ route('gamelist.all') }}">{{ __('Games') }}</a></li>
-                        <li class="nav-item "> <a class="nav-link text-white activity" href="{{ route('activity',UserHelp::get_username(Auth::user()->id)) }}">{{ __('Activities ') }}</a></li>
-                        
-                        <li class="nav-item mt-1"> <a class="navbar-brand text-white profil" href="{{ route('myprofile') }}">{{ Auth::user()->name }}</a></li>
-                        <li class="nav-item mt-1 ml-3">
+                        <li class="nav-item "> <a class="nav-link text-white activity" href="{{ route('activity',$username) }}">{{ __('Activities ') }}</a></li>
+                        <li class="nav-item mt-1"> <a class="navbar-brand text-white profil" href="{{ route('profile.show', $username) }}">{{ $username }}</a></li>
+                        <li class="nav-item mt-1 ml-5">
                             <a class="navbar-brand text-light" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">

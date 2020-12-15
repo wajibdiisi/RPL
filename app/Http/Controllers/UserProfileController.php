@@ -66,8 +66,7 @@ class UserProfileController extends Controller
    
 
     public function showRequest($id){
-    
-        $user = ProfileManager::with('embedsRequest')->where('user_id','=',$id)->first();
+        $user = ProfileManager::with('embedsRequest')->where('user_id','=',$id)->orWhere('profile_id',$id)->first();
         $reqArray=array();
         foreach($user->embedsRequest as $req){
             if($req->status == 'Need Action'){
@@ -107,9 +106,13 @@ class UserProfileController extends Controller
         }
         if($request->get('nama_lengkap')){
         $updateProfile->nama_lengkap = $request->get('nama_lengkap');
+        $userAccount = User::find($updateProfile->user_id);
+        $userAccount->name = $request->get('nama_lengkap');
+        $userAccount->save();
         $updateProfile->save();
     }
-    return redirect()->route('profile.show',$id)->with(['success' => 'Data berhasil diubah']);
+    Alert::success('Operation Success','Data Updated');
+    return redirect()->route('profile.show',$updateProfile->username)->with(['success' => 'Data berhasil diubah']);
 }
 
     public function update_about(Request $request,$id){
@@ -123,7 +126,8 @@ class UserProfileController extends Controller
 
         $profile = Profile::where('_id',$id)->orWhere('username',$id)->first();
         $profile->update(['about'  => $request->get('about')]);
-        return redirect()->route('profile.show',$id);
+        Alert::success('Operation Success','Data Updated');
+        return redirect()->route('profile.show',$profile->username);
     }
 
     public function profile_gameDelete($id,$game_id){
@@ -134,13 +138,13 @@ class UserProfileController extends Controller
 
 
     public function detail(Request $request,$id){
-        $user = Profile::where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->first();
+        $user = Profile::with('gameCollection','review','userpost')->where('user_id','=',$id)->orWhere('username','=',$id)->orWhere('_id','=',$id)->first();
         if($request->ajax()){
             $data = gameUser::where('profile_id',$id)->where('status','!=',null)->with('gameData')->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    $actionBtn = '<a href="'. route('profile.game_delete', ['id' => $data->profile_id, 'game_id' => $data->game_id]) .'" class="delete btn btn-danger btn-sm">Delete</a>';
+                    $actionBtn = '<a href="'. route('profile.game_delete', ['id' => $data->profile_id, 'game_id' => $data->game_id]) .'" class="delete btn btn-outline-danger btn-sm">Delete</a>';
                     return $actionBtn;
                 })->addColumn('title', function($data){
                     return '<a class ="text-decoration-none" href="' . route('game.show', $data->gameData->custom_url) .'">'.$data->gameData->gameName.'</a>';      
@@ -205,10 +209,10 @@ class UserProfileController extends Controller
             'contact_name' => $request->get('contact_name'),
         ];
         foreach($data->contact_list as $contact){
-        
         if($contact['contact_type'] == $request->get('contact_type'))
         $data->pull('contact_list',['contact_type' =>$request->get('contact_type')]);
         $data->push('contact_list',$push_data,true);
+        Alert::success('Operation Success','Data Updated');
         }
         return redirect()->route('profile.show',$id);
     }

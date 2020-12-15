@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('title')
+Login
+@endsection
 @section('content')
 <style>
     body {
@@ -44,16 +46,14 @@
 }
     
 </style>
-<div class="container">
+<div class="container mt-5">
     <div class="row">
         <div class="col-lg-1">
-            <div class="hexagon">
-                <img src="{{ asset('uploads/web_asset/logo.gif') }}" alt="" style="width:95px;height:95px">
-            </div>
+            
             <div class="mb-5"></div>
         </div>
     </div>
-    <div class="row">
+    <div class="row mt-5">
         <div class="col-lg-4 content">
             <h1 class="h2 mb-0">Welcome back!</h1>
             <div class="mb-5"></div>

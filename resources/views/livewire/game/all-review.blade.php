@@ -59,7 +59,7 @@
                                                 </div>
                                                
                                                 <div class="progress">
-                                                    <div class="progress-bar bg-orange" role="progressbar" style="width: @if($game->review->where('rating','dislike')->count() != 0){{$game->review->where('rating','dislike')->count()/$game->review->count() * 100}}% @else 0% @endif"
+                                                    <div class="progress-bar bg-danger" role="progressbar" style="width: @if($game->review->where('rating','dislike')->count() != 0){{$game->review->where('rating','dislike')->count()/$game->review->count() * 100}}% @else 0% @endif"
                                                         aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </li>

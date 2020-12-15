@@ -534,7 +534,7 @@
                                 </div>
                             </div>
                             <h4 class="text-center h6 mt-2">
-                                <?= $userView->username ?></h4>
+                                <?= $userView->nama_lengkap ?></h4>
                             <p class="text-center small">Last Online {{$last_seen}}</p>
                             @endif
 
@@ -741,7 +741,11 @@
                             @endforeach
 
                             @endif
-
+                            @if(UserHelp::isAdmin($userView->user_id) == '1')
+                            <p><button class="mt-3 btn btn-outline-danger"><i class="fas fa-user-shield"></i> Admin</button></p>
+                            @else
+                            <p><button class="mt-3 btn btn-outline-success"><i class="far fa-user"></i> Member</button></p>
+                            @endif
                         </div>
                         <hr />
                         <div class="card-heading clearfix mt-3">
@@ -774,7 +778,7 @@
                             <button class="mb-2 btn btn-outline-warning btn-sm"><i class="fas fa-chess-king"></i> Walking Encyclopedia </button>
                             @endif
                             @if($count_friend == 0)
-                            <button class="mr-2 btn btn-outline-secondary btn-sm"><i class="fas fa-chess-pawn"></i> Anti-Social</button>
+                            <button class="mr-2 btn btn-outline-secondary btn-sm"><i class="fas fa-chess-pawn"></i> Lonely</button>
                             @elseif($count_friend > 0 && $count_friend < 5)
                             <button class="mr-2 btn btn-outline-success btn-sm"><i class="fas fa-chess-knight"></i> Socialist</button>
                             @elseif($count_friend > 5 && $count_friend < 10)
@@ -815,11 +819,13 @@
                                     <tbody>
                                         @if($userView->contact_list)
                                         @foreach($userView->contact_list as $contact_list)
+                                        @if($contact_list['contact_name'] != 'N/A')
                                         <tr>
                                         <th scope="row">
                                         {{$contact_list['contact_type']}} : 
                                         <td>{{$contact_list['contact_name']}}</td>
                                     </tr>
+                                    @endif
                                 </th>
                                     @endforeach 
                                  

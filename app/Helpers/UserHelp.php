@@ -6,6 +6,7 @@ use App\Helpers\UserHelp;
 use App\Models\gameCRUD;
 use App\Models\userCollection;
 use App\Models\Contact;
+use App\Models\User;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 class UserHelp extends Eloquent {
@@ -49,5 +50,9 @@ class UserHelp extends Eloquent {
     public static function get_contact(){
         $data = Contact::all();
         return $data;
+    }
+    public static function isAdmin($id){
+        $data = User::where('_id',$id)->first();
+        return (isset($data->role_id) ? $data->role_id : null );
     }
 }
